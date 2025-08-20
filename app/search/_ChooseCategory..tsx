@@ -13,7 +13,7 @@ interface CategoryRadioProps {
     categories: Category[]
     onChange: (value: string) => void
     locale: string
-    categoryId: number
+    defaultValue: string
 
 }
 
@@ -21,7 +21,7 @@ export default function ChooseCategory({
     locale,
     categories,
     onChange,
-    categoryId,
+    defaultValue,
 
 
 }: CategoryRadioProps) {
@@ -32,10 +32,20 @@ export default function ChooseCategory({
 
     return (
         <RadioGroup
-            defaultValue={categoryId.toString()}
+            defaultValue={defaultValue}
             onValueChange={(value) => onChange(value)}
         >
-            {categories.map((cat) => (
+            <div key={defaultValue} className="flex items-center gap-3">
+
+                <RadioGroupItem
+                    value={defaultValue}
+                    id={defaultValue}
+                />
+                <Label htmlFor={defaultValue}>
+                    {defaultValue}
+                </Label>
+            </div>
+            {categories.map((cat) => (  
                 <div key={cat.id.toString()} className="flex items-center gap-3">
                     <RadioGroupItem
                         value={cat.id.toString()}

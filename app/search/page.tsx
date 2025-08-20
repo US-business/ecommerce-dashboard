@@ -147,164 +147,162 @@ export default function SearchPage() {
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8 flex">
-                {/* Search Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold mb-4">{t("search.title")}</h1>
-
-                    {/* Search Form */}
-                    <form onSubmit={handleSearch} className="flex gap-2 mb-4">
-                        <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                            <Input
-                                type="text"
-                                placeholder={t("search.placeholder")}
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                className="pl-10"
-                            />
-                        </div>
-                        <Button type="button" variant="outline" onClick={() => setShowFilters(!showFilters)}>
-                            <Filter className="h-4 w-4 mr-2" />
-                            {t("search.filters")}
-                        </Button>
-                    </form>
-
-                    {/* Results Info */}
-                    <div className="flex items-center justify-between">
-                        <p className="text-sm text-blue-900 px-5 py-1 rounded-md bg-blue-100 border border-blue-300">{t("search.results")} : {total}</p>
-
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-2">
-                                <label className="text-sm font-medium ">{t("common.show")}</label>
-                                <Select value={numberOfProducts} onValueChange={setNumberOfProducts}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={t("common.numberOfProducts")} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="12">12</SelectItem>
-                                        <SelectItem value="24">24</SelectItem>
-                                        <SelectItem value="36">36</SelectItem>
-                                        <SelectItem value="48">48</SelectItem>
-                                        <SelectItem value="60">60</SelectItem>
-                                        <SelectItem value="all">{t("common.all")}</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <Button
-                                variant={viewMode === "grid" ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => setViewMode("grid")}
-                            >
-                                <Grid className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant={viewMode === "list" ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => setViewMode("list")}
-                            >
-                                <List className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Filters Panel */}
-                {showFilters && (
-                    <Card className="mb-6">
-                        <CardContent className="p-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-lg font-semibold">{t("search.filters")}</h3>
-                                <Button variant="ghost" size="sm" onClick={clearFilters}>
-                                    <X className="h-4 w-4 mr-2" />
-                                    {t("search.clear")}
-                                </Button>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                {/* Category Filter */}
-                                <div>
-                                    <label className="text-sm font-medium mb-2 block">{t("categories.category")}</label>
-                                    <Select value={categoryId.toString()} onValueChange={(value) => setCategoryId(parseInt(value))}>
-
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={t("categories.allCategories")} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">{t("categories.allCategories")}</SelectItem>
-                                            <SelectItem value="1">Electronics</SelectItem>
-                                            <SelectItem value="2">Clothing</SelectItem>
-                                            <SelectItem value="3">Home & Garden</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Brand Filter */}
-                                <div>
-                                    <label className="text-sm font-medium mb-2 block">{t("products.brand")}</label>
-                                    <Select value={brand} onValueChange={setBrand}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={t("products.allBrands")} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">{t("products.allBrands")}</SelectItem>
-                                            <SelectItem value="Apple">Apple</SelectItem>
-                                            <SelectItem value="Samsung">Samsung</SelectItem>
-                                            <SelectItem value="Nike">Nike</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Price Range */}
-                                <div>
-                                    <label className="text-sm font-medium mb-2 block">{t("common.priceRange")}</label>
-                                    <div className="px-2">
-                                        <Slider
-                                            value={priceRange}
-                                            onValueChange={setPriceRange}
-                                            max={1000}
-                                            min={0}
-                                            step={10}
-                                            className="mb-2"
-                                        />
-                                        <div className="flex justify-between text-xs text-muted-foreground">
-                                            <span>${priceRange[0]}</span>
-                                            <span>${priceRange[1]}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Sort By */}
-                                <div>
-                                    <label className="text-sm font-medium mb-2 block">{t("common.sortBy")}</label>
-                                    <Select value={sortBy} onValueChange={setSortBy}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={t("common.sortBy")} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="newest">{t("common.newest")}</SelectItem>
-                                            <SelectItem value="oldest">{t("common.oldest")}</SelectItem>
-                                            <SelectItem value="priceLowHigh">{t("common.priceLowHigh")}</SelectItem>
-                                            <SelectItem value="priceHighLow">{t("common.priceHighLow")}</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                )}
-
-
-
                 <AsideBar title={t("common.search")}>
                     <Collapsible title={t("categories.title")}>
                         <ChooseCategory
                             locale={locale}
-                            categoryId={categoryId}
+                            defaultValue={t("common.all")}
+
                             categories={categories}
                             onChange={(value) => setCategoryId(parseInt(value))} />
                     </Collapsible>
                 </AsideBar>
                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                    {/* Search Header */}
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold mb-4">{t("search.title")}</h1>
+
+                        {/* Search Form */}
+                        <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+                            <div className="relative flex-1">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                                <Input
+                                    type="text"
+                                    placeholder={t("search.placeholder")}
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    className="pl-10"
+                                />
+                            </div>
+                            <Button type="button" variant="outline" onClick={() => setShowFilters(!showFilters)}>
+                                <Filter className="h-4 w-4 mr-2" />
+                                {t("search.filters")}
+                            </Button>
+                        </form>
+
+                        {/* Results Info */}
+                        <div className="flex items-center justify-between">
+                            <p className="text-sm text-blue-900 px-5 py-1 rounded-md bg-blue-100 border border-blue-300">{t("search.results")} : {total}</p>
+
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2">
+                                    <label className="text-sm font-medium ">{t("common.show")}</label>
+                                    <Select value={numberOfProducts} onValueChange={setNumberOfProducts}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={t("common.numberOfProducts")} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="12">12</SelectItem>
+                                            <SelectItem value="24">24</SelectItem>
+                                            <SelectItem value="36">36</SelectItem>
+                                            <SelectItem value="48">48</SelectItem>
+                                            <SelectItem value="60">60</SelectItem>
+                                            <SelectItem value="all">{t("common.all")}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <Button
+                                    variant={viewMode === "grid" ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => setViewMode("grid")}
+                                >
+                                    <Grid className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant={viewMode === "list" ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => setViewMode("list")}
+                                >
+                                    <List className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Filters Panel */}
+                    {showFilters && (
+                        <Card className="mb-6">
+                            <CardContent className="p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-semibold">{t("search.filters")}</h3>
+                                    <Button variant="ghost" size="sm" onClick={clearFilters}>
+                                        <X className="h-4 w-4 mr-2" />
+                                        {t("search.clear")}
+                                    </Button>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    {/* Category Filter */}
+                                    <div>
+                                        <label className="text-sm font-medium mb-2 block">{t("categories.category")}</label>
+                                        <Select value={categoryId.toString()} onValueChange={(value) => setCategoryId(parseInt(value))}>
+
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={t("categories.allCategories")} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">{t("categories.allCategories")}</SelectItem>
+                                                <SelectItem value="1">Electronics</SelectItem>
+                                                <SelectItem value="2">Clothing</SelectItem>
+                                                <SelectItem value="3">Home & Garden</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Brand Filter */}
+                                    <div>
+                                        <label className="text-sm font-medium mb-2 block">{t("products.brand")}</label>
+                                        <Select value={brand} onValueChange={setBrand}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={t("products.allBrands")} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">{t("products.allBrands")}</SelectItem>
+                                                <SelectItem value="Apple">Apple</SelectItem>
+                                                <SelectItem value="Samsung">Samsung</SelectItem>
+                                                <SelectItem value="Nike">Nike</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Price Range */}
+                                    <div>
+                                        <label className="text-sm font-medium mb-2 block">{t("common.priceRange")}</label>
+                                        <div className="px-2">
+                                            <Slider
+                                                value={priceRange}
+                                                onValueChange={setPriceRange}
+                                                max={1000}
+                                                min={0}
+                                                step={10}
+                                                className="mb-2"
+                                            />
+                                            <div className="flex justify-between text-xs text-muted-foreground">
+                                                <span>${priceRange[0]}</span>
+                                                <span>${priceRange[1]}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Sort By */}
+                                    <div>
+                                        <label className="text-sm font-medium mb-2 block">{t("common.sortBy")}</label>
+                                        <Select value={sortBy} onValueChange={setSortBy}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={t("common.sortBy")} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="newest">{t("common.newest")}</SelectItem>
+                                                <SelectItem value="oldest">{t("common.oldest")}</SelectItem>
+                                                <SelectItem value="priceLowHigh">{t("common.priceLowHigh")}</SelectItem>
+                                                <SelectItem value="priceHighLow">{t("common.priceHighLow")}</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
                     {/* Products Grid/List */}
                     {isLoadingPage ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
