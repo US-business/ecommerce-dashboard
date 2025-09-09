@@ -39,7 +39,7 @@ async function isDatabaseAvailable() {
 // Get all categories with pagination and search
 export async function getCategories(page = 1, limit = 10, search?: string , searchFirstName = false): Promise<CategoriesResponse> {
   try {
-    await requireAuth()
+    // await requireAuth()
 
     const dbAvailable = await isDatabaseAvailable()
 
@@ -103,7 +103,7 @@ export async function getCategories(page = 1, limit = 10, search?: string , sear
 // Get single category by ID
 export async function getCategory(id: number): Promise<CategoryResponse> {
   try {
-    await requireAuth()
+    // await requireAuth()
 
     const dbAvailable = await isDatabaseAvailable()
 

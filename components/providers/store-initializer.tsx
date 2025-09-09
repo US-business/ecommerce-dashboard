@@ -18,7 +18,7 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
   }, [loadUser])
 
   useEffect(() => {
-    // Apply RTL/LTR direction to document on mount
+    // Apply RTL/LTR direction immediately when locale changes
     if (typeof document !== 'undefined') {
       document.documentElement.dir = dir
       document.documentElement.lang = locale

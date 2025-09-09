@@ -3,7 +3,7 @@ import { pgTable, serial, varchar, text, decimal, integer, boolean, timestamp, p
 
 // Enums
 export const userRoleEnum = pgEnum("user_role", ["super_admin", "viewer"])
-export const discountTypeEnum = pgEnum("discount_type", ["fixed", "percentage" , "none"])
+export const discountTypeEnum = pgEnum("discount_type", ["fixed", "percentage", "none"])
 export const productStatusEnum = pgEnum("product_status", ["best_seller", "new", "coming_soon"])
 
 // Users table
@@ -31,35 +31,41 @@ export const categories = pgTable("categories", {
 })
 
 // Products table
-export const products = pgTable("products", {
-  id: serial("id").primaryKey(),
-  nameEn: varchar("name_en", { length: 200 }).notNull(),
-  nameAr: varchar("name_ar", { length: 200 }).notNull(),
-  slug: varchar("slug", { length: 200 }).notNull().unique(),
-  sku: varchar("sku", { length: 50 }).notNull(),
-  descriptionEn: text("description_en"),
-  descriptionAr: text("description_ar"),
-  image: varchar("image", { length: 255 }).notNull(),
-  imageName:text("image_name"),
-  images: text("images").array().notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }),
-  isPriceActive: boolean("is_price_active").default(false),
-  discountType: discountTypeEnum("discount_type").notNull(),
-  discountValue: decimal("discount_value", { precision: 10, scale: 2 }),
-  quantityInStock: integer("quantity_in_stock").default(0),
-  brand: varchar("brand", { length: 100 }),
-  isFeatured: boolean("is_featured").default(false),
-  size: varchar("size", { length: 50 }),
-  material: varchar("material", { length: 100 }),
-  badge: varchar("badge", { length: 50 }),
-  weight: decimal("weight", { precision: 8, scale: 2 }),
-  color: text("color"),
-  dimensions: varchar("dimensions", { length: 100 }),
-  status: productStatusEnum("status").notNull().default("new"),
-  categoryId: integer("category_id").references(() => categories.id),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-})
+export const products = pgTable(
+  "products",
+  {
+    id: serial("id").primaryKey(),
+    nameEn: varchar("name_en", { length: 200 }).notNull(),
+    nameAr: varchar("name_ar", { length: 200 }).notNull(),
+    slug: varchar("slug", { length: 200 }).notNull().unique(),
+    sku: varchar("sku", { length: 50 }).notNull(),
+    descriptionEn: text("description_en"),
+    descriptionAr: text("description_ar"),
+    image: varchar("image", { length: 255 }).notNull(),
+    imageName: text("image_name"),
+    images: text("images").array().notNull(),
+    price: decimal("price", { precision: 10, scale: 2 }),
+    isPriceActive: boolean("is_price_active").default(false),
+    discountType: discountTypeEnum("discount_type").notNull().default("none"),
+    discountValue: decimal("discount_value", { precision: 10, scale: 2 }),
+    quantityInStock: integer("quantity_in_stock").default(0),
+    brand: varchar("brand", { length: 100 }),
+    isFeatured: boolean("is_featured").default(false),
+    size: varchar("size", { length: 50 }),
+    material: varchar("material", { length: 100 }),
+    materialAr: varchar("material_ar", { length: 100 }),
+    badge: varchar("badge", { length: 50 }),
+    badgeAr: varchar("badge_ar", { length: 50 }),
+    capacity: varchar("capacity", { length: 50 }),
+    weight: decimal("weight", { precision: 8, scale: 2 }),
+    color: text("color"),
+    dimensions: varchar("dimensions", { length: 100 }),
+    status: productStatusEnum("status").default("new"),
+    categoryId: integer("category_id").references(() => categories.id),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  }
+)
 
 // Product Relations (for related products)
 export const productRelations = pgTable("product_relations", {
@@ -92,8 +98,8 @@ export const coupons = pgTable("coupons", {
   id: serial("id").primaryKey(),
   code: varchar("code", { length: 50 }).notNull().unique(),
   isActive: boolean("is_active").default(true),
-  discountType: varchar("discount_type").notNull(),
-  discountValue: decimal("discount_value", { precision: 10, scale: 2 }).notNull(),
+  discountType: discountTypeEnum("discount_type").notNull().default("none"),
+  discountValue: decimal("discount_value", { precision: 10, scale: 2 }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 })
@@ -104,6 +110,9 @@ export const cart = pgTable("cart", {
   userId: integer("user_id")
     .references(() => users.id)
     .notNull(),
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }),
+  quantity: integer("quantity").notNull().default(1),
+  couponId: integer("coupon_id"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 })
@@ -230,4 +239,29 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
     fields: [orderItems.productId],
     references: [products.id],
   }),
+}))
+
+// Gallery Images table
+export const galleryImages = pgTable("gallery_images", {
+  id: serial("id").primaryKey(),
+  titleEn: varchar("title_en", { length: 200 }),
+  titleAr: varchar("title_ar", { length: 200 }),
+  altTextEn: varchar("alt_text_en", { length: 200 }),
+  altTextAr: varchar("alt_text_ar", { length: 200 }),
+  url: varchar("url", { length: 500 }).notNull(),
+  publicId: varchar("public_id", { length: 200 }).notNull().unique(),
+  fileName: varchar("file_name", { length: 200 }).notNull(),
+  fileSize: integer("file_size").notNull(),
+  width: integer("width"),
+  height: integer("height"),
+  format: varchar("format", { length: 10 }),
+  tags: text("tags").array(),
+  isFeatured: boolean("is_featured").default(false),
+  isDefault: boolean("is_default").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+})
+
+export const galleryImagesRelations = relations(galleryImages, ({ many }) => ({
+  // Can be extended for relationships with products, categories, etc.
 }))

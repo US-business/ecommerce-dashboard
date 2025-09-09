@@ -1,8 +1,8 @@
 "use client"
 
 import { useI18nStore } from "@/lib/stores/i18n-store"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/shadcnUI/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/shadcnUI/dropdown-menu"
 import { Globe } from "lucide-react"
 import { locales, localeNames } from "@/lib/i18n/config"
 import { cn } from "@/lib/utils"
@@ -13,17 +13,17 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className={cn(dir === "rtl" && "flex-row-reverse")}>
-          <Globe className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
+        <Button variant="ghost" size="sm" className={cn(" text-purple-900 hover:text-purple-900  rounded-none focus-visible:ring-0 hover:bg-purple-200 cursor-pointer")}>
+          <Globe className={cn("h-4 w-4 text-purple-900")} />
           {localeNames[locale]}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={dir === "rtl" ? "start" : "end"}>
+      <DropdownMenuContent align={dir === "rtl" ? "start" : "end"} className={cn("bg-purple-100 text-purple-900")}>
         {locales.map((loc) => (
           <DropdownMenuItem
             key={loc}
             onClick={() => setLocale(loc)}
-            className={cn(locale === loc ? "bg-accent" : "", loc === "ar" && "text-right")}
+            className={cn(locale === loc ? "bg-purple-200 text-purple-900" : "", loc === "ar" && "text-right","hover:bg-purple-200")}
           >
             {localeNames[loc]}
           </DropdownMenuItem>

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Package, FolderOpen, ShoppingCart, Users, Ticket, Star } from "lucide-react"
+import { LayoutDashboard, Package, FolderOpen, ShoppingCart, Users, Ticket, Star, Image } from "lucide-react"
 import { useAuthStore } from "@/lib/stores/auth-store"
 
 const navigation = [
@@ -48,6 +48,12 @@ const navigation = [
     name: "navigation.reviews",
     href: "/dashboard/reviews",
     icon: Star,
+    roles: ["super_admin", "viewer"],
+  },
+  {
+    name: "navigation.gallery",
+    href: "/dashboard/gallery",
+    icon: Image,
     roles: ["super_admin", "viewer"],
   },
 ]

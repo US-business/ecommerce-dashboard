@@ -1,10 +1,10 @@
 
 import { useState, useEffect, useCallback } from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TabsContent } from "@/components/ui/tabs"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/shadcnUI/input"
+import { Label } from "@/components/shadcnUI/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
+import { TabsContent } from "@/components/shadcnUI/tabs"
+import { Checkbox } from "@/components/shadcnUI/checkbox"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { useAppStore, useI18nStore } from "@/lib/stores"
@@ -26,13 +26,17 @@ function RelatedProducts({ product, isEdit = false }: RelatedProductsProps) {
 
 
    const { t, dir } = useI18nStore()
-   const [relatedProductsSearch, setRelatedProductsSearch] = useState("")
-   const { productState, updateProductField, updateProductImages, removeProductImage, resetProductForm, setProductForm } = useAppStore();
+   const [relatedProductsSearch, setRelatedProductsSearch ] = useState("");
+   const { productState, updateProductField, updateProductImages, removeProductImage, resetProductForm, setProductForm,setShowSaveButtonProduct } = useAppStore();
 
    const {
       availableProducts, selectedRelatedProducts, filteredProducts, relatedProducts
    } = productState;
 
+
+   useEffect( () => {
+      setShowSaveButtonProduct(true);
+   } , [])
 
    const loadData = useCallback(async () => {
       if (isEdit && product?.id) {
@@ -57,7 +61,6 @@ function RelatedProducts({ product, isEdit = false }: RelatedProductsProps) {
          }
       } else {
          // For new product, just load available products
-         resetProductForm();
          const result = await getAllProductsActions();
          if (result?.success && result?.data) {
             updateProductField("availableProducts", result.data);
@@ -67,9 +70,9 @@ function RelatedProducts({ product, isEdit = false }: RelatedProductsProps) {
    }, [isEdit, product?.id]);
 
    useEffect(() => {
+      // for related Products
       loadData();
    }, []);
-
 
    // useEffect(() => {
    //    const init = async () => {

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 import type { Locale } from "@/lib/i18n/config"
-import { defaultLocale } from "@/lib/i18n/config"
+import { i18nConfig } from "@/lib/i18n/config"
 import { getTranslation } from "@/lib/i18n/use-i18n"
 
 interface I18nState {
@@ -11,30 +11,37 @@ interface I18nState {
   t: (key: string) => string
 }
 
+const getInitialState = (): { locale: Locale; dir: "ltr" | "rtl" } => {
+  if (typeof window !== 'undefined') {
+    const savedLocale = localStorage.getItem('preferred-locale') as Locale
+    if (savedLocale && (savedLocale === 'ar' || savedLocale === 'en')) {
+      return {
+        locale: savedLocale,
+        dir: savedLocale === 'ar' ? 'rtl' : 'ltr'
+      }
+    }
+  }
+  return {
+    locale: 'ar',
+    dir: 'rtl'
+  }
+}
+
 export const useI18nStore = create<I18nState>()(
   subscribeWithSelector((set, get) => ({
-    locale: defaultLocale,
-    dir: defaultLocale === "ar" ? "rtl" : "ltr",
+    ...getInitialState(),
 
     setLocale: (locale: Locale) => {
       const dir = locale === "ar" ? "rtl" : "ltr"
       
-      // Apply RTL/LTR direction to document
-      if (typeof document !== 'undefined') {
-        document.documentElement.dir = dir
-        document.documentElement.lang = locale
-        document.body.dir = dir
-
-        // Add/remove RTL class for additional styling
-        if (locale === "ar") {
-          document.documentElement.classList.add("rtl")
-          document.body.classList.add("rtl")
-        } else {
-          document.documentElement.classList.remove("rtl")
-          document.body.classList.remove("rtl")
-        }
+      // Save to localStorage first
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('preferred-locale', locale)
       }
-
+      
+      // Then apply locale settings
+      i18nConfig.applyLocale(locale)
+      
       set({ locale, dir })
     },
 

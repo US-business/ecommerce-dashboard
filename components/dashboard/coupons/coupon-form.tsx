@@ -5,13 +5,13 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/shadcnUI/button"
+import { Input } from "@/components/shadcnUI/input"
+import { Label } from "@/components/shadcnUI/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnUI/select"
+import { Switch } from "@/components/shadcnUI/switch"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
+import { Alert, AlertDescription } from "@/components/shadcnUI/alert"
 import { cn } from "@/lib/utils"
 import { createCoupon, updateCoupon, type CouponFormData } from "@/lib/actions/coupons"
 
@@ -131,8 +131,8 @@ export function CouponForm({ coupon, isEdit = false }: CouponFormProps) {
                     ? "النسبة المئوية (0-100)"
                     : "Percentage (0-100)"
                   : dir === "rtl"
-                    ? "المبلغ بالدولار"
-                    : "Amount in dollars"}
+                    ? "المبلغ بالجنيه"
+                    : "Amount in LE"}
               </p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export function CouponForm({ coupon, isEdit = false }: CouponFormProps) {
                 {formData.discountValue > 0
                   ? formData.discountType === "percentage"
                     ? `${formData.discountValue}%`
-                    : `$${formData.discountValue}`
+                    : `LE ${formData.discountValue}`
                   : "---"}
               </p>
               <p>

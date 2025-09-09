@@ -38,7 +38,8 @@
     "priceHighLow": "سعر: من الاعلى إلى الاقل",
     "show": "عرض المنتجات",
     "numberOfProducts": "عدد المنتجات",
-    "all": "الكل"
+    "all": "الكل",
+    "categories" : "الفئات"
   },
   "forms": {
     "required": "هذا الحقل مطلوب",
@@ -74,7 +75,8 @@
     "users": "المستخدمون",
     "coupons": "كوبونات الخصم",
     "cart": "السلة",
-    "reviews": "التقييمات"
+    "reviews": "التقييمات",
+    "gallery": "المعرض"
   },
   "products": {
     "title": "المنتجات",
@@ -98,7 +100,9 @@
     "featured": "منتج مميز",
     "size": "الحجم",
     "material": "المادة",
+    "materialAr": "المادة (عربي)",
     "badge": "الشارة",
+    "badgeAr": "الشارة (عربي)",
     "weight": "الوزن",
     "dimensions": "الأبعاد",
     "category": "الفئة",
@@ -107,7 +111,8 @@
     "images": "صور متعددة",
     "imageMainUpload": "تحميل الصورة الرئيسية",
     "relatedProducts": "المنتجات ذات الصلة",
-    "allBrands" : "جميع العلامات التجارية"
+    "allBrands": "جميع العلامات التجارية",
+    "priceRange": "تحديد السعر"
   },
   "categories": {
     "title": "الفئات",
@@ -119,7 +124,7 @@
     "slug": "الرابط المختصر",
     "image": "الصورة",
     "category": "الفئة",
-    "allCategories" : "جميع الفئات"
+    "allCategories": "جميع الفئات"
   },
   "users": {
     "title": "المستخدمون",
@@ -162,9 +167,36 @@
     "tryDifferent": " prøv igen",
     "pageOf": "صفحة",
     "total": "إجمالي",
-    "filters" : "فلتر",
-    "clear" : "مسح الفلاتر",
-    "apply" : "تطبيق",
-    "search" : "بحث"
+    "filters": "فلتر",
+    "clear": "مسح الفلاتر",
+    "apply": "تطبيق",
+    "productsFound": "عدد المنتجات المُعثر عليها:",
+    "sortBy": "ترتيب حسب",
+    "newest": "الأحدث",
+    "oldest": "الأقدم",
+    "priceLowHigh": "السعر: من الاقل إلى الاعلى",
+    "priceHighLow": "السعر: من الاعلى إلى الاقل",
+    "show": "عرض المنتجات",
+    "numberOfProducts": "عدد المنتجات",
+    "all": "كل المنتجات",
+    "inStock": "متاح",
+    "outOfStock": "غير متاح",
+    "onSale": "عروض على المنتاجات",
+    "priceRange": "السعر: من - إلى",
+    "availability": "متاح",
+    "filter": "بحث متقدم"
+  },
+  "gallery": {
+    "title": "المعرض",
+    "addGallery": "إضافة معرض",
+    "editGallery": "تعديل المعرض",
+    "name": "الاسم",
+    "nameEn": "الاسم (إنجليزي)",
+    "nameAr": "الاسم (عربي)",
+    "slug": "الرابط المختصر",
+    "image": "الصورة",
+    "gallery": "المعرض",
+    "allGalleries": "جميع المعارض",
+    "searchPlaceholder": "بحث عن صور..."
   }
 }

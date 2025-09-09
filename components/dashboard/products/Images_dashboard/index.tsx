@@ -5,25 +5,27 @@ import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/shadcnUI/button"
+import { Input } from "@/components/shadcnUI/input"
+import { Label } from "@/components/shadcnUI/label"
+import { Textarea } from "@/components/shadcnUI/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnUI/select"
+import { Switch } from "@/components/shadcnUI/switch"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
+import { Alert, AlertDescription, AlertTitle } from "@/components/shadcnUI/alert"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcnUI/tabs"
 import { cn } from "@/lib/utils"
 import { createProduct, updateProduct, getCategories, uploadImageAction } from "@/lib/actions/products"
 import UploadImage from "./__upload-image";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/shadcnUI/separator";
 import { AlertCircleIcon, ImageIcon, Link, X } from "lucide-react";
 import { useAppStore } from "@/lib/stores/app-store";
 import { z } from "zod"
 import AddImageByUrl from "./__AddImageByUrl"
 import Gallery from "./__Gallery"
 import { ProductProps } from "@/types/product"
+import { useGalleryStore } from "@/lib/stores"
+import { GalleryImage } from "@/lib/stores/gallery-store"
 
 interface ProductFormProps {
   product?: any
@@ -47,6 +49,7 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
   const [uploading, setUploading] = useState(false)
 
 
+  const { setSelectedImage , selectedImage  } = useGalleryStore();
   const { productState, updateProductField, updateProductImages } = useAppStore();
   const { image, imageName, images } = productState;
 
@@ -65,107 +68,21 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
     updateProductImages(value);
   };
 
-
-
-  // Unified image upload function to API  /  cloudinary رفع مباشر الى 
-  const getSignature = async () => {
-    const response = await fetch('/api/sign-image', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        paramsToSign: {
-          timestamp: Math.round(new Date().getTime() / 1000),
-        },
-      }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to get signature');
-    }
-    const { signature } = await response.json();
-    return signature;
-  };
-
-  async function uploadImage(file: File) {
-    const timestamp = Math.round(new Date().getTime() / 1000);
-    const signature = await getSignature();
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
-    formData.append("signature", signature);
-    formData.append("timestamp", timestamp.toString());
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-    return data.secure_url;
-  }
-
-  // Unified image upload function to API  /  cloudinary رفع مباشر الى 
-  // اسرع عند رفع الصور بدون التقيد بمساحة الملف
-  const handleImageUpload_use_API = async (file: File, isMainImage: boolean = true) => {
-    try {
-      setUploading(true);
-
-      const imageUrl = await uploadImage(file);
-      console.log("Uploaded image URL:", imageUrl);
-
-      if (isMainImage) {
-        handleFormChange("image", imageUrl);
-      } else {
-        handleFormImages(imageUrl);
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-
-  //  NextJS عن طريق سيرفر   cloudinary  رفع غير مباشر الى 
-  //  Unified image upload function to server Action
-  const handleImageUpload_use_server_action = async (file: File, isMainImage: boolean = true) => {
-
-    try {
-      setUploading(true);
-      const formDataUpload = new FormData();
-      formDataUpload.append('file', file);
-
-      const uploadResult = await uploadImageAction(formDataUpload);
-
-      if (uploadResult.success && uploadResult.url) {
-        if (isMainImage) {
-          handleFormChange("image", uploadResult.url);
-        } else {
-          handleFormImages(uploadResult.url);
-        }
-      } else {
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-    } finally {
-      setUploading(false);
-    }
-  };
-
+useEffect(() => {
+  console.log(selectedImage)
+  console.log(imageName);
+  console.log(image);
+  
+}, [selectedImage, imageName, image])
 
 
   // Function to add image URL manually
-  const addImageByUrl = (imageUrl: string, isMainImage: boolean = true) => {
+  const addChosenImage = (image: GalleryImage, isMainImage: boolean = true) => {
+    setSelectedImage(image)
     if (isMainImage) {
-      handleFormChange("image", imageUrl);
+      handleFormChange("image", image?.url);
     } else {
-      handleFormImages(imageUrl);
+      handleFormImages(image?.url || "");
     }
   }
 
@@ -190,21 +107,10 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
           <CardContent className="space-y-4 h-fit">
             <div className={cn(dir === "rtl" && "flex-row-reverse", "lg:h-[600px] h-auto flex flex-wrap lg:flex-nowrap w-full gap-4")}>
               <div className="space-y-2 w-full lg:w-[50%]">
-                <AddImageByUrl addUrlManually={(url) => addImageByUrl(url)} />
-                <Separator className="my-6 border-1 " />
-                <UploadImage
-                  id="mainImage"
-                  name="image"
-                  accept="image/*"
-                  onChange={(file: any) => handleImageUpload_use_API(file)}
-                  disabled={uploading}
-                  title={t("products.imageMainUpload")}
-                  className={cn(dir === "rtl" && "text-right")}
-                />
+                <AddImageByUrl addUrlManually={(url) => addChosenImage({ url } as GalleryImage)} />
                 <Separator className="my-6 border-1 " />
                 <div className="space-y-2">
-
-                  <Gallery addUrlChosenManually={(url) => addImageByUrl(url)} />
+                  <Gallery addImageChosenManually={(image) => addChosenImage(image)} />
                 </div>
                 <Separator className="my-6 border-1 " />
                 <div className="space-y-2">
@@ -216,7 +122,7 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
                     id="imageAlt"
                     placeholder={dir === "rtl" ? "عنوان وصف الصورة" : "Image description title"}
                     className={cn(dir === "rtl" && "text-right")}
-                    value={imageName}
+                    value={ imageName || selectedImage?.altTextEn}
                     onChange={(e) => handleFormChange("imageName", e.target.value)}
                   />
                 </div>
@@ -240,7 +146,7 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
                         size="icon"
                         className="absolute top-2 right-2 h-6 w-6"
                         onClick={() => {
-                          addImageByUrl("")
+                          addChosenImage( { url: "" } as GalleryImage)
                         }}
                       >
                         <X className="h-3 w-3" />
@@ -337,7 +243,7 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
                   placeholder="https://example.com/image.jpg"
                   className={cn(dir === "rtl" && "text-right")}
                 />
-                <Button type="button" onClick={() => addImageByUrl(imageField, false)} disabled={!imageField.trim()}>
+                <Button type="button" onClick={() => addChosenImage({ url: imageField } as GalleryImage, false)} disabled={!imageField.trim()}>
                   {t("common.add")}
                 </Button>
               </div>
@@ -345,31 +251,16 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
                 <Card>
                   <CardHeader>
                     <CardTitle className={cn(dir === "rtl" && "text-right")}>
-                      {dir === "rtl" ? "رفع الصورة الرئيسية" : "Upload main Image"}
+                      {dir === "rtl" ? "معرض الصور" : "Gallery"}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-
+                    <Gallery addImageChosenManually={(image) => addChosenImage(image , false)} />
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            {/* Upload Additional Image */}
-            <div className="space-y-2">
-              <Label className={cn(dir === "rtl" && "text-right block")}>
-                {dir === "rtl" ? "أو ارفع صورة إضافية" : "Or Upload Additional Image"}
-              </Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) handleImageUpload_use_API(file, false)
-                }}
-                disabled={uploading}
-              />
-            </div>
 
             {/* Images Preview */}
             {images && images.length > 0 && (
@@ -406,14 +297,6 @@ const ImagesDashboard = ({ product, isEdit = false }: ProductFormProps) => {
         </Card>
       </TabsContent >
 
-      {uploading && (
-        <div className="text-center">
-          <p className={cn(dir === "rtl" && "text-right")}>
-            {dir === "rtl" ? "جاري الرفع..." : "Uploading..."}
-          </p>
-        </div>
-      )
-      }
     </>
   )
 }

@@ -3,39 +3,31 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ErrorBoundary } from "@/components/error-boundary"
-import { Navbar } from "@/components/layout/Navbar"
-import { ThemeProvider } from "@/components/providers/theme-provider"
 import { StoreInitializer } from "@/components/providers/store-initializer"
+
+import { cn } from "@/lib/utils"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "E-Commerce Dashboard",
-  description: "Multilingual e-commerce admin dashboard",
-  generator: 'v0dev'
+  title: "E-Commerce",
+  description: "Multilingual e-commerce",
+  generator: ''
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} h-[3200px]`}>
-        <ErrorBoundary>
-          {/* <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          > */}
-            <StoreInitializer>
-              <Navbar />
-              {children}
-            </StoreInitializer>
-          {/* </ThemeProvider> */}
-        </ErrorBoundary>
+    <html lang="ar" dir="rtl" className="rtl">
+      <body className={cn(inter.className, "bg-linear-to-r from-teal-50 via-purple-100/50 to-cyan-50")}>
+        <StoreInitializer>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+        </StoreInitializer>
       </body>
     </html>
   )

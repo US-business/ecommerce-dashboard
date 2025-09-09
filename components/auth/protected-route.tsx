@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/stores/auth-store"
 import { useI18nStore } from "@/lib/stores/i18n-store"
 
@@ -19,13 +19,17 @@ export function ProtectedRoute({ children, requiredRole, fallbackPath = "/dashbo
   const { user, isLoading } = useAuthStore()
   const { t } = useI18nStore()
   const router = useRouter()
+  const pathName = usePathname()
+
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push("/")
+      router.push("/signin")
       return
     }
-
+    if (!user && pathName.startsWith("/dashboard")) {
+      router.push("/signin")
+    }
     if (!isLoading && user && requiredRole && user.role !== requiredRole) {
       router.push(fallbackPath)
       return

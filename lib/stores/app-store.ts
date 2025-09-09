@@ -9,13 +9,12 @@ interface AppState {
   showMessage: boolean
   
   // Images
-  images: string[]
+  images: { id: string; url: string }[]
   
   // Featured Products
   featuredProductsList: any[]
   featuredHomeGoodsList: any[]
   featuredElectronicsList: any[]
-  homeGoodsList: any[]
   
   // Wishlist
   isWishlist: boolean
@@ -26,18 +25,28 @@ interface AppState {
   subtotal: number
   
   // Product Form State
+  products: ProductProps[]
   productState: ProductProps
+  showSaveButtonProduct: boolean
+
+  // Categories
+  categories: any[]
   
   // Actions
+  setProducts: (products: ProductProps[]) => void
+  setFeaturedProductsList: (products: ProductProps[]) => void
+  setFeaturedElectronicsList: (products: ProductProps[]) => void
+  setCategories: (categories: any[]) => void
   setIsLoadingPage: (loading: boolean) => void
   setMessage: (message: string) => void
-  setImages: (images: string[]) => void
+  setImages: (images: { id: string; url: string }[]) => void
   setIsWishlist: (isWishlist: boolean) => void
   setProductsInCart: (products: any[]) => void
   setOpenCart: (open: boolean) => void
   setSubtotal: (subtotal: number) => void
   updateProductQuantity: (productId: string, newQuantity: number) => void
-  
+  setShowSaveButtonProduct: (show: boolean) => void
+
   // Product Form Actions
   updateProductField: (field: keyof ProductProps, value: any) => void
   updateProductImages: (image: string) => void
@@ -65,11 +74,14 @@ const initialProductState: ProductProps = {
   isFeatured: false,
   size: "",
   material: "",
+  materialAr: "",
   badge: "",
+  badgeAr: "",
   weight: 0,
   dimensions: "",
   status: "new",
   color: "",
+  capacity: "",
   categoryId: 0,
   relatedProducts: [],
   availableProducts: [],
@@ -85,7 +97,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   featuredProductsList: [],
   featuredHomeGoodsList: [],
   featuredElectronicsList: [],
-  homeGoodsList: [],
   message: '',
   showMessage: false,
   isWishlist: false,
@@ -93,7 +104,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   openCart: false,
   subtotal: 0,
   productState: {...initialProductState},
+  categories: [],
+  showSaveButtonProduct: false,
+  products: [],
+
   
+  setProducts: (products: ProductProps[]) => set({ products: products }),
+  setFeaturedProductsList: (products: ProductProps[]) => set({ featuredProductsList: products }),
+  setFeaturedElectronicsList: (products: ProductProps[]) => set({ featuredElectronicsList: products }),
+  setCategories: (categories: any[]) => set({ categories: [...categories] }),
   
   // UI Actions
   setProductForm: (data : ProductProps) => set({ productState: { ...data } }),
@@ -104,6 +123,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   setProductsInCart: (products) => set({ productsInCart: [...products] }),
   setOpenCart: (open) => set({ openCart: open }),
   setSubtotal: (subtotal) => set({ subtotal }),
+  setShowSaveButtonProduct: (show) => set({ showSaveButtonProduct: show }),
+
   
   updateProductQuantity: (productId, newQuantity) => {
     const { productsInCart } = get()

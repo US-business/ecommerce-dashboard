@@ -1,3 +1,5 @@
 export { useAuthStore } from './auth-store'
 export { useI18nStore } from './i18n-store'
 export { useAppStore } from './app-store'
+export { useSearchStore } from './search-store'
+export { useGalleryStore } from './gallery-store'

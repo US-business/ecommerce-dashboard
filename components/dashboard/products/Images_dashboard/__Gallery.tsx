@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getAllImagesAction } from '@/lib/actions/products';
-import { Button } from "@/components/ui/button"
+import { getAllImagesAction } from '@/lib/actions/gallery';
+import { GalleryImage, useGalleryStore } from '@/lib/stores/gallery-store';
+import { Button } from "@/components/shadcnUI/button"
 import {
    Dialog,
    DialogClose,
@@ -12,50 +13,54 @@ import {
    DialogHeader,
    DialogTitle,
    DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/shadcnUI/dialog"
 import Image from 'next/image';
 import { useAppStore } from '@/lib/stores/app-store';
-import z from 'zod';
 import { cn } from '@/lib/utils';
 import { useI18nStore } from '@/lib/stores/i18n-store';
 
 
 type GalleryProps = {
-   addUrlChosenManually: (url: string) => void;
+   addImageChosenManually: (image: GalleryImage) => void;
 }
 
-export default function Gallery({ addUrlChosenManually }: GalleryProps) {
+export default function Gallery({ addImageChosenManually }: GalleryProps) {
 
-   const [imageURLChosen, setImageURLChosen] = useState('')
+   const [imageChosen, setImageChosen] = useState<GalleryImage | null>(null)
    const [message, setMessage] = useState('')
    const [error, setError] = useState(false)
-     const { t, dir } = useI18nStore()
-
-   const { images, setImages } = useAppStore();
+   const { t, dir } = useI18nStore()
+   const [images, setImages] = useState<GalleryImage[]>([])
 
    useEffect(() => {
-      getAllImagesAction().then(res => setImages(res));
-   }, [setImages]);
+      async function fetchImages() {
+      const result = await getAllImagesAction()
+      setImages(result)
+      console.log("result", result);
+      console.log( "images", images);
+      }
+      fetchImages()
 
-   if (!images && images?.length === 0) {
-      setMessage('Your gallery currently has no Images')
-      setMessage('المعرض لا يحتوي على أي صور حاليا.')
-   }
+      if (!images || images.length === 0) {
+         dir === "rtl" ? setMessage('المعرض لا يحتوي على أي صور حاليا.') : setMessage('Your gallery currently has no Images')
+      }
+   }, []);
 
-   const handleAddUrl = () => {
-      if (!imageURLChosen.trim()) {
-         setMessage("❌ Image URL is required");
+
+   const handleAddImage = () => {
+      if (!imageChosen) {
+         setMessage("❌ Image is required");
          setError(true);
          return;
       }
 
       try {
-         addUrlChosenManually(imageURLChosen);
-         setMessage("✔ Image URL added successfully!");
+         addImageChosenManually(imageChosen);
+         setMessage("✔ Image added successfully!");
          setError(false);
-         setImageURLChosen("");
+         setImageChosen(null);
       } catch (err) {
-         console.error("Error adding image URL:", err);
+         console.error("Error adding image:", err);
       }
 
    };
@@ -63,7 +68,7 @@ export default function Gallery({ addUrlChosenManually }: GalleryProps) {
    return (
       <Dialog>
          <DialogTrigger asChild>
-            <h5  className={cn(dir === "rtl" && "text-right block")}>
+            <h5 className={cn(dir === "rtl" && "text-right block")}>
                {dir === "rtl" ? "أختر من المعرض" : "Choose from Gallery"}
             </h5>
          </DialogTrigger>
@@ -86,12 +91,13 @@ export default function Gallery({ addUrlChosenManually }: GalleryProps) {
                </DialogDescription>
             </DialogHeader>
             <div className="flex flex-wrap h-60 gap-4 overflow-y-scroll">
-               {images.map((img: { id: string; url: string }) => (
+               {images?.map((img) => (
                   <div
-                     key={img.id}
-                     className={`${imageURLChosen === img.url ? "border-5 border-blue-400" : "border-1 border-neutral-300"} space-y-2 relative w-60 lg:w-44 h-33  overflow-hidden  rounded-lg cursor-pointer `}
+                     onClick={() => setImageChosen(img as GalleryImage)}
+                     key={img?.id}
+                     className={`${imageChosen?.id && imageChosen?.id === img?.id ? "border-5 border-blue-400" : "border-1 border-neutral-300"} space-y-2 relative w-60 lg:w-44 h-33  overflow-hidden  rounded-lg cursor-pointer `}
                   >
-                     <Image onClick={() => setImageURLChosen(img.url)} loading="lazy" key={img.id} src={img.url} fill className="object-contain" sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' alt={img.id} />
+                     <Image loading="lazy" key={img?.id} src={img?.url || ""} fill className="object-contain" sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' alt={img?.titleEn || img?.titleAr || ""} />
                   </div>
                ))}
             </div>
@@ -102,7 +108,7 @@ export default function Gallery({ addUrlChosenManually }: GalleryProps) {
 
                {images && images.length > 0 ? (
                   <DialogClose asChild>
-                     <Button type="button" onClick={handleAddUrl}>
+                     <Button type="button" onClick={handleAddImage}>
                         Save changes
                      </Button>
                   </DialogClose>

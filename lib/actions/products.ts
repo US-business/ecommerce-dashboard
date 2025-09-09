@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache"
 import { requireAuth } from "@/lib/auth/actions"
 import { mockProductsService } from "@/lib/services/products-mock"
-import cloudinary from "../cloudinary"
-import {ProductProps} from "@/types/product"
+import cloudinary from "../cloudinary/cloudinary"
+import { ProductProps } from "@/types/product"
 
 // export interface ProductFormData {
 //   nameEn: string
@@ -68,13 +68,18 @@ async function isDatabaseAvailable() {
   }
 }
 
-// Get all products with pagination and search
-export async function getAllProductsActions(page = 1, limit = 10, search?: string , searchFirstName = false): Promise<ProductsResponse> {
+export async function getAllProductsActions(
+  page = 1,
+  limit = 10,
+  search?: string,
+  searchFirstName = false,
+  categoryId?: number,
+  featuredProducts?: boolean
+): Promise<ProductsResponse> {
   try {
-    await requireAuth()
+    // await requireAuth()
 
     const dbAvailable = await isDatabaseAvailable()
-
     if (!dbAvailable) {
       return await mockProductsService.getProducts(page, limit, search)
     }
@@ -82,31 +87,44 @@ export async function getAllProductsActions(page = 1, limit = 10, search?: strin
     try {
       const { db } = await import("@/lib/db")
       const { products, categories } = await import("@/lib/db/schema")
-      const { eq, like, or, desc, count } = await import("drizzle-orm")
+      const { eq, like, or, and, desc, count } = await import("drizzle-orm")
 
       const offset = (page - 1) * limit
 
-        // Build search condition
-        const searchCondition = search
-        ? searchFirstName === false ? or(
-          like(products.nameEn, `%${search}%`),
-          like(products.nameAr, `%${search}%`),
-          like(products.slug, `%${search}%`),
-          like(products.brand, `%${search}%`),
-        ) : or(
-          like(products.nameEn, `${search}%`),
-          like(products.nameAr, `${search}%`),
-          like(products.slug, `${search}%`),
-          like(products.brand, `${search}%`),
-        )
+      // Build search condition
+      const searchCondition = search
+        ? searchFirstName
+          ? or(
+              like(products.nameEn, `${search}%`),
+              like(products.nameAr, `${search}%`),
+              like(products.slug, `${search}%`),
+              like(products.brand, `${search}%`)
+            )
+          : or(
+              like(products.nameEn, `%${search}%`),
+              like(products.nameAr, `%${search}%`),
+              like(products.slug, `%${search}%`),
+              like(products.brand, `%${search}%`)
+            )
         : undefined
-      
 
+      // Build category condition
+      const whereConditions: any[] = []
+      if (categoryId) whereConditions.push(eq(products.categoryId, categoryId))
+      // get featured products
+      if (featuredProducts) whereConditions.push(eq(products.isFeatured, true))
+
+      // Combine search + category
+      if (searchCondition) whereConditions.push(searchCondition)
+
+      // Base query
       const baseQuery = db
         .select({
           id: products.id,
           nameEn: products.nameEn,
           nameAr: products.nameAr,
+          descriptionEn: products.descriptionEn,
+          descriptionAr: products.descriptionAr,
           slug: products.slug,
           sku: products.sku,
           price: products.price,
@@ -119,8 +137,8 @@ export async function getAllProductsActions(page = 1, limit = 10, search?: strin
           image: products.image,
           imageName: products.imageName,
           images: products.images,
-
           createdAt: products.createdAt,
+          capacity: products.capacity,
           category: {
             id: categories.id,
             nameEn: categories.nameEn,
@@ -130,30 +148,18 @@ export async function getAllProductsActions(page = 1, limit = 10, search?: strin
         .from(products)
         .leftJoin(categories, eq(products.categoryId, categories.id))
 
-      const query = searchCondition
-        ? baseQuery
-          .where(searchCondition)
-          .orderBy(desc(products.createdAt))
-          .limit(limit)
-          .offset(offset)
-        : baseQuery
-          .orderBy(desc(products.createdAt))
-          .limit(limit)
-          .offset(offset)
+      // Apply where, order, limit, offset
+      const query = whereConditions.length > 0
+        ? baseQuery.where(and(...whereConditions)).orderBy(desc(products.createdAt)).limit(limit).offset(offset)
+        : baseQuery.orderBy(desc(products.createdAt)).limit(limit).offset(offset)
 
       const result = await query
 
-      // Get total count for pagination - FIXED
-      const totalQuery = db
-        .select({ count: count() })
-        .from(products)
-
-      if (searchCondition) {
-        totalQuery.where(searchCondition)
-      }
-
+      // Total count for pagination
+      let totalQuery = db.select({ count: count() }).from(products)
+      if (whereConditions.length > 0) totalQuery = totalQuery.where(and(...whereConditions)) as any
       const totalResult = await totalQuery
-      const total = totalResult[0].count // ✅ Fixed: get actual count
+      const total = totalResult[0].count
 
       return {
         success: true,
@@ -174,11 +180,10 @@ export async function getAllProductsActions(page = 1, limit = 10, search?: strin
 }
 
 
-
 // Get single product by ID
 export async function getProduct(id: number): Promise<ProductResponse> {
   try {
-    await requireAuth();
+    // await requireAuth();
 
     const dbAvailable = await isDatabaseAvailable();
     if (!dbAvailable) {
@@ -212,11 +217,14 @@ export async function getProduct(id: number): Promise<ProductResponse> {
           isFeatured: products.isFeatured,
           size: products.size,
           material: products.material,
+          materialAr: products.materialAr,
           badge: products.badge,
+          badgeAr: products.badgeAr,
           weight: products.weight,
           dimensions: products.dimensions,
           status: products.status,
           color: products.color,
+          capacity: products.capacity,
           categoryId: products.categoryId,
           createdAt: products.createdAt,
           updatedAt: products.updatedAt,
@@ -383,11 +391,14 @@ export async function createProduct(data: ProductProps & { relatedProducts?: num
           ...(data.isFeatured && { isFeatured: data.isFeatured }),
           ...(data.size && { size: data.size }),
           ...(data.material && { material: data.material }),
+          ...(data.materialAr && { materialAr: data.materialAr }),
           ...(data.badge && { badge: data.badge }),
+          ...(data.badgeAr && { badgeAr: data.badgeAr }),
           ...(data.weight && { weight: data.weight?.toString() }),
           ...(data.dimensions && { dimensions: data.dimensions }),
           ...(data.status && { status: data.status }),
           ...(data.color && { color: data.color }),
+          ...(data.capacity && { capacity: data.capacity }),
           ...(data.categoryId && { categoryId: data.categoryId }),
         })
         .returning()
@@ -483,11 +494,14 @@ export async function updateProduct(id: number, data: ProductProps & { relatedPr
           isFeatured: data.isFeatured ?? false,
           size: data.size || null,
           material: data.material || null,
+          materialAr: data.materialAr || null,
           badge: data.badge || null,
+          badgeAr: data.badgeAr || null,
           weight: data.weight ? data.weight.toString() : null,
           dimensions: data.dimensions || null,
           status: data.status || "new",
           color: data.color || null,
+          capacity: data.capacity || null,
           categoryId: data.categoryId || null,
           updatedAt: new Date(),
         })
@@ -593,8 +607,12 @@ export async function searchProductsAction({
   category,
   minPrice,
   maxPrice,
+  inStockOnly,
+  outOfStockOnly,
+  onSaleOnly,
   brand,
   sortBy = "newest", // default
+
 }: {
   query?: string
   page?: number
@@ -602,7 +620,10 @@ export async function searchProductsAction({
   category?: number
   minPrice?: number
   maxPrice?: number
-  brand?: string
+  brand?: string[]
+  inStockOnly?: boolean
+  outOfStockOnly?: boolean
+  onSaleOnly?: boolean
   sortBy?: "newest" | "oldest" | "priceLowHigh" | "priceHighLow"
 }): Promise<{
   success: boolean
@@ -650,8 +671,26 @@ export async function searchProductsAction({
     // فلترة حسب السعر
     if (minPrice !== undefined) whereConditions.push(gte(products.price, minPrice))
     if (maxPrice !== undefined) whereConditions.push(lte(products.price, maxPrice))
-    // فلترة حسب البراند
-    if (brand) whereConditions.push(eq(products.brand, brand))
+
+    // فلترة حسب البراند //
+    // if (brand) whereConditions.push(eq(products.brand, brand)) // فلترة البحث عن أختيار براند واحد فقط
+
+    if (brand && Array.isArray(brand) && brand.length > 0) { // فلترة البحث عن عدة براند
+      whereConditions.push(or(...brand.map((b) => eq(products.brand, b))))
+    }
+
+    if (inStockOnly === true) whereConditions.push(gte(products.quantityInStock, 1))
+    if (outOfStockOnly === true) whereConditions.push(eq(products.quantityInStock, 0))
+    if (onSaleOnly) {
+      whereConditions.push(
+        or(
+          eq(products.discountType, "fixed"),
+          eq(products.discountType, "percentage")
+        )
+      )
+    }
+
+
 
     // إنشاء query أساسي
     let dbQuery = db
@@ -669,6 +708,7 @@ export async function searchProductsAction({
         quantityInStock: products.quantityInStock,
         createdAt: products.createdAt,
         updatedAt: products.updatedAt,
+        capacity: products.capacity,
         category: {
           id: categories.id,
           nameEn: categories.nameEn,
@@ -733,12 +773,39 @@ export async function searchProductsAction({
   }
 }
 
+export async function getAllBrands(): Promise<ProductsResponse> {
+  try {
+    const { db } = await import("@/lib/db")
+    const { products } = await import("@/lib/db/schema")
+    // const { notEq } = await import("drizzle-orm") as any
 
+    const result = await db
+      .select({ brand: products.brand })
+      .from(products)
+      // .where(products.brand.notEq(null) as any)
+      .where(products.brand.notNull as any) // أو حسب نوع العمود
+      .groupBy(products.brand)
+      .orderBy(products.brand)
+
+    return {
+      success: true,
+      data: result.map((r) => r.brand) as string[],
+      total: result.length,
+    }
+  } catch (error) {
+    console.error("Error fetching brands:", error)
+    return {
+      success: false,
+      data: [],
+      total: 0,
+    }
+  }
+}
 
 // Get categories for dropdown
 export async function getCategories(): Promise<ProductsResponse> {
   try {
-    await requireAuth()
+    // await requireAuth()
 
     const dbAvailable = await isDatabaseAvailable()
 
@@ -874,20 +941,7 @@ export async function uploadImageAction(formData: FormData): Promise<UploadRespo
   }
 }
 
-export async function getAllImagesAction() {
 
-  const { resources } = await cloudinary.search
-    .expression('folder:/*')
-    .sort_by('public_id', 'desc')
-    .max_results(50)
-    .execute();
-
-  return resources.map((img: any) => ({
-    id: img.public_id,
-    url: img.secure_url
-  }));
-
-}
 
 
 

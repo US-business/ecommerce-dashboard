@@ -5,21 +5,28 @@ import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/shadcnUI/button"
+import { Input } from "@/components/shadcnUI/input"
+import { Label } from "@/components/shadcnUI/label"
+import { Textarea } from "@/components/shadcnUI/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnUI/select"
+import { Switch } from "@/components/shadcnUI/switch"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
+import { Alert, AlertDescription, AlertTitle } from "@/components/shadcnUI/alert"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcnUI/tabs"
 import { cn } from "@/lib/utils"
-import { createProduct, updateProduct, getCategories, getProduct } from "@/lib/actions/products"
+import { createProduct, updateProduct, getCategories, getProduct, getAllProductsActions } from "@/lib/actions/products"
 import { useAppStore } from "@/lib/stores/app-store";
 import ImagesDashboard from "./Images_dashboard"
 import RelatedProducts from "./Related_products_dashboard"
 import { ProductProps } from "@/types/product"
+import { Checkbox } from "@/components/shadcnUI/checkbox"
+import Image from "next/image"
+
+
+
+
+
 
 interface ProductFormProps {
   product?: any
@@ -33,13 +40,18 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [categories, setCategories] = useState<any[]>([])
+  const [relatedProductsSearch, setRelatedProductsSearch] = useState("");
 
 
-  const { productState, updateProductField, updateProductImages, removeProductImage, resetProductForm, setProductForm } = useAppStore();
+  const { productState, showSaveButtonProduct, setShowSaveButtonProduct, updateProductField, updateProductImages, removeProductImage, resetProductForm, setProductForm } = useAppStore();
 
   const {
-    nameEn, nameAr, slug, sku, descriptionEn, descriptionAr, image, images, price, isPriceActive, discountType, discountValue, quantityInStock, brand, isFeatured, size, material, badge, weight, dimensions, status, color, categoryId,
+    nameEn, nameAr, slug, sku, descriptionEn, descriptionAr, image, images, capacity, price, isPriceActive, discountType, discountValue, quantityInStock, brand, isFeatured, size, material, materialAr, badge, badgeAr, weight, dimensions, status, color, categoryId,
+    availableProducts, selectedRelatedProducts, filteredProducts,
   } = productState;
+
+
+
 
   useEffect(() => {
     console.log(product);
@@ -82,29 +94,6 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
   useEffect(() => {
     fetchProduct()
     // updateProductField("nameEn", product?.nameEn || "")
-    // updateProductField("nameAr", product?.nameAr || "")
-    // updateProductField("slug", product?.slug || "")
-    // updateProductField("sku", product?.sku || "")
-    // updateProductField("descriptionEn", product?.descriptionEn || "")
-    // updateProductField("descriptionAr", product?.descriptionAr || "")
-    // updateProductField("image", product?.image || "")
-    // updateProductField("images", product?.images || [])
-    // updateProductField("price", product?.price ? Number.parseFloat(product.price) : 0)
-    // updateProductField("isPriceActive", product?.isPriceActive || false)
-    // updateProductField("discountType", product?.discountType || "none")
-    // updateProductField("discountValue", product?.discountValue ? Number.parseFloat(product.discountValue) : undefined)
-    // updateProductField("quantityInStock", product?.quantityInStock || 0)
-    // updateProductField("brand", product?.brand || "")
-    // updateProductField("isFeatured", product?.isFeatured || false)
-    // updateProductField("size", product?.size || "")
-    // updateProductField("material", product?.material || "")
-    // updateProductField("badge", product?.badge || "")
-    // updateProductField("weight", product?.weight ? Number.parseFloat(product.weight) : undefined)
-    // updateProductField("dimensions", product?.dimensions || "")
-    // updateProductField("status", product?.status || "")
-    // updateProductField("color", product?.color || "")
-    // updateProductField("categoryId", product?.categoryId || undefined)
-
     console.log(productState);
   }, [isEdit, product?.id])
 
@@ -172,6 +161,99 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
       setLoading(false)
     }
   }
+
+
+
+
+
+
+  // ///////////////////////////////////////////////////////// for related Products
+  const loadData = useCallback(async () => {
+    if (isEdit && product?.id) {
+      try {
+        // First load the product data
+        // Then load available products
+        const result = await getAllProductsActions();
+        if (result?.success && result?.data) {
+          const filteredProductsDB = result.data.filter((p: any) => p.id !== product.id);
+          updateProductField("availableProducts", filteredProductsDB);
+          updateProductField("filteredProducts", filteredProductsDB);
+
+          // Now set the related products after both product data and available products are loaded
+          if (product?.relatedProducts) {
+            const relatedIds = product.relatedProducts.map((rp: any) => rp.id);
+            updateProductField("selectedRelatedProducts", relatedIds);
+            updateProductField("relatedProducts", relatedIds);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading product data:", error);
+      }
+    } else {
+      // For new product, just load available products
+      const result = await getAllProductsActions();
+      if (result?.success && result?.data) {
+        updateProductField("availableProducts", result.data);
+        updateProductField("filteredProducts", result.data);
+      }
+    }
+  }, [isEdit, product?.id]);
+
+  // useEffect(() => {
+  //   // for related Products
+  //   loadData();
+  // }, []);
+
+
+  const handleRelatedProductToggle = (productId: number) => {
+    const updatedSelectedProducts = selectedRelatedProducts?.includes(productId)
+      ? selectedRelatedProducts?.filter((id: any) => id !== productId)
+      : [...selectedRelatedProducts ?? [], productId];
+    updateProductField("selectedRelatedProducts", updatedSelectedProducts)
+    updateProductField("relatedProducts", updatedSelectedProducts)
+    console.log(filteredProducts);
+  };
+
+
+
+
+
+
+  const handleRelatedProductsSearch = (searchTerm: string) => {
+    setRelatedProductsSearch(searchTerm)
+
+    if (!searchTerm.trim()) {
+      updateProductField("filteredProducts", availableProducts)
+      return
+    }
+
+    const filtered = availableProducts?.filter((product: any) => {
+      const nameEn = product.nameEn?.toLowerCase() || ""
+      const nameAr = product.nameAr?.toLowerCase() || ""
+      const sku = product.sku?.toLowerCase() || ""
+      const brand = product.brand?.toLowerCase() || ""
+      const search = searchTerm.toLowerCase()
+
+      return nameEn.includes(search) || nameAr.includes(search) || sku.includes(search) || brand.includes(search)
+    })
+    updateProductField("filteredProducts", filtered)
+  }
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -410,14 +492,39 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="materialAr" className={cn(dir === "rtl" && "text-right block")}>
+                    {t("products.materialAr")}
+                  </Label>
+                  <Input
+                    id="materialAr"
+                    value={materialAr}
+                    onChange={(e) => handleFormChange("materialAr", e.target.value)}
+                    className={cn(dir === "rtl" && "text-right")}
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="badge" className={cn(dir === "rtl" && "text-right block")}>
                     {t("products.badge")}
                   </Label>
                   <Input
+                    maxLength={50}
                     id="badge"
                     value={badge}
                     onChange={(e) => handleFormChange("badge", e.target.value)}
                     placeholder={dir === "rtl" ? "جديد، الأكثر مبيعاً" : "New, Best Seller"}
+                    className={cn(dir === "rtl" && "text-right")}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="badgeAr" className={cn(dir === "rtl" && "text-right block")}>
+                    {t("products.badgeAr")}
+                  </Label>
+                  <Input
+                    dir="rtl"
+                    maxLength={50}
+                    id="badgeAr"
+                    value={badgeAr}
+                    onChange={(e) => handleFormChange("badgeAr", e.target.value)}
                     className={cn(dir === "rtl" && "text-right")}
                   />
                 </div>
@@ -457,6 +564,17 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
                     value={dimensions}
                     onChange={(e) => handleFormChange("dimensions", e.target.value)}
                     placeholder={dir === "rtl" ? "الطول × العرض × الارتفاع" : "L × W × H"}
+                    className={cn(dir === "rtl" && "text-right")}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="capacity" className={cn(dir === "rtl" && "text-right block")}>
+                    {t("products.capacity")}
+                  </Label>
+                  <Input
+                    id="capacity"
+                    value={capacity}
+                    onChange={(e) => handleFormChange("capacity", e.target.value)}
                     className={cn(dir === "rtl" && "text-right")}
                   />
                 </div>
@@ -565,6 +683,7 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
 
               <div className={cn("flex items-center space-x-2", dir === "rtl" && "flex-row-reverse space-x-reverse")}>
                 <Switch
+                  checked={isPriceActive}
                   id="isPriceActive"
                   onCheckedChange={(checked) => handleFormChange("isPriceActive", checked)}
                 />
@@ -677,6 +796,133 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
           <RelatedProducts product={product} isEdit={isEdit} />
         </TabsContent>
 
+
+
+
+
+        {/* <TabsContent value="related" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className={cn(dir === "rtl" && "text-right")}>
+                {dir === "rtl" ? "المنتجات ذات الصلة" : "Related Products"}
+              </CardTitle>
+              <p className={cn("text-sm text-muted-foreground", dir === "rtl" && "text-right")}>
+                {dir === "rtl"
+                  ? "اختر المنتجات التي تريد عرضها كمنتجات ذات صلة مع هذا المنتج"
+                  : "Select products to display as related to this product"}
+              </p>
+            </CardHeader>
+
+
+
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="relatedSearch" className={cn(dir === "rtl" && "text-right block")}>
+                  {dir === "rtl" ? "البحث في المنتجات" : "Search Products"}
+                </Label>
+                <Input
+                  id="relatedSearch"
+                  type="text"
+                  placeholder={
+                    dir === "rtl"
+                      ? "ابحث بالاسم أو رمز المنتج أو العلامة التجارية..."
+                      : "Search by name, SKU, or brand..."
+                  }
+                  value={relatedProductsSearch}
+                  onChange={(e) => handleRelatedProductsSearch(e.target.value)}
+                  className={cn(dir === "rtl" && "text-right")}
+                />
+              </div>
+
+              {relatedProductsSearch && (
+                <div className={cn("text-sm text-muted-foreground", dir === "rtl" && "text-right")}>
+                  {dir === "rtl"
+                    ? `تم العثور على ${filteredProducts?.length} منتج`
+                    : `Found ${filteredProducts?.length} products`}
+                </div>
+              )}
+
+              {filteredProducts && filteredProducts?.length > 0 ? (
+                <div className="grid gap-4 max-h-96 overflow-y-auto">
+                  {filteredProducts && filteredProducts.map((availableProduct: any) => (
+                    <div
+                      key={availableProduct.id}
+                      className={cn(
+                        "flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50",
+                        dir === "rtl" && "flex-row-reverse space-x-reverse",
+                      )}
+                    >
+                      <Checkbox
+                        id={`product-${availableProduct.id}`}
+                        checked={selectedRelatedProducts && selectedRelatedProducts?.includes(availableProduct?.id)}
+                        onCheckedChange={() => handleRelatedProductToggle(availableProduct?.id)}
+                      />
+                      <p>{availableProduct?.id}</p>
+                      <div className="flex items-center space-x-3 flex-1">
+                        {availableProduct.image && (
+                          <Image
+                            src={availableProduct.image || "/placeholder.svg"}
+                            alt={dir === "rtl" ? availableProduct.nameAr : availableProduct.nameEn}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 object-cover rounded border"
+                            onError={(e) => {
+                              e.currentTarget.src = "/placeholder.svg?height=48&width=48&text=No+Image"
+                            }}
+                          />
+                        )}
+
+                        <div className={cn("flex-1", dir === "rtl" && "text-right")}>
+                          <Label htmlFor={`product-${availableProduct.id}`} className="font-medium cursor-pointer">
+                            {dir === "rtl" ? availableProduct.nameAr : availableProduct.nameEn}
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            {dir === "rtl" ? `رمز المنتج: ${availableProduct.sku}` : `SKU: ${availableProduct.sku}`}
+                          </p>
+                          {availableProduct.brand && (
+                            <p className="text-sm text-muted-foreground">
+                              {dir === "rtl"
+                                ? `العلامة التجارية: ${availableProduct.brand}`
+                                : `Brand: ${availableProduct.brand}`}
+                            </p>
+                          )}
+                          <p className="text-sm font-medium text-green-600">${availableProduct.price}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className={cn("text-muted-foreground", dir === "rtl" && "text-right")}>
+                    {relatedProductsSearch
+                      ? dir === "rtl"
+                        ? "لم يتم العثور على منتجات تطابق البحث"
+                        : "No products found matching your search"
+                      : dir === "rtl"
+                        ? "لا توجد منتجات متاحة للاختيار"
+                        : "No products available to select"}
+                  </p>
+                </div>
+              )}
+
+              {selectedRelatedProducts && selectedRelatedProducts.length > 0 && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className={cn("text-sm font-medium text-blue-900", dir === "rtl" && "text-right")}>
+                    {dir === "rtl"
+                      ? `تم اختيار ${selectedRelatedProducts.length} منتج كمنتجات ذات صلة`
+                      : `${selectedRelatedProducts.length} products selected as related`}
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent> */}
+
+
+
+
+
       </Tabs>
 
 
@@ -694,7 +940,10 @@ export function ProductForm({ product, isEdit = false }: ProductFormProps) {
         <Button type="submit" disabled={loading}>
           {loading ? t("common.loading") : t("common.save")}
         </Button>
-        <Button type="button" variant="outline" onClick={() => router.push("/dashboard/products")} disabled={loading}>
+        <Button type="button" variant="outline" onClick={() => {
+          setShowSaveButtonProduct(false);
+          router.push("/dashboard/products")
+        }} disabled={loading}>
           {t("common.cancel")}
         </Button>
       </div>

@@ -28,14 +28,15 @@
     "noResults": "No results found",
     "tryDifferent": "Try different keywords",
     "results": "results",
-    "sortBy": "Sort By",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "priceLowHigh": "Price: Low -> High",
-    "priceHighLow": "Price: High -> Low",
-    "show": "Show Products",
-    "numberOfProducts": "Number of Products",
-    "all": "All"
+    "pageOf": "Page",
+    "sortBy" : "Sort By",
+    "newest" : "Newest",
+    "oldest" : "Oldest",
+    "priceLowHigh" : "Price Low to High",
+    "priceHighLow" : "Price High to Low",
+    "show" : "Show Products",
+    "all" : "All",
+    "categories" : "Categories"
   },
   "forms": {
     "required": "This field is required",
@@ -71,7 +72,8 @@
     "users": "Users",
     "coupons": "Coupons",
     "cart": "Cart",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "gallery": "Gallery"
   },
   "products": {
     "title": "Products",
@@ -86,16 +88,19 @@
     "descriptionEn": "Description (English)",
     "descriptionAr": "Description (Arabic)",
     "price": "Price",
-    "addPrice" : "Add Price",
+    "addPrice": "Add Price",
     "discount": "Discount",
     "discountType": "Discount Type",
     "discountValue": "Discount Value",
     "quantity": "Quantity in Stock",
     "brand": "Brand",
+    "brandAr": "Brand (Arabic)",
     "featured": "Featured Product",
     "size": "Size",
     "material": "Material",
+    "materialAr": "Material (Arabic)",
     "badge": "Badge",
+    "badgeAr": "Badge (Arabic)",
     "weight": "Weight",
     "dimensions": "Dimensions",
     "category": "Category",
@@ -104,7 +109,8 @@
     "images": "Multiple Images",
     "imageMainUpload": "Upload Main Image",
     "relatedProducts": "Related Products",
-    "allBrands" : "All Brands"
+    "allBrands": "All Brands",
+    "priceRange": "Price Range"
   },
   "categories": {
     "title": "Categories",
@@ -116,7 +122,7 @@
     "slug": "Slug",
     "image": "Image",
     "category": "Category",
-    "allCategories" : "All Categories"
+    "allCategories": "All Categories"
   },
   "users": {
     "title": "Users",
@@ -156,9 +162,36 @@
     "results": "results",
     "noResults": "No products found",
     "tryDifferent": "Try adjusting your search or filters",
-    "filters" : "Filters",
-    "clear" : "Clear",
-    "apply" : "Apply"
+    "filters": "Filters",
+    "clear": "Clear",
+    "apply": "Apply",
+    "productsFound": "Products Found",
+    "sortBy": "Sort By",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "priceLowHigh": "Price: Low -> High",
+    "priceHighLow": "Price: High -> Low",
+    "show": "Show Products",
+    "numberOfProducts": "Number of Products",
+    "all": "All",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "onSale": "On Sale",
+    "priceRange": "Price Range",
+    "availability": "Availability",
+    "filter": "Filter"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "addGallery": "Add Gallery",
+    "editGallery": "Edit Gallery",
+    "name": "Name",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "slug": "Slug",
+    "image": "Image",
+    "gallery": "Gallery",
+    "allGalleries": "All Galleries",
+    "searchPlaceholder": "Search for images..."
   }
 }
-

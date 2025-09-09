@@ -10,7 +10,7 @@ export interface ProductProps {
   descriptionAr?: string;
   image?: string;
   imageName?: string;
-  images?: any[];
+  images?: string[];
   price?: number | any;
   isPriceActive?: boolean;
   discountType?: "fixed" | "percentage" | "none"
@@ -20,11 +20,14 @@ export interface ProductProps {
   isFeatured?: boolean;
   size?: string;
   material?: string;
+  materialAr?: string;
   badge?: string;
+  badgeAr?: string;
   weight?: number;
   dimensions?: string;
   status?: ProductStatus; // ✅ النوع الموحد
   color?: string;
+  capacity?: string;
   categoryId: number;
   relatedProducts?: number[];
   availableProducts?: number[];

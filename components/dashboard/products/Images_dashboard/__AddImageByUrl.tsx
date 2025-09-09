@@ -1,12 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
-import { Label } from '@/components/ui/label'
+import { Label } from '@/components/shadcnUI/label'
 import { useI18nStore } from '@/lib/stores/i18n-store'
 import { Link } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Input } from '@/components/shadcnUI/input'
 import z from 'zod'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/shadcnUI/button'
 
 type AddImageByUrlProps = {
    addUrlManually: (e: string) => void

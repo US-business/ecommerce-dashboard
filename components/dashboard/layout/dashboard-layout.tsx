@@ -4,11 +4,11 @@ import type React from "react"
 
 import { useState } from "react"
 
-import { redirect, useRouter } from "next/navigation"
+import { redirect, usePathname, useRouter } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
 import { useAuthStore } from "@/lib/stores/auth-store"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/shadcnUI/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/shadcnUI/sheet"
 import { Menu, LogOut, LayoutDashboard } from "lucide-react"
 import { Sidebar } from "./sidebar"
 import { LanguageToggle } from "@/components/language-toggle"
@@ -63,9 +63,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   if (!user) {
-    router.push("/")
+    router.push("/signin")
     return null
   }
+
+
+
+
 
   const handleLogout = async () => {
     try {
