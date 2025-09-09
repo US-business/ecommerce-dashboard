@@ -100,20 +100,6 @@ const Slider = ({ items, autoPlayInterval = 5000, className = '', dir = 'ltr' }:
         // <div className={`relative w-full max-w-4xl h-60 md:h-80 bg-gradient-to-br from-cyan-200/80 to-blue-500/80 border-6 border-blue-500/20 rounded-2xl overflow-hidden shadow-2xl ${className}`}>
         <div className={`relative w-full flex flex-col h-full bg-white overflow-hidden rounded-md ${className}`}>
             <div className="relative w-full h-full "
-            // style={{
-            //     backgroundSize: "cover",
-            //     backgroundPosition: "center",
-            //     // 👇 الماسك اللي بيخلي الأطراف تختفي تدريجي
-            //     // ✅ ماسك من اليمين والشمال فقط
-            //     WebkitMaskImage:
-            //         "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
-            //     WebkitMaskRepeat: "no-repeat",
-            //     WebkitMaskSize: "100% 100%",
-            //     maskImage:
-            //         "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
-            //     maskRepeat: "no-repeat",
-            //     maskSize: "100% 100%",
-            // }}
             >
                 {/* <div className="absolute inset-0 z-10 bg-linear-to-r from-emerald-50 via-transparent to-emerald-50" /> */}
                 <div className="absolute inset-0 z-10 bg-linear-to-r from-white via-transparent to-white" />

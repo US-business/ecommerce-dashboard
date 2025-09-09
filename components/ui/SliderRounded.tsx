@@ -32,8 +32,6 @@ type SliderRoundedProps = {
 
 
 const SliderRounded = ({ items, dir, className }: SliderRoundedProps) => {
-   const { t } = useI18nStore()
-
 
 
    return (
@@ -77,7 +75,6 @@ const SliderRounded = ({ items, dir, className }: SliderRoundedProps) => {
                                           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                                           className="relative w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                                        />
-
 
                                        {/* Hover overlay */}
                                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />

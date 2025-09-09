@@ -5,6 +5,17 @@ import { pgTable, serial, varchar, text, decimal, integer, boolean, timestamp, p
 export const userRoleEnum = pgEnum("user_role", ["super_admin", "viewer"])
 export const discountTypeEnum = pgEnum("discount_type", ["fixed", "percentage", "none"])
 export const productStatusEnum = pgEnum("product_status", ["best_seller", "new", "coming_soon"])
+export const localesNamesEnum = pgEnum("locales_names", ["English", "العربية"])
+
+
+// جدول اللغات
+export const locales = pgTable("locales", {
+  id: serial("id").primaryKey(),
+  code: varchar("code", { length: 5 }).notNull().default("ar"), // en, ar
+  name: localesNamesEnum("name").notNull().default("العربية"), // English, العربية
+  dir: varchar("dir", { length: 3 }).notNull().default("rtl"), // ltr or rtl
+});
+
 
 // Users table
 export const users = pgTable("users", {
@@ -26,6 +37,7 @@ export const categories = pgTable("categories", {
   nameAr: varchar("name_ar", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   image: varchar("image", { length: 255 }),
+  localeId: serial("locale_id").references(() => locales.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 })
@@ -61,6 +73,7 @@ export const products = pgTable(
     color: text("color"),
     dimensions: varchar("dimensions", { length: 100 }),
     status: productStatusEnum("status").default("new"),
+    localeId: serial("locale_id").references(() => locales.id),
     categoryId: integer("category_id").references(() => categories.id),
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow(),
