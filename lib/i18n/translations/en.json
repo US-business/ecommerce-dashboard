@@ -1,0 +1,628 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "yes": "Yes",
+    "no": "No",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "myAccount": "My Account",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "about": "About",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "language": "Language",
+    "upload": "Upload",
+    "previous": "Previous",
+    "next": "Next",
+    "total": "Total",
+    "noResults": "No results found",
+    "tryDifferent": "Try different keywords",
+    "results": "Search results",
+    "pageOf": "Page",
+    "sortBy": "Sort By",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "show": "Show Products",
+    "numberOfProducts": "Number of Products",
+    "all": "All",
+    "categories": "Categories",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "help": "Help",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "backToTop": "Back to Top",
+    "refresh": "Refresh",
+    "close": "Close",
+    "confirm": "Confirm",
+    "warning": "Warning",
+    "info": "Information",
+    "success": "Success",
+    "error": "Error"
+  },
+  "account": {
+    "security": "Security",
+    "superAdmin": "Super Admin",
+    "editProfilePhoto" : "Edit Profile Photo",
+    "user": "User",
+    "tabs": {
+      "profile": "Profile",
+      "orders": "Orders"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your account settings.",
+      "username": "Username",
+      "email": "Email"
+    },
+    "orders": {
+      "title": "My Orders",
+      "description": "View your order history.",
+      "empty": "You have no orders.",
+      "order": "Order",
+      "orderDetails": "Order Details",
+      "shippingAddress": "Shipping Address",
+      "totalAmount": "Total Amount",
+      "status": "Status",
+      "items": "Items",
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "date": "Date"
+    },
+    "general": {
+      "back": "Back",
+      "name": "Name",
+      "role": "Role",
+      "joinDate": "Join Date",
+      "memberSince": "Member since",
+      "googleAccount": "Google Account",
+      "localAccount": "Local Account",
+      "security": "Security",
+      "superAdmin": "Super Admin",
+      "user": "User",
+      "notSpecified": "Not specified",
+      "saving": "Saving...",
+      "manageGoogleAccount": "Manage Google Account",
+      "passwordManagedByGoogle": "Your password is managed through Google. To change your password, please visit your Google account settings.",
+      "noOrdersYet": "No orders yet",
+      "startShopping": "Start Shopping"
+    }
+  },
+  "forms": {
+    "required": "This field is required",
+    "email": {
+      "invalid": "Invalid email address"
+    },
+    "password": {
+      "minLength": "Password must be at least 6 characters long"
+    }
+  },
+  "info": {
+    "addImageUrl": "Add Image URL",
+    "description": "Description",
+    "image": "Image"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "signOut": "Sign Out",
+    "signIn": "Sign In",
+    "signUp" : "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "loginButton": "Sign In",
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to continue"
+  },
+  "dashboard": {
+    "title": "Dashboard Overview",
+    "revenue_over_time": "Revenue Over Time",
+    "database_info": "The data shown reflects real information from the database",
+    "stats": {
+      "total_revenue": "Total Revenue",
+      "total_orders": "Total Orders",
+      "total_customers": "Total Customers",
+      "total_products": "Total Products"
+    },
+    "recent_orders": {
+      "title": "Recent Orders",
+      "view_all": "View All Orders"
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "open": "Open Menu",
+    "close": "Close Menu"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "categories": "Categories",
+    "orders": "Orders",
+    "users": "Users",
+    "coupons": "Coupons",
+    "cart": "Cart",
+    "reviews": "Reviews",
+    "gallery": "Gallery",
+    "profile": "Profile"
+  },
+  "products": {
+    "title": "Products",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "name": "Name",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "slug": "Slug",
+    "sku": "SKU",
+    "description": "Description",
+    "descriptionEn": "Description (English)",
+    "descriptionAr": "Description (Arabic)",
+    "price": "Price",
+    "addPrice": "Add Price",
+    "discount": "Discount",
+    "discountType": "Discount Type",
+    "discountValue": "Discount Value",
+    "quantity": "Quantity in Stock",
+    "brand": "Brand",
+    "featured": "Featured Product",
+    "size": "Size",
+    "material": "Material",
+    "materialAr": "Material (Arabic)",
+    "badge": "Badge",
+    "badgeAr": "Badge (Arabic)",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "category": "Category",
+    "color": "Color",
+    "image": "Main Image",
+    "images": "Multiple Images",
+    "imageMainUpload": "Upload Main Image",
+    "relatedProducts": "Related Products",
+    "allBrands": "All Brands",
+    "priceRange": "Price Range"
+  },
+  "categories": {
+    "title": "Categories",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "name": "Name",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "slug": "Slug",
+    "image": "Image",
+    "category": "Category",
+    "allCategories": "All Categories"
+  },
+  "users": {
+    "title": "Users",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "role": "Role",
+    "superAdmin": "Super Admin",
+    "viewer": "Viewer"
+  },
+  "orders": {
+    "title": "Orders",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "totalAmount": "Total Amount",
+    "status": "Status",
+    "createdAt": "Created At",
+    "items": "Items"
+  },
+  "coupons": {
+    "title": "Coupons",
+    "addCoupon": "Add Coupon",
+    "editCoupon": "Edit Coupon",
+    "code": "Code",
+    "discountType": "Discount Type",
+    "discountValue": "Discount Value",
+    "fixed": "Fixed",
+    "percentage": "Percentage",
+    "expiryDate": "Expiry Date"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search for products...",
+    "results": "Search results",
+    "noResults": "No products found",
+    "tryDifferent": "Try adjusting your search or filters",
+    "pageOf": "Page",
+    "total": "Total",
+    "filters": "Filters",
+    "clear": "Clear Filters",
+    "apply": "Apply",
+    "productsFound": "Products Found:",
+    "sortBy": "Sort By",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "show": "Show Products",
+    "numberOfProducts": "Number of Products",
+    "all": "All Products",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "onSale": "On Sale",
+    "priceRange": "Price Range",
+    "availability": "Availability",
+    "filter": "Advanced Search"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "addGallery": "Add Gallery",
+    "editGallery": "Edit Gallery",
+    "name": "Name",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "slug": "Slug",
+    "image": "Image",
+    "gallery": "Gallery",
+    "allGalleries": "All Galleries",
+    "searchPlaceholder": "Search for images..."
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyCart": "Your cart is empty",
+    "emptyCartDescription": "Looks like you haven't added any items to your cart yet",
+    "startShopping": "Start Shopping",
+    "loginRequired": "Please login to view your cart",
+    "items": "items",
+    "products": "Products",
+    "pricesIncludeVAT": "Prices include VAT",
+    "orderSummary": "Order Summary",
+    "acceptedPaymentMethods": "Accepted Payment Methods",
+    "removeOutOfStockItems": "Please remove out-of-stock items to continue",
+    "outOfStock": "Out of Stock",
+    "securePayment": "Secure Payment",
+    "sslProtection": "256-bit SSL protection",
+    "fastShipping": "Fast Shipping",
+    "deliveryTime": "1-3 day delivery",
+    "multiplePayment": "Multiple Payment",
+    "paymentOptions": "Visa, MC, PayPal",
+    "addToCart": "Add to Cart",
+    "removeFromCart": "Remove from Cart",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "continueShopping": "Continue Shopping"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "billingInfo": "Billing Information",
+    "shippingInfo": "Shipping Information",
+    "paymentMethod": "Payment Method",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "address": "Address",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country"
+  },
+  "errors": {
+    "generic": "An unexpected error occurred",
+    "networkError": "Network connection error",
+    "serverError": "Server error",
+    "timeout": "Connection timeout",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "notFound": "Page not found",
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Invalid email address",
+      "passwordTooShort": "Password is too short (minimum 6 characters)",
+      "passwordsNotMatch": "Passwords do not match",
+      "invalidPhoneNumber": "Invalid phone number",
+      "invalidUrl": "Invalid URL",
+      "invalidDate": "Invalid date",
+      "minLength": "Minimum length is {min} characters",
+      "maxLength": "Maximum length is {max} characters",
+      "minValue": "Value must be greater than {min}",
+      "maxValue": "Value must be less than {max}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "saved": "Successfully saved",
+      "updated": "Successfully updated",
+      "deleted": "Successfully deleted",
+      "created": "Successfully created",
+      "sent": "Successfully sent",
+      "uploaded": "Successfully uploaded"
+    },
+    "info": {
+      "loading": "Loading...",
+      "processing": "Processing...",
+      "saving": "Saving...",
+      "uploading": "Uploading...",
+      "connecting": "Connecting..."
+    },
+    "warning": {
+      "unsavedChanges": "You have unsaved changes",
+      "lowStock": "Low stock",
+      "slowConnection": "Slow connection",
+      "sessionExpiring": "Your session will expire soon"
+    }
+  },
+  "dialogs": {
+    "confirm": {
+      "delete": "Are you sure you want to delete this item?",
+      "logout": "Are you sure you want to logout?",
+      "unsavedChanges": "You have unsaved changes. Do you want to continue?",
+      "cancel": "Do you want to cancel this operation?"
+    },
+    "titles": {
+      "confirmation": "Confirmation",
+      "warning": "Warning",
+      "error": "Error",
+      "information": "Information"
+    },
+    "buttons": {
+      "ok": "OK",
+      "cancel": "Cancel",
+      "yes": "Yes",
+      "no": "No",
+      "save": "Save",
+      "delete": "Delete",
+      "continue": "Continue",
+      "goBack": "Go Back"
+    }
+  },
+  "cms": {
+    "about": {
+      "title": "About Us",
+      "subtitle": "Learn more about our company and mission",
+      "hero": {
+        "title": "Building Tomorrow's Commerce",
+        "description": "We're passionate about creating exceptional e-commerce experiences that connect businesses with their customers."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "description": "To empower businesses with cutting-edge e-commerce solutions that drive growth and deliver exceptional customer experiences."
+      },
+      "values": {
+        "title": "Our Values",
+        "innovation": {
+          "title": "Innovation",
+          "description": "We constantly push the boundaries of what's possible in e-commerce technology."
+        },
+        "quality": {
+          "title": "Quality",
+          "description": "We deliver products and services that exceed expectations and stand the test of time."
+        },
+        "customer": {
+          "title": "Customer Focus",
+          "description": "Our customers are at the heart of everything we do, driving our decisions and innovations."
+        }
+      },
+      "team": {
+        "title": "Meet Our Team",
+        "description": "Our dedicated team of professionals is committed to delivering excellence."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "Get in touch with our team",
+      "form": {
+        "name": "Full Name",
+        "email": "Email Address",
+        "subject": "Subject",
+        "message": "Message",
+        "send": "Send Message",
+        "sending": "Sending...",
+        "success": "Message sent successfully!",
+        "error": "Failed to send message. Please try again."
+      },
+      "info": {
+        "title": "Get in Touch",
+        "description": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+        "address": "Address",
+        "phone": "Phone",
+        "email": "Email",
+        "hours": "Business Hours"
+      },
+      "office": {
+        "title": "Our Office",
+        "address": "123 Business Street, City, Country 12345",
+        "phone": "+1 (555) 123-4567",
+        "email": "hello@company.com",
+        "hours": "Monday - Friday: 9:00 AM - 6:00 PM"
+      }
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "subtitle": "How we collect, use, and protect your information",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "introduction": {
+          "title": "Introduction",
+          "content": "This Privacy Policy describes how we collect, use, and protect your personal information when you use our services."
+        },
+        "collection": {
+          "title": "Information We Collect",
+          "content": "We collect information you provide directly to us, information we collect automatically when you use our services, and information from third parties."
+        },
+        "usage": {
+          "title": "How We Use Your Information",
+          "content": "We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you."
+        },
+        "sharing": {
+          "title": "Information Sharing",
+          "content": "We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy."
+        },
+        "security": {
+          "title": "Data Security",
+          "content": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
+        },
+        "rights": {
+          "title": "Your Rights",
+          "content": "You have the right to access, update, or delete your personal information. Contact us if you wish to exercise these rights."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "content": "If you have any questions about this Privacy Policy, please contact us using the information provided on our Contact page."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "subtitle": "Terms of service and conditions of use",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "acceptance": {
+          "title": "Acceptance of Terms",
+          "content": "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement."
+        },
+        "services": {
+          "title": "Use of Services",
+          "content": "You may use our services only for lawful purposes and in accordance with these Terms of Service."
+        },
+        "account": {
+          "title": "User Accounts",
+          "content": "When you create an account, you are responsible for maintaining the security of your account and all activities that occur under your account."
+        },
+        "prohibited": {
+          "title": "Prohibited Uses",
+          "content": "You may not use our services for any illegal or unauthorized purpose or to violate any applicable laws in your jurisdiction."
+        },
+        "intellectual": {
+          "title": "Intellectual Property",
+          "content": "The content, organization, graphics, design, compilation, and other matters related to this site are protected under applicable copyrights and other proprietary laws."
+        },
+        "limitation": {
+          "title": "Limitation of Liability",
+          "content": "In no event shall our company be liable for any direct, indirect, punitive, incidental, special, or consequential damages."
+        },
+        "modifications": {
+          "title": "Modifications",
+          "content": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on the website."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Find answers to common questions",
+      "searchPlaceholder": "Search FAQ...",
+      "categories": {
+        "general": "General",
+        "orders": "Orders & Shipping",
+        "payments": "Payments & Billing",
+        "returns": "Returns & Refunds",
+        "technical": "Technical Support"
+      },
+      "questions": {
+        "general": [
+          {
+            "question": "How do I create an account?",
+            "answer": "You can create an account by clicking the 'Register' button in the top navigation and filling out the required information."
+          },
+          {
+            "question": "How do I reset my password?",
+            "answer": "Click on 'Forgot Password' on the login page and follow the instructions sent to your email address."
+          },
+          {
+            "question": "Can I change my email address?",
+            "answer": "Yes, you can update your email address in your account settings under the Profile tab."
+          }
+        ],
+        "orders": [
+          {
+            "question": "How can I track my order?",
+            "answer": "You can track your order by logging into your account and visiting the 'My Orders' section, or using the tracking number sent to your email."
+          },
+          {
+            "question": "What are your shipping options?",
+            "answer": "We offer standard shipping (3-5 business days) and express shipping (1-2 business days). Shipping costs are calculated at checkout."
+          },
+          {
+            "question": "Can I change my shipping address?",
+            "answer": "You can change your shipping address before your order is processed. Contact our support team immediately if you need to make changes."
+          }
+        ],
+        "payments": [
+          {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and other secure payment methods."
+          },
+          {
+            "question": "Is my payment information secure?",
+            "answer": "Yes, we use industry-standard SSL encryption to protect your payment information during transmission."
+          },
+          {
+            "question": "When will I be charged?",
+            "answer": "Your payment method will be charged immediately when you place your order."
+          }
+        ],
+        "returns": [
+          {
+            "question": "What is your return policy?",
+            "answer": "We offer a 30-day return policy for most items in their original condition with tags and packaging."
+          },
+          {
+            "question": "How do I initiate a return?",
+            "answer": "Contact our customer service team or visit the Returns section in your account to start the return process."
+          },
+          {
+            "question": "How long does it take to process a refund?",
+            "answer": "Refunds are typically processed within 3-5 business days after we receive your returned item."
+          }
+        ],
+        "technical": [
+          {
+            "question": "The website is loading slowly. What should I do?",
+            "answer": "Try clearing your browser cache and cookies, or try accessing the site from a different browser or device."
+          },
+          {
+            "question": "I'm having trouble placing an order. What should I do?",
+            "answer": "Make sure all required fields are filled correctly and your payment method is valid. If issues persist, contact our support team."
+          },
+          {
+            "question": "How do I enable cookies?",
+            "answer": "Cookie settings can be found in your browser's privacy or security settings. Most browsers allow cookies by default."
+          }
+        ]
+      }
+    }
+  },
+  "accessibility": {
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle theme",
+    "goToTop": "Go to top",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "sortOptions": "Sort options",
+    "filterOptions": "Filter options",
+    "searchResults": "Search results",
+    "productImage": "Product image",
+    "userAvatar": "User avatar"
+  }
+}
