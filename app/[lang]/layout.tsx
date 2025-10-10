@@ -19,9 +19,61 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  title: "E-Commerce",
-  description: "Multilingual e-commerce",
-  generator: ''
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  title: {
+    default: 'E-Commerce Store | متجر إلكتروني',
+    template: '%s | E-Commerce Store'
+  },
+  description: 'Modern e-commerce platform with multilingual support (Arabic & English). Shop the best products with secure checkout and fast delivery. متجر إلكتروني حديث يدعم العربية والإنجليزية.',
+  keywords: ['e-commerce', 'online store', 'shopping', 'متجر إلكتروني', 'تسوق أونلاين', 'products', 'منتجات'],
+  authors: [{ name: 'E-Commerce Team' }],
+  creator: 'E-Commerce Team',
+  publisher: 'E-Commerce Store',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    alternateLocale: ['ar_SA'],
+    url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    siteName: 'E-Commerce Store',
+    title: 'E-Commerce Store | متجر إلكتروني',
+    description: 'Modern e-commerce platform with multilingual support',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'E-Commerce Store',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'E-Commerce Store | متجر إلكتروني',
+    description: 'Modern e-commerce platform with multilingual support',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default async function RootLayout({

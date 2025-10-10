@@ -13,6 +13,7 @@ import { Separator } from "@/components/shadcnUI/separator";
 import { Suspense } from "react";
 import ProductCard from "@/components/ui/ProductCard";
 import { Button } from "@/components/shadcnUI/button";
+import { generateProductSchema, generateBreadcrumbSchema } from "@/lib/utils/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
@@ -56,6 +57,27 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     return <div>Product Not Found</div>;
   }
 
+  // Generate Structured Data for SEO
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const productUrl = `${baseUrl}/${locale}/product/${product.id}`;
+  
+  const productStructuredData = generateProductSchema({
+    name: dir === 'rtl' ? product.nameAr : product.nameEn,
+    description: dir === 'rtl' ? product.descriptionAr || product.nameAr : product.descriptionEn || product.nameEn,
+    image: product.images || [],
+    price: product.price || '0',
+    currency: 'USD',
+    availability: (product.quantityInStock && product.quantityInStock > 0) ? 'InStock' : 'OutOfStock',
+    brand: product.brand,
+    sku: product.sku,
+  });
+
+  const breadcrumbStructuredData = generateBreadcrumbSchema([
+    { name: dir === 'rtl' ? 'الرئيسية' : 'Home', url: `${baseUrl}/${locale}` },
+    { name: dir === 'rtl' ? 'المنتجات' : 'Products', url: `${baseUrl}/${locale}/products` },
+    { name: dir === 'rtl' ? product.category?.nameAr : product.category?.nameEn, url: `${baseUrl}/${locale}/products?category=${product.category?.slug}` },
+    { name: dir === 'rtl' ? product.nameAr : product.nameEn, url: productUrl },
+  ]);
 
   // Get related products if available
   let relatedProducts: any[] = [];
@@ -65,7 +87,22 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productStructuredData),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData),
+        }}
+      />
+      
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-6">
         {/* Navigation */}
         <div className="flex items-center justify-between mb-6">
@@ -218,5 +255,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         )}
       </div>
     </main>
+    </>
   );
 }
