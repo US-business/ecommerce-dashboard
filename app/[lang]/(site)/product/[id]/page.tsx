@@ -14,6 +14,10 @@ import { Suspense } from "react";
 import ProductCard from "@/components/ui/ProductCard";
 import { Button } from "@/components/shadcnUI/button";
 import { generateProductSchema, generateBreadcrumbSchema } from "@/lib/utils/structured-data";
+import { ReviewsList } from "@/components/ui/reviews";
+import { getProductReviews } from "@/lib/actions/reviews";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth/auth.config";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
@@ -57,6 +61,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     return <div>Product Not Found</div>;
   }
 
+  // Get current user session
+  const session = await getServerSession(authOptions);
+  const currentUserId = session?.user?.id;
+
+  // Get product reviews
+  const reviewsData = await getProductReviews(idAsNumber);
+  const averageRating = reviewsData.averageRating || 0;
+  const totalReviews = reviewsData.totalReviews || 0;
+
   // Generate Structured Data for SEO
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const productUrl = `${baseUrl}/${locale}/product/${product.id}`;
@@ -70,6 +83,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     availability: (product.quantityInStock && product.quantityInStock > 0) ? 'InStock' : 'OutOfStock',
     brand: product.brand,
     sku: product.sku,
+    rating: totalReviews > 0 ? { value: averageRating, count: totalReviews } : undefined,
   });
 
   const breadcrumbStructuredData = generateBreadcrumbSchema([
@@ -219,6 +233,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </CardContent>
           </Card>
         )}
+
+        {/* Customer Reviews Section */}
+        <div className="mb-8">
+          <ReviewsList
+            productId={idAsNumber}
+            currentUserId={currentUserId}
+            dir={dir}
+          />
+        </div>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
