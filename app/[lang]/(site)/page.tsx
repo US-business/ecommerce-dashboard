@@ -16,6 +16,10 @@ import CarouselRounded from "@/components/ui/Carousel/CarouselRounded"
 import CarouselMain from "@/components/ui/Carousel/mainCarousel/CarouselMain"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { type Locale } from "@/lib/i18n/i18n-config"
+import HeroSection from "@/components/ui/HeroSection"
+import FeaturesSection from "@/components/ui/FeaturesSection"
+import TestimonialsSection from "@/components/ui/TestimonialsSection"
+import TrustIndicators from "@/components/ui/TrustIndicators"
 
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
@@ -37,6 +41,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   return (
     <>
+      {/* Background Decorations - Hidden on mobile for better performance */}
       <div className="relative w-full h-full z-0 pointer-events-none hidden xl:block">
         <SunSVG className="absolute top-25 -left-25 z-0 pointer-events-none w-50 h-50 rotate-65 opacity-30 text-emerald-600" />
         <FishSVG className="absolute top-[40dvh] left-15 z-0 pointer-events-none w-20 h-20 rotate-45 opacity-30 text-emerald-600" />
@@ -50,15 +55,19 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       </div>
 
       <div className={`${cn('min-h-screen container mx-auto overflow-hidden')}`}>
-        {/* Example of using the dictionary */}
+        {/* Hero Section - New Modern Design */}
+        {/* <HeroSection dir={dir} /> */}
 
+
+
+        {/* Main Content */}
         <AppProvider initialProducts={products} initialCategories={categories} initialFeaturedProducts={featuredProducts}>
           <div className="flex flex-col lg:flex-row justify-between gap-4 items-start w-full min-h-[40dvh] p-4">
             <div className="w-full lg:w-auto flex-shrink-0">
               <CategoriesList categories={categories} dictionary={dictionary} dir={dir}/>
             </div>
-              <CarouselMain items={featuredProducts} dir={dir} className="shadow-md" />
-          </div> 
+              <CarouselMain items={featuredProducts} dir={dir} lang={lang} className="shadow-md" />
+          </div>
 
           <CarouselRounded items={categories} dir={dir} className="mx-auto" />
 
@@ -69,6 +78,11 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             }
           </div>
         </AppProvider>
+
+        {/* Testimonials Section */}
+        <TestimonialsSection dir={dir} />
+        {/* Trust Indicators Section */}
+        <TrustIndicators dir={dir} />
       </div>
     </>
   )

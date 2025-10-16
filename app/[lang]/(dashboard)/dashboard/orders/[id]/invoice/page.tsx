@@ -3,13 +3,14 @@ import { getOrderById } from "@/lib/actions/orders"
 import PrintButton from "./_components/PrintButton"
 
 interface InvoicePageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function InvoicePage({ params }: InvoicePageProps) {
-  const { id } = params
+  const resolvedParams = await params;
+  const { id } = resolvedParams
   const order = await getOrderById(id)
 
   if (!order) {

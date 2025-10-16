@@ -20,13 +20,15 @@ interface CarouselComponentProps {
     autoPlayInterval?: number;
     className?: string;
     dir?: 'ltr' | 'rtl';
+    lang?: string;
 }
 
 const CarouselMain = ({
     items,
     autoPlayInterval = 5000,
     className = '',
-    dir = 'ltr'
+    dir = 'ltr',
+    lang = 'en'
 }: CarouselComponentProps) => {
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
@@ -90,7 +92,7 @@ const CarouselMain = ({
                 <CarouselContent>
                     {items?.map((product, index) => {
                         const priceInfo = calculatePrice(product);
-
+ 
                         return (
                             <CarouselItem key={product.id || index}>
                                 <Card className="relative w-full h-full min-h-[300px] md:h-[400px] border-0 overflow-hidden ">
@@ -122,6 +124,7 @@ const CarouselMain = ({
                                                     id={product.id}
                                                     quantityInStock={product.quantityInStock}
                                                     dir={dir}
+                                                    lang={lang}
                                                 />
                                             </div>
                                         </article>

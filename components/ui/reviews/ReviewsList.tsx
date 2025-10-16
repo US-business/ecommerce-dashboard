@@ -15,9 +15,10 @@ interface ReviewsListProps {
   productId: number
   currentUserId?: number
   dir: "rtl" | "ltr"
+  lang?: string
 }
 
-export function ReviewsList({ productId, currentUserId, dir }: ReviewsListProps) {
+export function ReviewsList({ productId, currentUserId, dir, lang = 'en' }: ReviewsListProps) {
   const [reviews, setReviews] = useState<any[]>([])
   const [averageRating, setAverageRating] = useState(0)
   const [totalReviews, setTotalReviews] = useState(0)
@@ -154,7 +155,7 @@ export function ReviewsList({ productId, currentUserId, dir }: ReviewsListProps)
             {dir === "rtl" ? (
               <>
                 يجب{" "}
-                <a href={`/${dir}/signin`} className="font-medium underline">
+                <a href={`/${lang}/signin`} className="font-medium underline">
                   تسجيل الدخول
                 </a>{" "}
                 لإضافة تقييم
@@ -162,7 +163,7 @@ export function ReviewsList({ productId, currentUserId, dir }: ReviewsListProps)
             ) : (
               <>
                 Please{" "}
-                <a href={`/${dir}/signin`} className="font-medium underline">
+                <a href={`/${lang}/signin`} className="font-medium underline">
                   sign in
                 </a>{" "}
                 to add a review

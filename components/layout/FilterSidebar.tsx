@@ -55,15 +55,15 @@ export const FilterSidebar = ({
    return (
       <>
          {/* Mobile Filter Button */}
-         <div className="lg:hidden w-full flex justify-end mb-4">
+         <div className="lg:hidden w-full flex justify-end mb-3 sm:mb-4">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
                <SheetTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
-                     <SlidersIcon className="h-4 w-4" />
-                     {dir === 'rtl' ? 'الفلتر' : 'Filter'}
+                  <Button variant="outline" size="sm" className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 py-2">
+                     <SlidersIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                     <span className="whitespace-nowrap">{dir === 'rtl' ? 'الفلتر' : 'Filter'}</span>
                   </Button>
                </SheetTrigger>
-               <SheetContent side={dir === 'rtl' ? 'right' : 'left'} className="w-[300px]">
+               <SheetContent side={dir === 'rtl' ? 'right' : 'left'} className="w-[280px] sm:w-[300px] p-4">
                   <SearchFilters
                      classNames='h-full lg:flex'
                      t={t}

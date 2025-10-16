@@ -312,6 +312,26 @@
     "checkout": "Proceed to Checkout",
     "continueShopping": "Continue Shopping"
   },
+  "wishlist": {
+    "title": "Wishlist",
+    "emptyWishlist": "Your wishlist is empty",
+    "emptyWishlistDescription": "You haven't added any products to your wishlist yet",
+    "startBrowsing": "Start Browsing",
+    "loginRequired": "Please login to view your wishlist",
+    "items": "items",
+    "addToWishlist": "Add to Wishlist",
+    "removeFromWishlist": "Remove from Wishlist",
+    "addAllToCart": "Add All to Cart",
+    "clearWishlist": "Clear Wishlist",
+    "moveToCart": "Move to Cart",
+    "productAdded": "Added to wishlist",
+    "productRemoved": "Removed from wishlist",
+    "alreadyInWishlist": "Product already in wishlist",
+    "confirmClear": "Are you sure you want to clear all products from wishlist?",
+    "itemsMovedToCart": "All items moved to cart",
+    "viewWishlist": "View Wishlist",
+    "saveForLater": "Save for Later"
+  },
   "checkout": {
     "title": "Checkout",
     "billingInfo": "Billing Information",
@@ -396,6 +416,133 @@
     }
   },
   "cms": {
+    "home": {
+      "hero": {
+        "badge": "Best E-Commerce 2024",
+        "title": "Your First Choice E-Commerce Store",
+        "description": "Discover premium products at competitive prices with exceptional customer service. Shop with confidence and security with our quality guarantee.",
+        "ctaPrimary": "Start Shopping",
+        "ctaSecondary": "Watch Video",
+        "stats": {
+          "customers": "Happy Customers",
+          "products": "Products Sold",
+          "rating": "Average Rating"
+        }
+      },
+      "features": {
+        "title": "Features That Make Us The Best",
+        "subtitle": "We provide a complete shopping experience that combines high quality, excellent service and competitive prices",
+        "items": [
+          {
+            "title": "Free Shipping",
+            "description": "Free shipping on orders over $50",
+            "badge": "Popular"
+          },
+          {
+            "title": "100% Secure Payment",
+            "description": "Advanced SSL protection",
+            "badge": "Secure"
+          },
+          {
+            "title": "Easy Returns",
+            "description": "Within 30 days, no questions",
+            "badge": "Flexible"
+          },
+          {
+            "title": "24/7 Support",
+            "description": "Expert team always available",
+            "badge": "Fast"
+          },
+          {
+            "title": "Fast Delivery",
+            "description": "Delivery within 24 hours in major cities",
+            "badge": "Quick"
+          },
+          {
+            "title": "Gifts & Offers",
+            "description": "Special offers and ongoing promotions",
+            "badge": "Special"
+          }
+        ],
+        "bottomCta": {
+          "title": "Over 1M+ Satisfied Customers",
+          "description": "Join us today and experience the difference"
+        }
+      },
+      "testimonials": {
+        "title": "What Our Customers Say",
+        "subtitle": "We pride ourselves on serving thousands of happy customers. Here's what they say about their experience with us.",
+        "stats": {
+          "customers": "Happy Customers",
+          "rating": "Average Rating",
+          "satisfaction": "Satisfaction",
+          "support": "Support"
+        }
+      },
+      "trustIndicators": {
+        "title": "Shop with Complete Confidence",
+        "subtitle": "We are committed to protecting your privacy and providing the best secure and reliable shopping experience",
+        "items": [
+          {
+            "title": "Guaranteed Security",
+            "description": "Advanced protection for your personal and financial data"
+          },
+          {
+            "title": "Fast Delivery",
+            "description": "Delivery within 24 hours in most areas"
+          },
+          {
+            "title": "Easy Returns",
+            "description": "Free returns within 30 days, no questions asked"
+          },
+          {
+            "title": "High Quality",
+            "description": "Authentic products from trusted brands"
+          },
+          {
+            "title": "Customer Support",
+            "description": "Specialized support team available 24/7"
+          },
+          {
+            "title": "Satisfaction Guaranteed",
+            "description": "Complete customer satisfaction guarantee"
+          }
+        ],
+        "badges": {
+          "ssl": "Secure",
+          "pci": "Compliant",
+          "trusted": "Trusted"
+        }
+      }
+    },
+    "categories": {
+      "title": "Categories",
+      "description": "Discover our wide range of diverse categories"
+    },
+    "products": {
+      "title": "Products",
+      "description": "Browse all our diverse products"
+    },
+    "offers": {
+      "title": "Offers & Discounts",
+      "description": "Discover the latest exclusive offers and discounts"
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Read the latest articles and tips from our experts"
+    },
+    "howToBuy": {
+      "title": "How to Shop",
+      "description": "Comprehensive step-by-step guide for the perfect shopping experience"
+    },
+    "paymentMethods": {
+      "title": "Payment Methods",
+      "description": "Learn about our secure and available payment methods"
+    },
+    "shipping": {
+      "title": "Shipping & Delivery",
+      "description": "Comprehensive information about shipping options and delivery"
+    },
     "about": {
       "title": "About Us",
       "subtitle": "Learn more about our company and mission",
@@ -422,9 +569,21 @@
           "description": "Our customers are at the heart of everything we do, driving our decisions and innovations."
         }
       },
+      "stats": {
+        "happyCustomers": "Happy Customers",
+        "yearsExperience": "Years Experience",
+        "productsSold": "Products Sold",
+        "successRate": "Success Rate"
+      },
+      "cta": {
+        "title": "Ready to Start Your Journey?",
+        "description": "Join thousands of satisfied customers and experience the future of e-commerce",
+        "primaryButton": "Get Started",
+        "secondaryButton": "Learn More"
+      },
       "team": {
-        "title": "Meet Our Team",
-        "description": "Our dedicated team of professionals is committed to delivering excellence."
+        "title": "Our Team",
+        "description": "Meet the passionate individuals behind our success"
       }
     },
     "contact": {

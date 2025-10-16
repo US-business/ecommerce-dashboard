@@ -133,6 +133,28 @@ export const cartItems = pgTable("cart_items", {
   quantity: integer("quantity").notNull().default(1),
 })
 
+// Wishlist table
+export const wishlist = pgTable("wishlist", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+})
+
+// Wishlist Items table
+export const wishlistItems = pgTable("wishlist_items", {
+  id: serial("id").primaryKey(),
+  wishlistId: integer("wishlist_id")
+    .references(() => wishlist.id, { onDelete: "cascade" })
+    .notNull(),
+  productId: integer("product_id")
+    .references(() => products.id, { onDelete: "cascade" })
+    .notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+})
+
 // Orders table
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
@@ -181,6 +203,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   reviews: many(reviews),
   cart: many(cart),
   orders: many(orders),
+  wishlist: many(wishlist),
 }))
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -194,6 +217,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   }),
   reviews: many(reviews),
   cartItems: many(cartItems),
+  wishlistItems: many(wishlistItems),
   orderItems: many(orderItems),
   relatedProducts: many(productRelations, { relationName: "product" }),
   relatedTo: many(productRelations, { relationName: "relatedProduct" }),
@@ -242,6 +266,25 @@ export const cartItemsRelations = relations(cartItems, ({ one }) => ({
   }),
   product: one(products, {
     fields: [cartItems.productId],
+    references: [products.id],
+  }),
+}))
+
+export const wishlistRelations = relations(wishlist, ({ one, many }) => ({
+  user: one(users, {
+    fields: [wishlist.userId],
+    references: [users.id],
+  }),
+  items: many(wishlistItems),
+}))
+
+export const wishlistItemsRelations = relations(wishlistItems, ({ one }) => ({
+  wishlist: one(wishlist, {
+    fields: [wishlistItems.wishlistId],
+    references: [wishlist.id],
+  }),
+  product: one(products, {
+    fields: [wishlistItems.productId],
     references: [products.id],
   }),
 }))

@@ -293,6 +293,10 @@ export async function getProductsByIds(ids: number[]) {
         price: products.price,
         sku: products.sku,
         brand: products.brand,
+        discountType: products.discountType,
+        discountValue: products.discountValue,
+        quantityInStock: products.quantityInStock,
+        status: products.status
       })
       .from(products)
       .where(inArray(products.id, ids));

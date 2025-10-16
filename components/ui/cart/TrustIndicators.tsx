@@ -16,7 +16,7 @@ const TrustIndicators = ({ dir, dictionary }: TrustIndicatorsProps) => {
             <div
                className={cn(
                   "flex items-center space-x-3 p-4 bg-white rounded-lg",
-                  dir === "rtl" && "space-x-reverse",
+                  dir === "rtl" && "space-x-reverse", 
                )}
             >
                <Shield className="w-8 h-8 text-green-600" />

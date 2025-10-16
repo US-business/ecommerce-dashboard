@@ -15,18 +15,23 @@ import {
 } from "lucide-react";
 
 export async function generateMetadata({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);
+  const dir = lang === "ar" ? "rtl" : "ltr";
   
   return {
     title: `${dictionary.cms.contact.title} | E-Commerce Dashboard`,
     description: dictionary.cms.contact.subtitle,
+    dir,
   };
 }
 
-export default async function ContactPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export default async function ContactPage({ params }: { params: { lang: string } }) {  const resolvedParams = await params;
+
+  const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);
+  const dir = lang === "ar" ? "rtl" : "ltr";
 
   const contactInfo = [
     {

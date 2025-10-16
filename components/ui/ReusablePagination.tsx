@@ -146,7 +146,7 @@ const ReusablePagination = ({
     if (totalPages <= 1) return null;
 
     return (
-        <div className={`flex justify-center mt-8 ${className}`}>
+        <div className={`flex justify-center mt-8 ${className}`}> 
             <Pagination>
                 <PaginationContent className="gap-2">
                     {/* زر السابق */}

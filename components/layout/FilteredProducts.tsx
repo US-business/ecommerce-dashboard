@@ -2,7 +2,7 @@
 
 import { useSearchStore } from '@/lib/stores/search-store';
 import { useEffect } from 'react';
-import ProductCard from '../ui/ProductCard';
+import ProductCard from '../ui/ProductCard/ProductCard';
 import ReusablePagination from '../ui/ReusablePagination';
 import { useI18nStore } from '@/lib/stores';
 
@@ -13,6 +13,7 @@ interface FilteredProductsProps {
    currentPage?: number;
    limit?: number;
    dir?: string;
+   lang?: string;
    showSorting?: boolean;
    showViewToggle?: boolean;
    showPagination?: boolean;
@@ -25,6 +26,7 @@ export const FilteredProducts = ({
    currentPage = 1,
    limit = 20,
    dir: propDir = 'ltr',
+   lang = 'en',
    showSorting = true,
    showViewToggle = true,
    showPagination = true
@@ -115,33 +117,33 @@ export const FilteredProducts = ({
    );
 
    return (
-      <div className="flex-1 space-y-6">
+      <div className="flex-1 space-y-4 sm:space-y-6 min-w-0">
          {/* Results Header */}
-         <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm">
-            <div className="flex items-center gap-4">
-               <span className="text-sm text-gray-600">
+         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-white rounded-lg p-3 sm:p-4 shadow-sm">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+               <span className="text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                   {dir === 'rtl'
                      ? `عرض ${paginatedProducts.length} من ${filteredProducts.length} منتج`
                      : `Showing ${paginatedProducts.length} of ${filteredProducts.length} products`
                   }
                </span>
                {filteredProducts.length !== initialProducts.length && (
-                  <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                  <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded whitespace-nowrap">
                      {dir === 'rtl' ? 'مفلتر' : 'Filtered'}
                   </span>
                )}
             </div>
 
             {showSorting && (
-               <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">
+               <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="text-xs sm:text-sm text-gray-600 whitespace-nowrap flex-shrink-0">
                      {dir === 'rtl' ? 'ترتيب:' : 'Sort:'}
                   </span>
                   <select
                   title={dir === 'rtl' ? 'ترتيب:' : 'Sort:'}
                      value={sortBy}
                      onChange={(e : any) => setSortBy(e?.target?.value)}
-                     className="text-sm border rounded px-2 py-1"
+                     className="text-xs sm:text-sm border rounded px-2 py-1.5 sm:py-1 flex-1 sm:flex-initial min-w-0"
                   >
                      <option value="newest">{dir === 'rtl' ? 'الأحدث' : 'Newest'}</option>
                      <option value="oldest">{dir === 'rtl' ? 'الأقدم' : 'Oldest'}</option>
@@ -154,22 +156,22 @@ export const FilteredProducts = ({
 
          {/* Products Grid */}
          {paginatedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                {paginatedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} dir={dir} />
+                  <ProductCard key={product.id} product={product} dir={dir} lang={lang} />
                ))}
             </div>
          ) : (
-            <div className="text-center py-12 bg-white rounded-lg">
-               <div className="text-gray-400 mb-4">
-                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-8 sm:py-12 bg-white rounded-lg px-4">
+               <div className="text-gray-400 mb-3 sm:mb-4">
+                  <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m13-8l-4 4m0 0l-4-4m4 4V3" />
                   </svg>
                </div>
-               <h3 className="text-lg font-medium text-gray-900 mb-2">
+               <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2 break-words">
                   {dir === 'rtl' ? 'لا توجد منتجات' : 'No products found'}
                </h3>
-               <p className="text-gray-600 mb-4">
+               <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 break-words">
                   {dir === 'rtl'
                      ? 'جرب تغيير معايير البحث أو الفلاتر'
                      : 'Try adjusting your search criteria or filters'
@@ -177,7 +179,7 @@ export const FilteredProducts = ({
                </p>
                <button
                   onClick={clearFilters}
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-sm sm:text-base text-blue-600 hover:text-blue-700 font-medium"
                >
                   {dir === 'rtl' ? 'مسح جميع الفلاتر' : 'Clear all filters'}
                </button>

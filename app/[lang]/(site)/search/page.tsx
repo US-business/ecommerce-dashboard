@@ -14,7 +14,7 @@ import { getCategories } from "@/lib/actions/categories"
 import { useSearchStore } from "@/lib/stores/search-store" // <- store اللي عملناه
 import ReusablePagination from "@/components/ui/ReusablePagination"
 import SearchFilters from "@/components/layout/SearchFilters"
-import ProductCard from "@/components/ui/ProductCard"
+import ProductCard from "@/components/ui/ProductCard/ProductCard"
 
 interface Product {
     id: number

@@ -1,29 +1,14 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card";
-import { Button } from "@/components/shadcnUI/button";
-import { Input } from "@/components/shadcnUI/input";
-import { Badge } from "@/components/shadcnUI/badge";
 import { Separator } from "@/components/shadcnUI/separator";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/shadcnUI/accordion";
-import { 
-  HelpCircle,
-  Search,
-  Package,
-  CreditCard,
-  RefreshCw,
-  Settings,
-  MessageSquare,
-  Phone,
-  Mail, 
-  ChevronRight
-} from "lucide-react";
+import { HelpCircle, Package, CreditCard, RefreshCw, Settings, MessageSquare, Phone, Mail } from "lucide-react";
+import { HeroSection } from "./HeroSection";
+import { StatsSection } from "./StatsSection";
+import { CategorySidebar } from "./CategorySidebar";
+import { FAQContent } from "./FAQContent";
+import { SupportChannels } from "./SupportChannels";
+import { CallToAction } from "./CallToAction";
 
 interface FAQClientProps {
   dictionary: any;
@@ -52,12 +37,12 @@ export function FAQClient({ dictionary }: FAQClientProps) {
   // Filter questions based on search term
   const filteredQuestions = useMemo(() => {
     if (!searchTerm) return dictionary.cms.faq.questions[activeCategory];
-    
+
     const allQuestions = Object.values(dictionary.cms.faq.questions).flat() as Array<{
       question: string;
       answer: string;
     }>;
-    
+
     return allQuestions.filter((item) =>
       item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.answer.toLowerCase().includes(searchTerm.toLowerCase())
@@ -97,182 +82,36 @@ export function FAQClient({ dictionary }: FAQClientProps) {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      {/* Hero Section */}
-      <div className="text-center mb-16">
-        <Badge variant="outline" className="mb-4 text-sm font-medium">
-          {dictionary.cms.faq.subtitle}
-        </Badge>
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          {dictionary.cms.faq.title}
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
-          Find answers to the most commonly asked questions about our services
-        </p>
-        
-        {/* Search Bar */}
-        <div className="max-w-md mx-auto relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder={dictionary.cms.faq.searchPlaceholder}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-      </div>
+      <HeroSection
+        dictionary={dictionary}
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+      />
 
-      {/* Stats Section */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-        {stats.map((stat, index) => (
-          <Card key={index} className="text-center border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="mx-auto w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-                <stat.icon className="h-5 w-5 text-primary" />
-              </div>
-              <div className="text-lg font-bold mb-1">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <StatsSection stats={stats} />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Category Sidebar */}
-        {!searchTerm && (
-          <div className="lg:col-span-1">
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-lg">{dictionary.categories.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="space-y-1">
-                  {Object.keys(dictionary.cms.faq.categories).map((category) => {
-                    const IconComponent = categoryIcons[category as keyof typeof categoryIcons];
-                    const isActive = activeCategory === category;
-                    
-                    return (
-                      <button
-                        key={category}
-                        onClick={() => setActiveCategory(category)}
-                        className={`w-full p-4 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                          isActive ? 'bg-primary/10 border-r-2 border-primary' : ''
-                        }`}
-                      >
-                        <div className={`p-2 rounded-lg ${categoryColors[category as keyof typeof categoryColors]}`}>
-                          <IconComponent className="h-4 w-4" />
-                        </div>
-                        <span className="font-medium">
-                          {dictionary.cms.faq.categories[category]}
-                        </span>
-                        <ChevronRight className="h-4 w-4 ml-auto" />
-                      </button>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        <CategorySidebar
+          dictionary={dictionary}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          searchTerm={searchTerm}
+        />
 
-        {/* FAQ Content */}
-        <div className={searchTerm ? "lg:col-span-4" : "lg:col-span-3"}>
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <HelpCircle className="h-5 w-5 text-primary" />
-                {searchTerm ? "Search Results" : dictionary.cms.faq.categories[activeCategory]}
-              </CardTitle>
-              {!searchTerm && (
-                <p className="text-sm text-muted-foreground">
-                  {filteredQuestions.length} questions in this category
-                </p>
-              )}
-            </CardHeader>
-            <CardContent>
-              {filteredQuestions.length > 0 ? (
-                <Accordion type="single" collapsible className="w-full">
-                  {filteredQuestions.map((item : any, index : number) => (
-                    <AccordionItem key={index} value={`item-${index}`}>
-                      <AccordionTrigger className="text-left hover:text-primary">
-                        {item.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed">
-                        {item.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              ) : (
-                <div className="text-center py-8">
-                  <Search className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                  <h3 className="font-semibold mb-2">No Results Found</h3>
-                  <p className="text-muted-foreground mb-4">
-                    We couldn't find any questions matching your search term.
-                  </p>
-                  <Button
-                    onClick={() => setSearchTerm("")}
-                    variant="outline"
-                  >
-                    Clear Search
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        <FAQContent
+          dictionary={dictionary}
+          activeCategory={activeCategory}
+          searchTerm={searchTerm}
+          filteredQuestions={filteredQuestions}
+          onSearchClear={() => setSearchTerm("")}
+        />
       </div>
 
       <Separator className="my-16" />
 
-      {/* Support Channels */}
-      <div className="mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Still Need Help?</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Can't find what you're looking for? Our support team is here to help you
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {supportChannels.map((channel, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
-              <CardContent className="p-6 text-center">
-                <div className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${channel.color}`}>
-                  <channel.icon className="h-6 w-6" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{channel.title}</h3>
-                <p className="text-muted-foreground mb-4">{channel.description}</p>
-                <Button className="w-full" variant="outline">
-                  {channel.action}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <SupportChannels supportChannels={supportChannels} />
 
-      {/* Call to Action */}
-      <div className="text-center">
-        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-0 text-white">
-          <CardContent className="p-8">
-            <HelpCircle className="h-12 w-12 mx-auto mb-4 opacity-90" />
-            <h3 className="text-2xl font-bold mb-4">Didn't Find Your Answer?</h3>
-            <p className="text-lg mb-6 opacity-90">
-              Our dedicated support team is ready to help you with any questions or concerns
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="lg">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Contact Support
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600">
-                <Mail className="h-4 w-4 mr-2" />
-                Submit Ticket
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <CallToAction />
     </div>
   );
 }

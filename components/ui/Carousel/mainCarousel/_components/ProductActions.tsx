@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { Button } from "@/components/shadcnUI/button";
-import { Eye, ShoppingCart, Heart } from 'lucide-react';
+import { Eye, ShoppingCart } from 'lucide-react';
+import WishlistButton from '@/components/ui/WishlistButton';
 
 interface ProductActionsProps {
     id: number | string | undefined;
     quantityInStock?: number;
     dir?: 'ltr' | 'rtl';
+    lang?: string;
 }
 
-export function ProductActions({ id, quantityInStock, dir = 'ltr' }: ProductActionsProps) {
+export function ProductActions({ id, quantityInStock, dir = 'ltr', lang = 'en' }: ProductActionsProps) {
     return (
         <div className="flex items-center gap-3 pt-2 animate-in fade-in slide-in-from-bottom-8 duration-1300">
             <Button
@@ -18,7 +20,7 @@ export function ProductActions({ id, quantityInStock, dir = 'ltr' }: ProductActi
                 size="lg"
                 className="flex-1 text-amber-800 bg-gradient-to-r from-amber-100 to-amber-200 hover:from-amber/90 hover:to-amber/70 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
-                <Link href={`/product/${id}`} className="flex items-center gap-2">
+                <Link href={`/products/${id}`} className="flex items-center gap-2"> 
                     <Eye className="w-5 h-5" />
                     <span className="font-semibold">
                         {dir === 'rtl' ? 'عرض المنتج' : 'View Details'}
@@ -34,13 +36,12 @@ export function ProductActions({ id, quantityInStock, dir = 'ltr' }: ProductActi
                     >
                         <ShoppingCart className="w-5 h-5" />
                     </Button>
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        className="border-2 hover:bg-red-50 hover:border-red-300 transition-all duration-300 hover:scale-105"
-                    >
-                        <Heart className="w-5 h-5 text-red-500" />
-                    </Button>
+                    <WishlistButton
+                        productId={Number(id)}
+                        dir={dir}
+                        lang={lang}
+                        className="border-2 transition-all duration-300 hover:scale-105 h-11 w-11"
+                    />
                 </>
             ) : (
                 <Button

@@ -22,7 +22,7 @@ const CartQuantity = ({ item, dir, showDelete = false }: QuantityCartProps) => {
       }
       if (newQuantity === 0) {
          handleRemoveItem(cartItemId)
-      }
+      } 
       setIsUpdating(cartItemId)
    }
    const handleRemoveItem = async (cartItemId: number) => {

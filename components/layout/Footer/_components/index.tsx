@@ -1,0 +1,8 @@
+export { default as FeaturesSection } from './FeaturesSection'
+export { default as NewsletterSection } from './NewsletterSection'
+export { default as FooterLinks } from './FooterLinks'
+export { default as QuickLinksSection } from './QuickLinksSection'
+export { default as CustomerServiceSection } from './CustomerServiceSection'
+export { default as SocialMediaSection } from './SocialMediaSection'
+export { default as PaymentSecuritySection } from './PaymentSecuritySection'
+export { default as CopyrightSection } from './CopyrightSection'

@@ -21,6 +21,7 @@ import { Plus, Search, MoreHorizontal, Edit, Trash2, Eye, Star, Loader2 } from "
 import { cn } from "@/lib/utils"
 import {  useAuthStore } from "@/lib/stores"
 import Link from "next/link"
+import { getAllReviews, deleteReviewAdmin } from "@/lib/actions/reviews"
 
 // Review interface based on the database schema
 interface Review {
@@ -28,138 +29,22 @@ interface Review {
     productId: number
     userId: number
     rating: number
-    comment?: string
+    comment?: string | null
     createdAt: Date
     product?: {
-        nameEn: string
-        nameAr: string
-    }
+        nameEn: string | null
+        nameAr: string | null
+    } | null
     user?: {
-        username: string
-        email: string
-    }
+        username: string | null
+        email: string | null
+        image?: string | null
+    } | null
 }
 
-// Mock reviews data for demo purposes
-const mockReviews: Review[] = [
-    {
-        id: 1,
-        productId: 1,
-        userId: 3,
-        rating: 5,
-        comment: "Excellent product, very satisfied with the quality!",
-        createdAt: new Date("2024-01-15"),
-        product: {
-            nameEn: "Wireless Headphones",
-            nameAr: "سماعات لاسلكية",
-        },
-        user: {
-            username: "john_doe",
-            email: "john@example.com",
-        },
-    },
-    {
-        id: 2,
-        productId: 2,
-        userId: 2,
-        rating: 4,
-        comment: "Good product, comfortable to wear.",
-        createdAt: new Date("2024-01-20"),
-        product: {
-            nameEn: "Cotton T-Shirt",
-            nameAr: "قميص قطني",
-        },
-        user: {
-            username: "viewer",
-            email: "viewer@example.com",
-        },
-    },
-    {
-        id: 3,
-        productId: 3,
-        userId: 1,
-        rating: 3,
-        comment: "Average product, expected better quality.",
-        createdAt: new Date("2024-01-25"),
-        product: {
-            nameEn: "Coffee Mug",
-            nameAr: "كوب قهوة",
-        },
-        user: {
-            username: "admin",
-            email: "admin@example.com",
-        },
-    },
-    {
-        id: 4,
-        productId: 1,
-        userId: 4,
-        rating: 5,
-        comment: "Amazing sound quality, worth every penny!",
-        createdAt: new Date("2024-02-01"),
-        product: {
-            nameEn: "Wireless Headphones",
-            nameAr: "سماعات لاسلكية",
-        },
-        user: {
-            username: "sarah_admin",
-            email: "sarah@example.com",
-        },
-    },
-    {
-        id: 5,
-        productId: 2,
-        userId: 3,
-        rating: 2,
-        comment: "The size runs small, not as described.",
-        createdAt: new Date("2024-02-05"),
-        product: {
-            nameEn: "Cotton T-Shirt",
-            nameAr: "قميص قطني",
-        },
-        user: {
-            username: "john_doe",
-            email: "john@example.com",
-        },
-    },
-]
+// Real reviews data will be fetched from database
 
-// Mock function to get reviews with search and pagination
-async function getReviews(search: string = "") {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 300))
-
-    let filteredReviews = [...mockReviews]
-
-    if (search) {
-        const searchLower = search.toLowerCase()
-        filteredReviews = mockReviews.filter(
-            (review) =>
-                review.product?.nameEn.toLowerCase().includes(searchLower) ||
-                review.product?.nameAr.includes(search) ||
-                review.user?.username.toLowerCase().includes(searchLower) ||
-                review.user?.email.toLowerCase().includes(searchLower) ||
-                review.comment?.toLowerCase().includes(searchLower) ||
-                review.rating.toString().includes(search)
-        )
-    }
-
-    return {
-        success: true,
-        data: filteredReviews.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
-        total: filteredReviews.length,
-    }
-}
-
-// Mock function to delete a review
-async function deleteReview(id: number) {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 300))
-
-    return {
-        success: true,
-    }
-}
+// Real functions using server actions
 
 export default function ReviewsPage() {
       const { t, dir } = useI18nStore()
@@ -176,12 +61,16 @@ export default function ReviewsPage() {
     const loadReviews = async () => {
         setLoading(true)
         try {
-            const result = await getReviews(search)
+            const result = await getAllReviews(search)
             if (result.success && result.data) {
                 setReviews(result.data)
+            } else {
+                console.error("Failed to load reviews:", result.error)
+                setReviews([])
             }
         } catch (error) {
             console.error("Failed to load reviews:", error)
+            setReviews([])
         } finally {
             setLoading(false)
         }
@@ -196,14 +85,18 @@ export default function ReviewsPage() {
 
         setDeleting(true)
         try {
-            const result = await deleteReview(deleteId)
+            const result = await deleteReviewAdmin(deleteId)
             if (result.success) {
                 // Remove the deleted review from the state
                 setReviews(reviews.filter(review => review.id !== deleteId))
                 setDeleteId(null)
+            } else {
+                console.error("Failed to delete review:", result.error)
+                alert(result.error || "Failed to delete review")
             }
         } catch (error) {
             console.error("Failed to delete review:", error)
+            alert("Failed to delete review")
         } finally {
             setDeleting(false)
         }
@@ -301,23 +194,32 @@ export default function ReviewsPage() {
                                             ) : (
                                                 reviews.map((review) => (
                                                     <TableRow key={review.id}>
-                                                        <TableCell className={cn(dir === "rtl" && "text-right")}>
-                                                            {dir === "rtl" ? review.product?.nameAr : review.product?.nameEn}
+                                                        <TableCell className={cn(dir === "rtl" && "text-right" , "line-clamp-1")}>
+                                                            {dir === "rtl" 
+                                                                ? (review.product?.nameAr || "منتج غير محدد")
+                                                                : (review.product?.nameEn || "Product not found")
+                                                            }
                                                         </TableCell>
                                                         <TableCell className={cn(dir === "rtl" && "text-right")}>
                                                             <div>
-                                                                <div>{review.user?.username}</div>
-                                                                <div className="text-sm text-muted-foreground">{review.user?.email}</div>
+                                                                <div>{review.user?.username || "مستخدم محذوف"}</div>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    {review.user?.email || ""}
+                                                                </div>
                                                             </div>
                                                         </TableCell>
                                                         <TableCell className={cn(dir === "rtl" && "text-right")}>
                                                             {getRatingStars(review.rating)}
                                                         </TableCell>
                                                         <TableCell className={cn(dir === "rtl" && "text-right")}>
-                                                            <div className="max-w-xs truncate">{review.comment}</div>
+                                                            <div className="max-w-xs truncate">
+                                                                {review.comment || (dir === "rtl" ? "لا يوجد تعليق" : "No comment")}
+                                                            </div>
                                                         </TableCell>
                                                         <TableCell className={cn(dir === "rtl" && "text-right")}>
-                                                            {new Date(review.createdAt).toLocaleDateString()}
+                                                            {new Date(review.createdAt).toLocaleDateString(
+                                                                dir === "rtl" ? "ar-SA" : "en-US"
+                                                            )}
                                                         </TableCell>
                                                         <TableCell>
                                                             <div className="flex items-center justify-end gap-2">

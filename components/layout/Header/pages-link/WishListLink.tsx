@@ -11,7 +11,7 @@ const WishListLink = () => {
    const { t, dir } = useI18nStore()
 
    const handleWishlistClick = () => {
-      router.push("/wishlist")
+      router.push("/WishList")
    }
 
    return (

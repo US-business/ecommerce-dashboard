@@ -43,12 +43,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 
 
-export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string, lang: string }> }) {
   const resolvedParams = await params;
   const categorySlug = resolvedParams.slug;
+  const lang = resolvedParams.lang || 'ar';
 
   const cookieStore = await cookies();
-  const locale = cookieStore.get("preferred-locale")?.value || "ar"; // default ar
+  const locale = cookieStore.get("preferred-locale")?.value || lang || "ar"; // default ar
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   const productsRes = await getProductsByCategorySlug(categorySlug);
@@ -97,6 +98,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <FilteredProducts
           initialProducts={productsRes.data}
           categorySlug={categorySlug}
+          lang={lang}
+          dir={dir}
         />
       </div>
     </main> 

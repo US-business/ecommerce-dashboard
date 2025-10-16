@@ -17,7 +17,7 @@ export default function EditProductPage() {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    loadProduct()
+    loadProduct() 
   }, [params.id])
 
   const loadProduct = async () => {

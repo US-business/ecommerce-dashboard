@@ -12,14 +12,15 @@ import { Button } from "@/components/shadcnUI/button"
 import { Badge } from "@/components/shadcnUI/badge"
 import { Card, CardHeader, CardTitle } from "../../shadcnUI/card"
 import { cn } from "@/lib/utils"
-import ProductCard from "../ProductCard"
+import ProductCard from "../ProductCard/ProductCard"
 interface CategoryProductSliderProps {
   items: any[] | undefined;
   dir: string;
+  lang?: string;
   className?: string;
 }
 
-const CarouselComponent = ({ dir = 'ltr', items, className }: CategoryProductSliderProps) => {
+const CarouselComponent = ({ dir = 'ltr', lang = 'en', items, className }: CategoryProductSliderProps) => {
 
 
   if (!items || items.length === 0) {
@@ -51,7 +52,7 @@ const CarouselComponent = ({ dir = 'ltr', items, className }: CategoryProductSli
         <CarouselContent >
           {items?.map((item: any) => (
             <CarouselItem key={item.id} className="basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 p-3">
-              <ProductCard product={item} dir={dir} hiddenButtonCart className="shadow-md" />
+              <ProductCard product={item} dir={dir} lang={lang} hiddenButtonCart className="shadow-md" />
             </CarouselItem>
           ))}
         </CarouselContent>

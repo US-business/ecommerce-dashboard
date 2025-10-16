@@ -11,18 +11,22 @@ import { Badge } from "@/components/shadcnUI/badge"
 import { Edit, ArrowLeft } from "lucide-react"
 import { getProduct } from "@/lib/actions/products"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { ProductProps } from "@/types/product"
 
 export default function ProductViewPage() {
   const { t, dir } = useI18nStore()
   const { isSuperAdmin } = useAuthStore()
   const params = useParams()
   const router = useRouter()
-  const [product, setProduct] = useState<any>(null)
+  const [product, setProduct] = useState<ProductProps | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
   useEffect(() => {
-    loadProduct()
+    if (params.id) {
+      loadProduct()
+    }
   }, [params.id])
 
   const loadProduct = async () => {
@@ -73,28 +77,30 @@ export default function ProductViewPage() {
   }
 
   return (
-      <div className="space-y-6">
-        {/* Header */}
-        <div className={cn("flex items-center justify-between", dir === "rtl" && "flex-row-reverse")}>
-          <div className={cn("flex items-center gap-4", dir === "rtl" && "flex-row-reverse")}>
+      <div className="space-y-4 sm:space-y-6">
+        {/* Header - Responsive */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 order-2 sm:order-1">
             <Button
               variant="outline"
               size="sm"
               onClick={() => router.push("/dashboard/products")}
-              className={cn(dir === "rtl" && "flex-row-reverse")}
+              className="w-fit"
             >
               <ArrowLeft className={cn("h-4 w-4", dir === "rtl" ? "ml-2 rotate-180" : "mr-2")} />
               {dir === "rtl" ? "العودة" : "Back"}
             </Button>
             <div className={cn(dir === "rtl" && "text-right")}>
-              <h1 className="text-3xl font-bold">{dir === "rtl" ? product?.nameAr : product?.nameEn}</h1>
-              <p className="text-muted-foreground">{dir === "rtl" ? "تفاصيل المنتج" : "Product details"}</p>
+              {product && (
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold break-words">{dir === "rtl" ? product.nameAr : product.nameEn}</h1>
+              )}
+              <p className="text-sm sm:text-base text-muted-foreground">{dir === "rtl" ? "تفاصيل المنتج" : "Product details"}</p>
             </div>
           </div>
-          {isSuperAdmin && (
+          {isSuperAdmin && product && (
             <Button
               onClick={() => router.push(`/dashboard/products/${product.id}/edit`)}
-              className={cn(dir === "rtl" && "flex-row-reverse")}
+              className="w-full sm:w-auto order-1 sm:order-2"
             >
               <Edit className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
               {t("common.edit")}
@@ -102,37 +108,42 @@ export default function ProductViewPage() {
           )}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Product Image */}
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+          {/* Product Image - Enhanced with next/image */}
           <Card>
-            <CardHeader>
-              <CardTitle className={cn(dir === "rtl" && "text-right")}>
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className={cn("text-base sm:text-lg", dir === "rtl" && "text-right")}>
                 {dir === "rtl" ? "صورة المنتج" : "Product Image"}
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              {product?.image ? (
-                <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={dir === "rtl" ? product.nameAr : product.nameEn}
-                  className="w-full h-64 object-cover rounded-lg"
-                />
+            <CardContent className="px-4 sm:px-6">
+              {product?.images && product.images.length > 0 ? (
+                <div className="relative w-full h-48 sm:h-64 rounded-lg overflow-hidden">
+                  <Image
+                    src={product.images[0]}
+                    alt={dir === "rtl" ? product.nameAr : product.nameEn}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
               ) : (
-                <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
-                  <p className="text-muted-foreground">{dir === "rtl" ? "لا توجد صورة" : "No image"}</p>
+                <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center">
+                  <p className="text-sm sm:text-base text-muted-foreground">{dir === "rtl" ? "لا توجد صورة" : "No image"}</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Basic Information */}
+          {/* Basic Information - Responsive */}
           <Card>
-            <CardHeader>
-              <CardTitle className={cn(dir === "rtl" && "text-right")}>
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className={cn("text-base sm:text-lg", dir === "rtl" && "text-right")}>
                 {dir === "rtl" ? "المعلومات الأساسية" : "Basic Information"}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
               <div className={cn("grid gap-4", dir === "rtl" && "text-right")}>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">{t("products.nameEn")}</label>
@@ -152,7 +163,7 @@ export default function ProductViewPage() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">{t("common.status")}</label>
-                  <div className="mt-1">{getStatusBadge(product?.status)}</div>
+                  <div className="mt-1">{getStatusBadge(product?.status || "")}</div>
                 </div>
                 {product?.brand && (
                   <div>

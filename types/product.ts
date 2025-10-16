@@ -30,6 +30,7 @@ export interface ProductProps {
   warrantyAr?: string;
   categoryId: number;
   relatedProducts?: number[];
+  relatedProductIds?: number[];
   availableProducts?: number[];
   filteredProducts?: number[];
   selectedRelatedProducts?: number[];
@@ -38,6 +39,7 @@ export interface ProductProps {
     id: number
     nameEn: string
     nameAr: string
+    slug?: string
   }
 }
 

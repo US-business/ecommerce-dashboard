@@ -79,7 +79,7 @@ const CartItems = ({ user, dir, cart, dictionary }: CartItemProps) => {
                     finalPrice = itemPrice - (itemPrice * discountValue) / 100
                 } else if (item.product.discountType === 'fixed') {
                     finalPrice = itemPrice - discountValue
-                }
+                } 
 
                 const isOutOfStock = item.product.quantityInStock <= 0
                 const isUpdatingThis = isUpdating === item.id

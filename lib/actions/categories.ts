@@ -78,7 +78,12 @@ export async function getCategories(page = 1, limit = 10, search?: string , sear
 
       return {
         success: true,
-        data: result,
+        data: result.map(cat => ({
+          ...cat,
+          image: cat.image ?? undefined,
+          createdAt: cat.createdAt ?? new Date(),
+          updatedAt: cat.updatedAt ?? undefined,
+        })),
         total,
       }
     } catch (dbError) {
@@ -121,7 +126,12 @@ export async function getCategory(id: number): Promise<CategoryResponse> {
 
       return {
         success: true,
-        data: result[0],
+        data: {
+          ...result[0],
+          image: result[0].image ?? undefined,
+          createdAt: result[0].createdAt ?? new Date(),
+          updatedAt: result[0].updatedAt ?? undefined,
+        },
       }
     } catch (dbError) {
       return await mockCategoriesService.getCategory(id)
@@ -166,7 +176,12 @@ export async function createCategory(data: CategoryFormData): Promise<CategoryRe
 
       return {
         success: true,
-        data: result[0],
+        data: {
+          ...result[0],
+          image: result[0].image ?? undefined,
+          createdAt: result[0].createdAt ?? new Date(),
+          updatedAt: result[0].updatedAt ?? undefined,
+        },
       }
     } catch (dbError) {
       const result = await mockCategoriesService.createCategory(data)
@@ -216,7 +231,12 @@ export async function updateCategory(id: number, data: CategoryFormData): Promis
 
       return {
         success: true,
-        data: result[0],
+        data: {
+          ...result[0],
+          image: result[0].image ?? undefined,
+          createdAt: result[0].createdAt ?? new Date(),
+          updatedAt: result[0].updatedAt ?? undefined,
+        },
       }
     } catch (dbError) {
       const result = await mockCategoriesService.updateCategory(id, data)

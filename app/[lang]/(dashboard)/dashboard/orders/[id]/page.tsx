@@ -9,13 +9,14 @@ import { UpdateOrderStatus } from "../_components/UpdateOrderStatus"
 import { OrderNotes } from "../_components/OrderNotes"
 
 interface OrderDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
-  const { id } = params
+  const resolvedParams = await params;
+  const { id } = resolvedParams
   const order = await getOrderById(id)
 
   if (!order) {
