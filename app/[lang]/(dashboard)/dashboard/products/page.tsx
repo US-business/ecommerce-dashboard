@@ -7,13 +7,7 @@ import { ProductsTableSkeleton } from "@/components/ui/skeletons/ProductsTableSk
 import { Card, CardContent } from "@/components/shadcnUI/card";
 import { AlertCircle } from "lucide-react";
 
-export default async function ProductsPage({
-  params,
-  searchParams
-}: {
-  params: Promise<{ lang: string }>,
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
+export default async function ProductsPage({params,searchParams}: {params: Promise<{ lang: string }>,searchParams: Promise<{ [key: string]: string | string[] | undefined }>}) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const lang = resolvedParams?.lang as Locale;
