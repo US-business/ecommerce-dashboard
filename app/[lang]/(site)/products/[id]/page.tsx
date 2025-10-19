@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const idAsNumber = parseInt(productId);
 
   const cookieStore = await cookies();
-  const locale = cookieStore.get("preferred-locale")?.value || lang || "ar";
+  const locale = cookieStore.get("preferred-locale")?.value || "ar";
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   const { data: product } = await getProduct(idAsNumber);
@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const idAsNumber = parseInt(id);
 
   const cookieStore = await cookies();
-  const locale = cookieStore.get("preferred-locale")?.value || lang || "ar";
+  const locale = cookieStore.get("preferred-locale")?.value || "ar";
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   const { data: product } = await getProduct(idAsNumber);
@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <BackLink dir={dir} className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm sm:text-base" />
           
           <Button variant="outline" size="sm" className="w-full sm:w-auto" asChild>
-            <a href={`/${lang}/products`} className="text-xs sm:text-sm">
+            <a href={`/${locale}/products`} className="text-xs sm:text-sm">
               {dir === 'rtl' ? 'جميع المنتجات' : 'All Products'}
             </a>
           </Button>
@@ -137,7 +137,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             <Breadcrumb>
               <BreadcrumbList className="flex items-center flex-wrap gap-1 sm:gap-2" role="list">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/${lang}`} className="flex items-center gap-1 sm:gap-2 hover:text-primary transition-colors text-xs sm:text-sm">
+                  <BreadcrumbLink href={`/${locale}`} className="flex items-center gap-1 sm:gap-2 hover:text-primary transition-colors text-xs sm:text-sm">
                     <Home className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">{dir === 'rtl' ? 'الرئيسية' : 'Home'}</span>
                   </BreadcrumbLink>
@@ -145,7 +145,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 <BreadcrumbSeparator className={cn("text-xs sm:text-sm", dir === "rtl" ? "rotate-180" : "")} />
                 <BreadcrumbItem>
                   <BreadcrumbLink 
-                    href={`/${lang}/category/${product?.category?.slug}`}
+                    href={`/${locale}/category/${product?.category?.slug}`}
                     className="hover:text-primary transition-colors text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none"
                     title={dir === "rtl" ? product?.category?.nameAr : product?.category?.nameEn}
                   >
@@ -174,7 +174,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               
               {/* Product Info */}
               <div className="bg-gradient-to-br from-gray-50 to-white p-4 sm:p-6 lg:p-8 order-2">
-                <InfoItem product={product} dir={dir} lang={lang} />
+                <InfoItem product={product} dir={dir} lang={locale} />
               </div>
             </div>
           </CardContent>
@@ -232,7 +232,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             productId={idAsNumber}
             currentUserId={currentUserId}
             dir={dir}
-            lang={lang}
+            lang={locale}
           />
         </div>
 
@@ -246,7 +246,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                   <span className="break-words">{dir === 'rtl' ? 'منتجات ذات صلة' : 'Related Products'}</span>
                 </CardTitle>
                 <Button variant="ghost" size="sm" className="w-full sm:w-auto" asChild>
-                  <a href={`/${lang}/products?category=${product?.category?.slug}`} className="text-xs sm:text-sm">
+                  <a href={`/${locale}/products?category=${product?.category?.slug}`} className="text-xs sm:text-sm">
                     {dir === 'rtl' ? 'عرض المزيد' : 'View More'}
                   </a>
                 </Button>
@@ -278,7 +278,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                       key={relatedProduct.id} 
                       product={relatedProduct} 
                       dir={dir}
-                      lang={lang}
+                      lang={locale}
                       hiddenButtonCart
                     />
                   ))}

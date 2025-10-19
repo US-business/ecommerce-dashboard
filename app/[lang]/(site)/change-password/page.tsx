@@ -14,9 +14,9 @@ import { Eye, EyeOff, Lock, ArrowLeft, CheckCircle } from "lucide-react"
 import { useSession } from "next-auth/react"
 
 export default function ChangePasswordPage() {
-  const { t, dir } = useI18nStore()
+  const { t, dir, locale } = useI18nStore()
   const params = useParams()
-  const lang = (params?.lang as string) || (dir === "rtl" ? "ar" : "en")
+  const lang = locale || "ar"
   const { user } = useAuth()
   const { data: session } = useSession()
   const router = useRouter()

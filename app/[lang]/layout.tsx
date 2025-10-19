@@ -11,6 +11,7 @@ import { i18n, type Locale } from "@/lib/i18n/i18n-config"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth/auth.config"
 import { cn } from "@/lib/utils"
+import { env } from "@/lib/config/env"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,7 +20,7 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: 'E-Commerce Store | متجر إلكتروني',
     template: '%s | E-Commerce Store'
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: ['ar_SA'],
-    url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    url: env.NEXT_PUBLIC_APP_URL,
     siteName: 'E-Commerce Store',
     title: 'E-Commerce Store | متجر إلكتروني',
     description: 'Modern e-commerce platform with multilingual support',

@@ -28,7 +28,7 @@ export default async function Page({
 
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}> 
       <DashboardContent
         dictionary={dictionary}
         direction={direction}

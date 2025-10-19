@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { db } from "@/lib/db"
 import { users, accounts, sessions, verificationTokens, cart } from "@/lib/db/schema"
 import { eq } from "drizzle-orm"
+import { env, isDevelopment } from "@/lib/config/env"
+import { logAuthError } from "./errors"
 
 
 
@@ -13,8 +15,8 @@ export const authOptions: AuthOptions = {
   // سيتم التعامل مع قاعدة البيانات يدوياً في callbacks
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "select_account",
@@ -31,16 +33,28 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
+          logAuthError("CredentialsProvider.authorize", new Error("Missing credentials"), {
+            hasEmail: !!credentials?.email,
+            hasPassword: !!credentials?.password
+          })
           return null
         }
         try {
           const dbUser = await db.select().from(users).where(eq(users.email, credentials.email)).then(rows => rows[0])
           if (!dbUser || !dbUser.password) {
+            logAuthError("CredentialsProvider.authorize", new Error("User not found or no password"), {
+              email: credentials.email,
+              userExists: !!dbUser,
+              hasPassword: !!dbUser?.password
+            })
             return null
           }
           const { comparePasswords } = await import("@/lib/utils")
           const valid = await comparePasswords(credentials.password, dbUser.password)
           if (!valid) {
+            logAuthError("CredentialsProvider.authorize", new Error("Invalid password"), {
+              email: credentials.email
+            })
             return null
           }
           return {
@@ -49,7 +63,10 @@ export const authOptions: AuthOptions = {
             name: dbUser.username || dbUser.email.split('@')[0],
             image: dbUser.image ?? undefined,
           } as any
-        } catch {
+        } catch (error) {
+          logAuthError("CredentialsProvider.authorize", error, {
+            email: credentials.email
+          })
           return null
         }
       }
@@ -74,7 +91,11 @@ export const authOptions: AuthOptions = {
             // Note: id will be undefined for users not in database 
           }
         } catch (error) {
-          
+          logAuthError("jwt callback", error, {
+            hasUser: !!user,
+            hasAccount: !!account,
+            userEmail: user?.email
+          })
           // Use user data from OAuth as fallback
           token.email = user.email
           token.username = user.name || user.email?.split('@')[0]
@@ -92,7 +113,10 @@ export const authOptions: AuthOptions = {
             token.username = dbUser.username || token.username
           }
         } catch (error) {
-          
+          logAuthError("jwt callback - token refresh", error, {
+            tokenEmail: token.email,
+            hasId: !!token.id
+          })
         }
       }
       
@@ -160,7 +184,10 @@ export const authOptions: AuthOptions = {
           
           return true
         } catch (error) {
-          console.error("Google sign-in error:", error)
+          logAuthError("signIn callback - Google", error, {
+            userEmail: user.email,
+            providerId: account.providerAccountId
+          })
           return false
         }
       }
@@ -185,7 +212,11 @@ export const authOptions: AuthOptions = {
         if (parsed.origin === baseUrl) {
           return parsed.toString()
         }
-      } catch (e) {
+      } catch (error) {
+        logAuthError("redirect callback", error, {
+          url,
+          baseUrl
+        })
       }
 
       // Default to Arabic home as app default locale
@@ -203,5 +234,5 @@ export const authOptions: AuthOptions = {
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: isDevelopment,
 }

@@ -7,8 +7,9 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { type Locale } from "@/lib/i18n/i18n-config"
 import { getNextAuthUser } from "@/lib/auth/guards";
 
-export default async function UserOrdersPage({ params }: { params: { lang: string } }) {
-    const lang = params?.lang as Locale
+export default async function UserOrdersPage({ params }: { params: Promise<{ lang: string }> }) {
+    const resolvedParams = await params;
+    const lang = resolvedParams?.lang as Locale
 
     const dictionary = await getDictionary(lang);
 

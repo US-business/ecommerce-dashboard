@@ -1,397 +1,262 @@
 "use server"
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
-import { createSession, deleteSession, verifySession } from "./session"
-import bcrypt from 'bcryptjs'
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/lib/auth/auth.config"
+import { db } from "@/lib/db"
+import { users } from "@/lib/db/schema"
+import { eq } from "drizzle-orm"
 import { comparePasswords, hashPassword } from "../utils"
+import {
+  createAuthError,
+  logAuthError,
+  handleServerActionError,
+  validateRequiredFields,
+  isValidEmail,
+  isValidPassword,
+  AuthErrorCode
+} from "./errors"
 
-
-const adminEmail = process.env.SUPER_ADMIN_EMAIL
-const adminPassword = process.env.SUPER_ADMIN_PASSWORD
-
-export interface LoginResult {
+export interface ActionResult {
   success: boolean
   error?: string
+  code?: AuthErrorCode
+  data?: any
 }
-
-
-
-
 
 /////////////////////////////////////////////////////
 ////////                                   //////////
-////////         Login Functionality       //////////
+////////     Server Actions for NextAuth    //////////
 ////////                                   //////////
 /////////////////////////////////////////////////////
-export async function login(formData: FormData): Promise<LoginResult> {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
 
-  if (!email || !password) {
-    return { success: false, error: "Email and password are required" }
-  }
-
-
-  try {
-    //  for admin 
-    if (email === adminEmail && password ===  adminPassword) {
-      await createSession({
-        id: 1,
-        username: "admin",
-        email: adminEmail,
-        role: "super_admin",
-      })
-      return { success: true };
-    }
-
-
-
-
-    // Try database connection only if available
-    try {
-      const { db } = await import("@/lib/db")
-      const { users } = await import("@/lib/db/schema")
-      const { eq } = await import("drizzle-orm")
-
-      // const user = await db.query.users.findFirst({
-      //   where: eq(users.email, email),
-      // })
-
-      const user = await db.select()
-        .from(users)
-        .where(eq(users.email, email))
-        .then(rows => rows[0])
-
-
-      if (user && await comparePasswords(password, user.password)) {
-        await createSession({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          role: user.role,
-        })
-        return { success: true }
-      }
-    } catch (dbError) {
-      console.log("Database not available, using demo users only")
-    }
-
-    return { success: false, error: "Invalid email or password" }
-  } catch (error) {
-    console.error("Login error:", error)
-    return { success: false, error: "An error occurred during login" }
-  }
-}
-
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////     changePassword Functionality       //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
-export async function changePassword(formData: FormData): Promise<LoginResult> {
-  const currentPassword = formData.get("currentPassword") as string
-  const newPassword = formData.get("newPassword") as string
-
-  if (!currentPassword || !newPassword) {
-    return { success: false, error: "Current password and new password are required" }
-  }
-
-  try {
-    const session = await verifySession()
-    if (!session) {
-      return { success: false, error: "User not authenticated" }
-    }
-
-    // Check if user exists
-    const { db } = await import("@/lib/db")
-    const { users } = await import("@/lib/db/schema")
-    const { eq } = await import("drizzle-orm")
-
-    const user = await db.select()
-      .from(users)
-      .where(eq(users.id, session.userId))
-      .then(rows => rows[0])
-
-    if (!user) {
-      return { success: false, error: "User not found" }
-    }
-
-    // Verify current password
-    if (!(await comparePasswords(currentPassword, user.password))) {
-      return { success: false, error: "Current password is incorrect" }
-    }
-
-    // Hash the new password
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10)
-
-    // Update user's password
-    await db.update(users)
-      .set({ password: hashedNewPassword })
-      .where(eq(users.id, user.id))
-
-    return { success: true }
-  } catch (error) {
-    console.error("Change password error:", error)
-    return { success: false, error: "An error occurred while changing the password" }
-  }
-}
-
-///////////////////////////////////////////////////////////
-////////                                         //////////
-////////        resetPassword Functionality      //////////
-////////                                         //////////
-///////////////////////////////////////////////////////////
-
-export async function resetPassword(formData: FormData): Promise<LoginResult> {
-  const email = formData.get("email") as string
-  const newPassword = formData.get("newPassword") as string
-
-  if (!email || !newPassword) {
-    return { success: false, error: "Email and new password are required" }
-  }
-
-  try {
-    // Check if user exists
-    const { db } = await import("@/lib/db")
-    const { users } = await import("@/lib/db/schema")
-    const { eq } = await import("drizzle-orm")
-
-    const user = await db.select()
-      .from(users)
-      .where(eq(users.email, email))
-      .then(rows => rows[0])
-
-    if (!user) {
-      return { success: false, error: "User not found" }
-    }
-
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(newPassword, 10)
-
-    // Update user's password
-    await db.update(users)
-      .set({ password: hashedPassword })
-      .where(eq(users.id, user.id))
-
-    return { success: true }
-  } catch (error) {
-    console.error("Reset password error:", error)
-    return { success: false, error: "An error occurred while resetting the password" }
-  }
-}
-
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////           register Functionality       //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
-export async function register(formData: FormData): Promise<LoginResult> {
-  const username = formData.get("username") as string
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-  const role = formData.get("role") as "super_admin" | "viewer"
-
-  if (!username || !email || !password || !role) {
-    return { success: false, error: "All fields are required" }
-  }
-
-  try {
-    // Check if user already exists
-    const { db } = await import("@/lib/db")
-    const { users } = await import("@/lib/db/schema")
-    const { eq } = await import("drizzle-orm")
-
-    const existingUser = await db.select()
-      .from(users)
-      .where(eq(users.email, email))
-      .then(rows => rows[0])
-
-    if (existingUser) {
-      return { success: false, error: "User already exists" }
-    }
-
-    // Validate role
-    if (role !== "super_admin" && role !== "viewer") {
-      return { success: false, error: "Invalid role" }
-    }
-
-
-
-    // Create new user
-    const [newUser] = await db.insert(users).values({
-      username,
-      email,
-      password: await bcrypt.hash(password, 10),
-      role,
-    }).returning()
-
-    if (!newUser) {
-      return { success: false, error: "Failed to create user" }
-    }
-
-
-    // Create session for new user
-    await createSession({
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-    })
-
-    return { success: true }
-  } catch (error) {
-    console.error("Registration error:", error)
-    return { success: false, error: "An error occurred during registration" }
-  }
-}
-
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////             logout Functionality       //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
-
-export async function logout() {
-  const session = await verifySession()
-  // Redirect to signin page
-  if (!session) return redirect("/")
-  // Delete the session
-  await deleteSession()
-  // Revalidate both the home and signin paths
-  revalidatePath("/")
-  revalidatePath("/")
-
-}
-
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////       getCurrentUser Functionality     //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
+/**
+ * Get current authenticated user from NextAuth session
+ */
 export async function getCurrentUser() {
-  const session = await verifySession()
-  if (!session) return null
-
   try {
-    // For admin , return session data directly
-    if (session.email === adminEmail) {
-      return {
-        id: session.userId,
-        username: session.username,
-        email: session.email,
-        role: session.role,
-        createdAt: new Date(),
-      }
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      return null
     }
 
-    // Try to get user from database if available
-    try {
-      const { db } = await import("@/lib/db")
-      const { users } = await import("@/lib/db/schema")
-      const { eq } = await import("drizzle-orm")
+    // Get full user data from database
+    const user = await db.select()
+      .from(users)
+      .where(eq(users.email, session.user.email))
+      .then(rows => rows[0])
 
-      const user = await db.query.users.findFirst({
-        where: eq(users.id, session.userId),
-        columns: {
-          id: true,
-          username: true,
-          email: true,
-          role: true,
-          createdAt: true,
-        },
+    if (!user) {
+      logAuthError("getCurrentUser", createAuthError.userNotFound(), {
+        email: session.user.email
       })
-
-      if (user) return user
-    } catch (dbError) {
-      console.log("Database not available, using session data")
+      return null
     }
 
-    // Return session data as fallback
     return {
-      id: session.userId,
-      username: session.username,
-      email: session.email,
-      role: session.role,
-      createdAt: new Date(),
+      id: user.id,
+      username: user.username || user.email.split('@')[0],
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+      image: user.image,
+      provider: user.provider
     }
   } catch (error) {
-    console.error("Get current user error:", error)
+    logAuthError("getCurrentUser", error, {
+      hasSession: !!await getServerSession(authOptions)
+    })
     return null
   }
 }
 
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////       requireAuth Functionality        //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
-export async function requireAuth() {
-  const session = await verifySession()
-  if (!session) {
-    redirect("/")
-  }
-  return session
+/**
+ * Check if user is authenticated
+ */
+export async function isAuthenticated(): Promise<boolean> {
+  const session = await getServerSession(authOptions)
+  return !!session?.user
 }
 
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////       requireSuperAdmin Functionality   //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
-
-export async function requireSuperAdmin() {
-  const session = await requireAuth()
-  if (session.role !== "super_admin") {
-    redirect("/")
-  }
-  return session
+/**
+ * Check if user has super admin role
+ */
+export async function isSuperAdmin(): Promise<boolean> {
+  const user = await getCurrentUser()
+  return user?.role === "super_admin"
 }
 
-//////////////////////////////////////////////////////////
-////////                                        //////////
-////////         createUser Functionality       //////////
-////////                                        //////////
-//////////////////////////////////////////////////////////
+/**
+ * Get user by email
+ */
+export async function getUserByEmail(email: string) {
+  try {
+    if (!email || !isValidEmail(email)) {
+      throw createAuthError.invalidEmail({ email })
+    }
 
-export async function createUser(userData: {
+    const user = await db.select()
+      .from(users)
+      .where(eq(users.email, email))
+      .then(rows => rows[0])
+    
+    return user || null
+  } catch (error) {
+    logAuthError("getUserByEmail", error, { email })
+    return null
+  }
+}
+
+/**
+ * Update user profile
+ */
+export async function updateUserProfile(data: {
+  username?: string
+  address?: string
+  phoneNumber?: string
+}): Promise<ActionResult> {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      throw createAuthError.noSession()
+    }
+
+    const user = await getUserByEmail(session.user.email)
+    if (!user) {
+      throw createAuthError.userNotFound({ email: session.user.email })
+    }
+
+    await db.update(users)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, user.id))
+
+    return { success: true }
+  } catch (error) {
+    return handleServerActionError("updateUserProfile", error)
+  }
+}
+
+/**
+ * Verify user credentials (for API routes)
+ */
+export async function verifyCredentials(email: string, password: string): Promise<ActionResult> {
+  try {
+    // Validate input
+    if (!email || !password) {
+      throw createAuthError.missingFields(["email", "password"])
+    }
+
+    if (!isValidEmail(email)) {
+      throw createAuthError.invalidEmail({ email })
+    }
+
+    const user = await getUserByEmail(email)
+    if (!user || !user.password) {
+      throw createAuthError.invalidCredentials()
+    }
+
+    const isValid = await comparePasswords(password, user.password)
+    if (!isValid) {
+      throw createAuthError.invalidCredentials()
+    }
+
+    return { 
+      success: true, 
+      data: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        role: user.role
+      }
+    }
+  } catch (error) {
+    return handleServerActionError("verifyCredentials", error)
+  }
+}
+
+/**
+ * Create a new user (admin only)
+ */
+export async function createUserAccount(userData: {
   username: string
   email: string
   password: string
   role: "super_admin" | "viewer"
   address?: string
   phoneNumber?: string
-}) {
+}): Promise<ActionResult> {
   try {
-    const { db } = await import("@/lib/db")
-    const { users } = await import("@/lib/db/schema")
+    // Validate required fields
+    validateRequiredFields(userData, ["username", "email", "password", "role"])
 
-    const [newUser] = await db
-      .insert(users)
-      .values({
-        ...userData,
-        // password: await import("crypto").then(crypto =>
-        //   crypto.subtle.digest("SHA-256", new TextEncoder().encode(userData.password))
-        //     .then(hashBuffer => Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join(""))
-        // ),
-        password: await hashPassword(userData.password), // In production, hash this
-        // password:  userData.password, // In production, hash this
+    // Validate email format
+    if (!isValidEmail(userData.email)) {
+      throw createAuthError.invalidEmail({ email: userData.email })
+    }
 
-      })
-      .returning({
-        id: users.id,
-        username: users.username,
-        email: users.email,
-        role: users.role,
-      })
+    // Validate password strength
+    if (!isValidPassword(userData.password)) {
+      throw createAuthError.invalidPassword()
+    }
 
-    return { success: true, user: newUser }
+    // Check if requester is super admin
+    const isAdmin = await isSuperAdmin()
+    if (!isAdmin) {
+      throw createAuthError.insufficientPermissions()
+    }
+
+    // Check if user already exists
+    const existingUser = await getUserByEmail(userData.email)
+    if (existingUser) {
+      throw createAuthError.userAlreadyExists({ email: userData.email })
+    }
+
+    // Create new user
+    const [newUser] = await db.insert(users).values({
+      ...userData,
+      password: await hashPassword(userData.password),
+      provider: "email"
+    }).returning({
+      id: users.id,
+      username: users.username,
+      email: users.email,
+      role: users.role
+    })
+
+    return { success: true, data: newUser }
   } catch (error) {
-    console.error("Create user error:", error)
-    return { success: false, error: "Failed to create user" }
+    return handleServerActionError("createUserAccount", error)
+  }
+}
+
+/**
+ * Delete user account (admin only)
+ */
+export async function deleteUserAccount(userId: number): Promise<ActionResult> {
+  try {
+    if (!userId || typeof userId !== "number") {
+      throw createAuthError.validationError("Invalid user ID")
+    }
+
+    const isAdmin = await isSuperAdmin()
+    if (!isAdmin) {
+      throw createAuthError.insufficientPermissions()
+    }
+
+    // Check if user exists
+    const userToDelete = await db.select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .then(rows => rows[0])
+
+    if (!userToDelete) {
+      throw createAuthError.userNotFound({ userId })
+    }
+
+    await db.delete(users).where(eq(users.id, userId))
+    return { success: true }
+  } catch (error) {
+    return handleServerActionError("deleteUserAccount", error)
   }
 }

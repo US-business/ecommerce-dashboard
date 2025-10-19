@@ -219,6 +219,15 @@ npm run start
 
 Detailed documentation is available in the `/docs` folder:
 
+### **Code Quality & Best Practices:**
+- [Phase 1 Improvements](docs/PHASE_1_IMPROVEMENTS.md) - ✨ Environment validation, Logger, Dependencies cleanup
+- [Phase 2 Improvements](docs/PHASE_2_IMPROVEMENTS.md) - ✨ Rate Limiting, Error Handling, Tailwind Config
+- [Error Pages Guide](docs/ERROR_PAGES_GUIDE.md) - ✨ Professional 404 & Error pages
+- [Skeleton Loaders Guide](docs/SKELETON_GUIDE.md) - ✨ NEW: Professional loading states
+- [API Examples](lib/api/EXAMPLE_API_ROUTE.md) - Complete API route examples with best practices
+- [Migration Guide](docs/MIGRATION_GUIDE.md) - How to migrate to new systems
+
+### **System Guides:**
 - [Authentication System Guide](docs/AUTH_SYSTEM_REVIEW.md)
 - [Account Integration Guide](docs/ACCOUNT_INTEGRATION_GUIDE.md)
 - [Security Guide](docs/SECURITY_GUIDE.md)

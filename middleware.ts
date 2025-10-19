@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { match } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator"; 
+import { getToken } from "next-auth/jwt";
 
-const locales = ["en", "ar"];
+const locales = ["ar", "en"];
 const defaultLocale = "ar";
+
+// Protected routes that require authentication
+const protectedRoutes = ["/dashboard"];
+
+// Routes that require super_admin role
+const adminRoutes = [
+  "/dashboard/products",
+  "/dashboard/categories",
+  "/dashboard/coupons",
+  "/dashboard/orders",
+  "/dashboard/gallery"
+];
 
 function getLocale(request: NextRequest): string {
   const preferredLocale = request.cookies.get('preferred-locale')?.value;
@@ -11,16 +22,9 @@ function getLocale(request: NextRequest): string {
     return preferredLocale;
   }
 
-  const negotiatorHeaders: Record<string, string> = {};
-  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
-  
-  try {
-    return match(languages, locales, defaultLocale);
-  } catch (error) {
-    return defaultLocale;
-  }
+  // Return default locale (Arabic) when no preference is saved
+  // This ensures the app starts with Arabic as the default language
+  return defaultLocale;
 }
 
 export async function middleware(request: NextRequest) {
@@ -41,8 +45,39 @@ export async function middleware(request: NextRequest) {
       new URL(`/${locale}${pathname}`, request.url)
     );
   }
+
+  // Check authentication for protected routes
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET
+  });
+
+  // Extract the path without locale
+  const pathWithoutLocale = pathname.replace(/^\/(ar|en)/, "");
+
+  // Check if route is protected
+  const isProtectedRoute = protectedRoutes.some(route => 
+    pathWithoutLocale.startsWith(route)
+  );
+
+  const isAdminRoute = adminRoutes.some(route => 
+    pathWithoutLocale.startsWith(route)
+  );
+
+  // Redirect to signin if accessing protected route without auth
+  if (isProtectedRoute && !token) {
+    const locale = pathname.split('/')[1] || defaultLocale;
+    const signInUrl = new URL(`/${locale}/signin`, request.url);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  // Check admin role for admin routes
+  if (isAdminRoute && token?.role !== "super_admin") {
+    const locale = pathname.split('/')[1] || defaultLocale;
+    return NextResponse.redirect(new URL(`/${locale}`, request.url));
+  }
   
-  // No custom session handling; let NextAuth manage sessions
   return NextResponse.next();
 }
 

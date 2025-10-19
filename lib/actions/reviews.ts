@@ -395,6 +395,68 @@ export async function getAllReviews(search: string = ""): Promise<ReviewsRespons
 }
 
 /**
+ * Get a single review by ID for dashboard
+ */
+export async function getReviewById(reviewId: number): Promise<ReviewResponse> {
+    try {
+        const dbAvailable = await isDatabaseAvailable()
+        if (!dbAvailable) {
+            return {
+                success: false,
+                error: "Database not available",
+            }
+        }
+
+        const { db } = await import("@/lib/db")
+        const { reviews, users, products } = await import("@/lib/db/schema")
+        const { eq } = await import("drizzle-orm")
+
+        // Get review with user and product information
+        const result = await db
+            .select({
+                id: reviews.id,
+                productId: reviews.productId,
+                userId: reviews.userId,
+                rating: reviews.rating,
+                comment: reviews.comment,
+                createdAt: reviews.createdAt,
+                product: {
+                    nameEn: products.nameEn,
+                    nameAr: products.nameAr,
+                },
+                user: {
+                    username: users.username,
+                    email: users.email,
+                    image: users.image,
+                },
+            })
+            .from(reviews)
+            .leftJoin(users, eq(reviews.userId, users.id))
+            .leftJoin(products, eq(reviews.productId, products.id))
+            .where(eq(reviews.id, reviewId))
+            .limit(1)
+
+        if (result.length === 0) {
+            return {
+                success: false,
+                error: "Review not found",
+            }
+        }
+
+        return {
+            success: true,
+            data: result[0],
+        }
+    } catch (error) {
+        console.error("Get review by ID error:", error)
+        return {
+            success: false,
+            error: "Failed to fetch review",
+        }
+    }
+}
+
+/**
  * Delete a review (Admin function)
  */
 export async function deleteReviewAdmin(reviewId: number): Promise<ReviewResponse> {

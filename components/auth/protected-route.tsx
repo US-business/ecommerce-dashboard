@@ -30,19 +30,18 @@ export function ProtectedRoute({ children, requiredRole, fallbackPath = "/dashbo
     const loading = isLoading || status === "loading"
     if (loading) return
 
+    // Redirect to signin if not authenticated
     if (!user) {
       router.push(localized)
       return
     }
-    if (!user && pathName.startsWith("/dashboard")) {
-      router.push(localized)
-      return
-    }
-    if (user && requiredRole && user.role !== requiredRole) {
+    
+    // Check role requirement
+    if (requiredRole && user.role !== requiredRole) {
       router.push(fallbackPath)
       return
     }
-  }, [user, isLoading, status, requiredRole, router, fallbackPath, lang, pathName])
+  }, [user, isLoading, status, requiredRole, router, fallbackPath, lang])
 
   if (isLoading || status === "loading") {
     return (

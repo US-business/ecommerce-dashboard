@@ -50,3 +50,11 @@ export function formatDate(date: Date | null | undefined): string {
   }).format(date);
 }
 
+// Re-export logger for convenience (safe for client and server)
+export { logger } from "./utils/logger"
+
+// Re-export runtime environment checks (safe for client and server)
+export { isProduction, isDevelopment, isTest, isServer, isClient } from "./config/runtime-env"
+
+// Note: 'env' is server-only. Import directly from "@/lib/config/env" in server code only
+

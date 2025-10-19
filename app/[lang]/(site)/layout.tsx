@@ -113,7 +113,7 @@ export default async function Layout({
             > */}
       <Navbar />
       <Header params={params}/>
-      <main className={cn("w-full overflow-hidden ")}>
+      <main className={cn("w-full overflow-hidden bg-gradient-to-r from-teal-50 via-purple-50 to-sky-50 ")}>
         {children}
       </main>
       <Footer params={params} />

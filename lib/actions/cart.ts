@@ -15,16 +15,13 @@ function toNumber(value: string | number | null | undefined): number {
 // 🟢 إنشاء كارت جديد للمستخدم
 export async function createCart(userId: number) {
     try {
-        console.log('createCart called for user:', userId);
         
         // First verify the user exists
         const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
         if (!user) {
-            console.error('User not found:', userId);
             return { success: false, error: "User not found" }
         }
 
-        console.log('User found, creating cart...');
         const [newCart] = await db
             .insert(cart)
             .values({
@@ -33,10 +30,8 @@ export async function createCart(userId: number) {
             })
             .returning()
         
-        console.log('Cart created successfully:', newCart);
         return { success: true, data: newCart }
     } catch (error) {
-        console.error("Error creating cart:", error)
         return { success: false, error: "Failed to create cart" }
     }
 }
@@ -44,7 +39,6 @@ export async function createCart(userId: number) {
 // 🟢 جلب الكارت مع العناصر والمنتجات
 export async function getCartFull(userId: number) {
     try {
-        console.log('getCartFull called for user:', userId);
         
         const result = await db.query.cart.findFirst({
             where: eq(cart.userId, userId),
@@ -58,36 +52,29 @@ export async function getCartFull(userId: number) {
             },
         })
 
-        console.log('getCartFull result:', result);
         
         if (!result) {
-            console.log('No cart found for user:', userId);
             return { success: true, data: null, message: "Cart not found" }
         }
 
-        console.log('Cart found with items:', result.items?.length || 0);
         return { success: true, data: result }
     } catch (error) {
-        console.error("Error fetching cart:", error)
         return { success: false, error: "Failed to fetch cart" }
     }
 }
 
 export async function addToCartAction(userId: number, productId: number, quantity: number) {
     try {
-        console.log('addToCartAction called with:', { userId, productId, quantity });
         
         // التحقق من وجود المستخدم أولاً
         const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
         if (!user) {
-            console.error('User not found:', userId);
             return { success: false, error: "User not found" };
         }
 
         // التحقق من وجود المنتج
         const product = await db.query.products.findFirst({ where: eq(products.id, productId) });
         if (!product) {
-            console.error('Product not found:', productId);
             return { success: false, error: "Product not found" };
         }
 
@@ -113,15 +100,12 @@ export async function addToCartAction(userId: number, productId: number, quantit
 
         let item;
         if (existing) {
-            console.log('Updating existing cart item:', existing.id);
             [item] = await db
                 .update(cartItems)
                 .set({ quantity: existing.quantity + quantity })
                 .where(eq(cartItems.id, existing.id))
                 .returning();
-            console.log('Updated cart item:', item);
         } else {
-            console.log('Creating new cart item for cart:', userCart.id, 'product:', productId);
             [item] = await db
                 .insert(cartItems)
                 .values({
@@ -130,7 +114,6 @@ export async function addToCartAction(userId: number, productId: number, quantit
                     quantity,
                 })
                 .returning();
-            console.log('Created cart item:', item);
         }
 
         // Verify the item was actually saved
@@ -138,58 +121,14 @@ export async function addToCartAction(userId: number, productId: number, quantit
             where: eq(cartItems.id, item.id),
             with: { product: true }
         });
-        console.log('Verified cart item from DB:', verifyItem);
 
         return { success: true, data: item };
     } catch (err) {
-        console.error("Error addToCartAction:", err);
         return { success: false, error: "Failed to add item to cart" };
     }
 }
 
 
-
-
-// 🟢 إضافة منتج للكارت أو زيادة الكمية لو موجود
-// export async function addToCartAction(userId: number, productId: number, qty: number = 1) {
-//     try {
-//         // First verify the user exists
-//         const user = await db.query.users.findFirst({ where: eq(users.id, userId) })
-//         if (!user) {
-//             return { success: false, error: "User not found" }
-//         }
-
-//         let userCart = await db.query.cart.findFirst({ where: eq(cart.userId, userId) })
-
-//         if (!userCart) {
-//             const res = await createCart(userId)
-//             if (!res.success) return res
-//             userCart = res.data!
-//         }
-
-//         const existingItem = await db.query.cartItems.findFirst({
-//             where: and(eq(cartItems.cartId, userCart.id), eq(cartItems.productId, productId)),
-//         })
-
-//         if (existingItem) {
-//             await db
-//                 .update(cartItems)
-//                 .set({ quantity: existingItem.quantity + qty })
-//                 .where(eq(cartItems.id, existingItem.id))
-//         } else {
-//             await db.insert(cartItems).values({
-//                 cartId: userCart.id,
-//                 productId,
-//                 quantity: qty,
-//             })
-//         }
-
-//         return await recalcCartTotal(userCart.id)
-//     } catch (error) {
-//         console.error("Error adding to cart:", error)
-//         return { success: false, error: "Failed to add to cart" }
-//     }
-// }
 
 // 🟢 تحديث كمية منتج معين
 export async function updateCartItem(cartItemId: number, qty: number) {
@@ -206,7 +145,6 @@ export async function updateCartItem(cartItemId: number, qty: number) {
 
         return await recalcCartTotal(updated.cartId)
     } catch (error) {
-        console.error("Error updating cart item:", error)
         return { success: false, error: "Failed to update cart item" }
     }
 }
@@ -229,7 +167,6 @@ export async function removeCartItem(cartItemId: number) {
 
         return await recalcCartTotal(existing.cartId)
     } catch (error) {
-        console.error("Error removing cart item:", error)
         return { success: false, error: "Failed to remove cart item" }
     }
 }
@@ -237,11 +174,9 @@ export async function removeCartItem(cartItemId: number) {
 // 🟢 تطبيق كوبون على الكارت
 export async function applyCouponAction(cartId: number, code: string) {
     try {
-        console.log('Applying coupon:', code, 'to cart:', cartId)
         
         const coupon = await db.query.coupons.findFirst({ where: eq(coupons.code, code.toUpperCase()) })
         if (!coupon || !coupon.isActive) {
-            console.log('Coupon not found or inactive:', code)
             return { success: false, error: "Invalid or inactive coupon" }
         }
 
@@ -250,14 +185,11 @@ export async function applyCouponAction(cartId: number, code: string) {
         const startsOk = !coupon.validFrom || new Date(coupon.validFrom as unknown as string | Date) <= now
         const endsOk = !coupon.validTo || now <= new Date(coupon.validTo as unknown as string | Date)
         if (!startsOk || !endsOk) {
-            console.log('Coupon outside validity window:', code, { validFrom: coupon.validFrom, validTo: coupon.validTo })
             return { success: false, error: "Coupon is expired or not yet valid" }
         }
 
-        console.log('Found coupon:', coupon)
         
         const [updatedCart] = await db.update(cart).set({ couponId: coupon.id }).where(eq(cart.id, cartId)).returning()
-        console.log('Updated cart with coupon:', updatedCart)
         
         return await recalcCartTotal(cartId)
     } catch (error) {
@@ -316,11 +248,8 @@ async function recalcCartTotal(cartId: number) {
         with: { coupon: true },
     })
 
-    console.log('Cart data with coupon:', cartData)
-
     if (cartData?.coupon) {
         const coupon = cartData.coupon
-        console.log('Applying coupon discount:', coupon)
         // Only apply if coupon still active and within validity window
         const now = new Date()
         const active = !!coupon.isActive
@@ -330,11 +259,9 @@ async function recalcCartTotal(cartId: number) {
             if (coupon.discountType === "percentage") {
                 const discount = (total * toNumber(coupon.discountValue || 0)) / 100
                 total = Math.max(total - discount, 0) // Ensure total doesn't go negative
-                console.log('Percentage discount applied:', discount, 'New total:', total)
             } else if (coupon.discountType === "fixed") {
                 const discount = toNumber(coupon.discountValue || 0)
                 total = Math.max(total - discount, 0) // Ensure total doesn't go negative
-                console.log('Fixed discount applied:', discount, 'New total:', total)
             }
         } else {
             console.log('Coupon not applied due to inactive or invalid date window')

@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const lang = resolvedParams.lang || 'ar';
 
   const cookieStore = await cookies();
-  const locale = cookieStore.get("preferred-locale")?.value || lang || "ar"; // default ar
+  const locale = cookieStore.get("preferred-locale")?.value || "ar"; // default ar
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   const productsRes = await getProductsByCategorySlug(categorySlug);

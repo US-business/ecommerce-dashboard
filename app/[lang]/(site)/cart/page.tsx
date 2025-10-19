@@ -31,7 +31,7 @@ export default async function CartPage({
   const lang = resolvedParams.lang as Locale
 
   const cookieStore = await cookies();
-  const locale = cookieStore.get("preferred-locale")?.value as Locale || lang || "ar"; // default ar
+  const locale = cookieStore.get("preferred-locale")?.value as Locale || "ar"; // default ar
   const dir = locale === "ar" ? "rtl" : "ltr";
   const dictionary = await getDictionary(locale);
 
@@ -47,39 +47,6 @@ export default async function CartPage({
       </div>
     )
   }
-  // const result = await getCartFull(user.id)
-  // console.log('user', user)
-  // console.log(' result:', result)
-  // console.log('cart', cart)
-  // console.log('Cart coupon:', cart?.success && cart.data ? cart.data.coupon : 'No coupon')
-  // console.log('Coupons from DB:', couponsResult.data)
-  // Load cart data from server on mount
-
-  // let items: CartItem[] = []
-  // try {
-  //   if (result.success && result.data && Array.isArray(result.data.items) && result.data.items.length > 0) {
-  //     items = result.data.items.map((item: any): CartItem => ({
-  //       id: Number(item.id),
-  //       productId: Number(item.productId),
-  //       quantity: Number(item.quantity),
-  //       product: {
-  //         id: Number(item.product?.id),
-  //         nameEn: String(item.product?.nameEn ?? ""),
-  //         nameAr: String(item.product?.nameAr ?? ""),
-  //         price: item.product?.price != null ? String(item.product.price) : null,
-  //         images: Array.isArray(item.product?.images) ? item.product.images : [],
-  //         quantityInStock: Number(item.product?.quantityInStock ?? 0),
-  //         discountType: (item.product?.discountType as 'fixed' | 'percentage' | 'none') ?? 'none',
-  //         discountValue: item.product?.discountValue != null ? String(item.product.discountValue) : null,
-  //       },
-  //       coupon: item.coupon,
-  //     }))
-  //     // console.log(items);
-
-  //   }
-  // } catch (error) {
-  //   console.error('Error loading cart:', error)
-  // }
 
 
 

@@ -1,15 +1,10 @@
 import { drizzle } from "drizzle-orm/postgres-js";
-import * as dotenv from "dotenv";
 import postgres from "postgres";
 import * as schema from "./schema";
+import { env } from "@/lib/config/env";
 
-dotenv.config({ path: ".env.local" });
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("❌ DATABASE_URL is not set");
-}
-
-const connectionString = process.env.DATABASE_URL;
+// Use validated environment variable
+const connectionString = env.DATABASE_URL;
 
 const client = postgres(connectionString, {
   ssl: { rejectUnauthorized: false },

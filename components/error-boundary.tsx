@@ -5,6 +5,7 @@ import type React from "react"
 import { Component, type ReactNode } from "react"
 import { Button } from "@/components/shadcnUI/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
+import { logger } from "@/lib/utils"
 
 interface Props {
   children: ReactNode
@@ -36,7 +37,11 @@ export class ErrorBoundary extends Component<Props, State> {
       throw error
     }
 
-    console.error("Error caught by boundary:", error, errorInfo)
+    // Log error with proper logging system
+    logger.error("React Error Boundary caught an error", {
+      error,
+      componentStack: errorInfo.componentStack,
+    })
   }
 
   render() {

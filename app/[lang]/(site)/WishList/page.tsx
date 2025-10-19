@@ -44,7 +44,7 @@ export default async function WishlistPage({
     const lang = resolvedParams.lang as Locale
 
     const cookieStore = await cookies()
-    const locale = cookieStore.get("preferred-locale")?.value as Locale || lang || "ar"
+    const locale = cookieStore.get("preferred-locale")?.value as Locale || "ar"
     const dir = locale === "ar" ? "rtl" : "ltr"
     const dictionary = await getDictionary(locale)
 
