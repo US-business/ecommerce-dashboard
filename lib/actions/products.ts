@@ -99,6 +99,7 @@ export async function getAllProductsActions(
           slug: products.slug,
           sku: products.sku,
           price: products.price,
+          discountType: products.discountType,
           discountValue: products.discountValue,
           isPriceActive: products.isPriceActive,
           quantityInStock: products.quantityInStock,
@@ -826,6 +827,99 @@ export async function searchProductsAction({
       page: 0,
       limit,
       sortBy,
+    }
+  }
+}
+
+// Get only discounted products
+export async function getDiscountedProductsActions(
+  page = 1,
+  limit = 10
+): Promise<ProductsResponse> {
+  try {
+    const dbAvailable = await isDatabaseAvailable()
+    if (!dbAvailable) {
+      return await mockProductsService.getProducts(page, limit)
+    }
+
+    try {
+      const { db } = await import("@/lib/db")
+      const { products, categories } = await import("@/lib/db/schema")
+      const { eq, or, and, desc, count, gte } = await import("drizzle-orm")
+
+      const offset = (page - 1) * limit
+
+      // Build condition for discounted products only
+      const discountCondition = and(
+        or(
+          eq(products.discountType, "fixed"),
+          eq(products.discountType, "percentage")
+        ),
+        gte(products.discountValue, "1") // Only products with discount value > 0
+      )
+
+      // Base query
+      const baseQuery = db
+        .select({
+          id: products.id,
+          nameEn: products.nameEn,
+          nameAr: products.nameAr,
+          descriptionEn: products.descriptionEn,
+          descriptionAr: products.descriptionAr,
+          slug: products.slug,
+          sku: products.sku,
+          price: products.price,
+          discountType: products.discountType,
+          discountValue: products.discountValue,
+          isPriceActive: products.isPriceActive,
+          quantityInStock: products.quantityInStock,
+          status: products.status,
+          color: products.color,
+          isFeatured: products.isFeatured,
+          brand: products.brand,
+          images: products.images,
+          imageAlt: products.imageAlt,
+          warrantyEn: products.warrantyEn,
+          warrantyAr: products.warrantyAr,
+          createdAt: products.createdAt,
+          category: {
+            id: categories.id,
+            nameEn: categories.nameEn,
+            nameAr: categories.nameAr,
+            slug: categories.slug,
+          },
+        })
+        .from(products)
+        .leftJoin(categories, eq(products.categoryId, categories.id))
+        .where(discountCondition)
+        .orderBy(desc(products.createdAt))
+        .limit(limit)
+        .offset(offset)
+
+      const result = await baseQuery
+
+      // Total count for pagination
+      const totalResult = await db
+        .select({ count: count() })
+        .from(products)
+        .where(discountCondition)
+      
+      const total = totalResult[0].count
+
+      return {
+        success: true,
+        data: result,
+        total,
+      }
+    } catch (dbError) {
+      console.warn("Database query failed, falling back to mock service", dbError)
+      return await mockProductsService.getProducts(page, limit)
+    }
+  } catch (error) {
+    console.error("Get discounted products error:", error)
+    return {
+      success: false,
+      error: "Failed to fetch discounted products",
     }
   }
 }

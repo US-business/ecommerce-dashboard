@@ -199,6 +199,11 @@ export interface Dictionary {
         relatedProducts: string
         allBrands: string
         priceRange: string
+        statusBestSeller: string
+        statusNew: string
+        statusComingSoon: string
+        statusOnSale: string
+        statusNormal: string
     }
     categories: {
         title: string
@@ -429,6 +434,12 @@ export interface Dictionary {
                     rating: string
                 }
             }
+            discountedProducts: {
+                title: string
+                subtitle: string
+                viewAll: string
+                upTo: string
+            }
             features: {
                 title: string
                 subtitle: string
@@ -489,10 +500,141 @@ export interface Dictionary {
         paymentMethods: {
             title: string
             description: string
+            paymentMethodsLabel: string
+            chooseMethod: string
+            securityProtection: string
+            methods: {
+                creditCard: {
+                    description: string
+                }
+                applePay: {
+                    name: string
+                    description: string
+                }
+                googlePay: {
+                    name: string
+                    description: string
+                }
+                bankTransfer: {
+                    name: string
+                    description: string
+                }
+                paypal: {
+                    name: string
+                    description: string
+                }
+                instant: string
+                businessDays: string
+                popular: string
+            }
+            security: {
+                ssl: {
+                    title: string
+                    description: string
+                }
+                pci: {
+                    title: string
+                    description: string
+                }
+                twoFactor: {
+                    title: string
+                    description: string
+                }
+                global: {
+                    title: string
+                    description: string
+                }
+            }
+            paymentFaq: {
+                title: string
+                description: string
+                isSecure: {
+                    question: string
+                    answer: string
+                }
+                availableMethods: {
+                    question: string
+                    answer: string
+                }
+                whenCharged: {
+                    question: string
+                    answer: string
+                }
+                canCancel: {
+                    question: string
+                    answer: string
+                }
+            }
         }
         shipping: {
             title: string
             description: string
+            shippingDelivery: string
+            availableOptions: string
+            deliveryZones: string
+            features: string
+            options: {
+                express: {
+                    name: string
+                    time: string
+                    cost: string
+                    description: string
+                }
+                standard: {
+                    name: string
+                    time: string
+                    cost: string
+                    description: string
+                }
+                international: {
+                    name: string
+                    time: string
+                    cost: string
+                    description: string
+                }
+            }
+            zones: {
+                local: {
+                    zone: string
+                    time: string
+                    cost: string
+                    areas: string
+                }
+                main: {
+                    zone: string
+                    time: string
+                    cost: string
+                    areas: string
+                }
+                remote: {
+                    zone: string
+                    time: string
+                    cost: string
+                    areas: string
+                }
+            }
+            shippingFeatures: {
+                tracking: {
+                    title: string
+                    description: string
+                }
+                packaging: {
+                    title: string
+                    description: string
+                }
+                guarantee: {
+                    title: string
+                    description: string
+                }
+                premium: {
+                    title: string
+                    description: string
+                }
+            }
+            questionsAbout: {
+                title: string
+                description: string
+            }
         }
         about: {
             title: string
@@ -605,6 +747,20 @@ export interface Dictionary {
             title: string
             subtitle: string
             lastUpdated: string
+            keyPoints: {
+                legalAgreement: {
+                    title: string
+                    description: string
+                }
+                userProtection: {
+                    title: string
+                    description: string
+                }
+                clearGuidelines: {
+                    title: string
+                    description: string
+                }
+            }
             sections: {
                 acceptance: {
                     title: string

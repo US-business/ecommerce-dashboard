@@ -41,7 +41,7 @@ const AddToCard = ({ productData, dir, lang = 'ar' }: ProductControlsProps) => {
 
 
             const res = await addToCartAction(user.id, productData.id, quantityToCart);
-            console.log('addToCartAction result:', res);
+            
             // Optimistically update local cart store for immediate UI feedback
             addItem({
                productId: Number(productData.id),
@@ -83,8 +83,6 @@ const AddToCard = ({ productData, dir, lang = 'ar' }: ProductControlsProps) => {
                   }
                }))
                setItems(serverItems)
-            } else {
-               console.warn('Failed to fetch cart from server:', full);
             }
             toast({
                title: dir === 'rtl' ? "تمت الإضافة بنجاح" : "Added to Cart",

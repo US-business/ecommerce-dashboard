@@ -38,7 +38,7 @@ export function BackToTopButton({ className = '' }: BackToTopButtonProps) {
     <Button
       onClick={scrollToTop}
       className={cn(
-        "fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-primary hover:bg-primary/90 text-white border-0",
+        "bg-amber-500 cursor-pointer fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300  hover:bg-amber-700/90 text-white border-0",
         className
       )}
       size="icon"

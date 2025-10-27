@@ -27,11 +27,11 @@ export function FAQClient({ dictionary }: FAQClientProps) {
   };
 
   const categoryColors = {
-    general: "bg-blue-100 text-blue-600",
-    orders: "bg-green-100 text-green-600",
-    payments: "bg-purple-100 text-purple-600",
-    returns: "bg-orange-100 text-orange-600",
-    technical: "bg-red-100 text-red-600",
+    general: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
+    orders: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
+    payments: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
+    returns: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
+    technical: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
   };
 
   // Filter questions based on search term
@@ -62,21 +62,21 @@ export function FAQClient({ dictionary }: FAQClientProps) {
       title: "Phone Support",
       description: "Call us for immediate assistance",
       action: "Call Now",
-      color: "bg-green-100 text-green-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       icon: Mail,
       title: "Email Support",
       description: "Send us your questions via email",
       action: "Send Email",
-      color: "bg-blue-100 text-blue-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       icon: MessageSquare,
       title: "Live Chat",
       description: "Chat with our support team",
       action: "Start Chat",
-      color: "bg-purple-100 text-purple-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
   ];
 

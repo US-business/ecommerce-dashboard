@@ -42,55 +42,55 @@ export default async function PrivacyPage({ params }: { params: { lang: string }
     {
       key: 'introduction',
       icon: FileText,
-      color: "bg-blue-100 text-blue-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'collection',
       icon: Database,
-      color: "bg-green-100 text-green-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'usage',
       icon: Eye,
-      color: "bg-purple-100 text-purple-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'sharing',
       icon: Users,
-      color: "bg-orange-100 text-orange-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'security',
       icon: Shield,
-      color: "bg-red-100 text-red-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'rights',
       icon: Lock,
-      color: "bg-indigo-100 text-indigo-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'contact',
       icon: Phone,
-      color: "bg-pink-100 text-pink-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
   ];
 
   const highlights = [
     {
       icon: Shield,
-      title: "Data Protection",
-      description: "We implement industry-standard security measures to protect your information",
+      title: dictionary.cms.privacy.highlights.dataProtection.title,
+      description: dictionary.cms.privacy.highlights.dataProtection.description, 
     },
     {
       icon: Lock,
-      title: "Privacy First",
-      description: "Your privacy is our priority and we never sell your personal data",
+      title: dictionary.cms.privacy.highlights.privacyFirst.title,
+      description: dictionary.cms.privacy.highlights.privacyFirst.description,
     },
     {
       icon: Eye,
-      title: "Transparency",
-      description: "We're transparent about what data we collect and how we use it",
+      title: dictionary.cms.privacy.highlights.transparency.title,
+      description: dictionary.cms.privacy.highlights.transparency.description,
     },
   ];
 

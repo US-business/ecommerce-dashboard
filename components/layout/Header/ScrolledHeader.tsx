@@ -15,13 +15,14 @@ function ScrolledHeader({ children }: ProductsResponse) {
       <>
          <header
             className={cn(
-               "sticky top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b transition-all duration-300",
+               // "sticky top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b transition-all duration-300",
+               "sticky top-0 left-0 right-0 z-50 bg-gradient-to-b from-slate-800 via-slate-700 to-slate-600 border-b transition-all duration-300",
                scrolled ? "shadow-md" : "shadow-none",
                visible ? "translate-y-0" : "-translate-y-full"
             )}
          >
             {children}
-         </header> 
+         </header>
       </>
    )
 }

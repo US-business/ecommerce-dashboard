@@ -24,7 +24,7 @@ export default async function Page({params}: {params: Promise<{ lang: string }>}
 
   return (
       <DashboardContent
-        dictionary={dictionary}
+        dictionary={dictionary} 
         direction={direction}
         data={data}
       />

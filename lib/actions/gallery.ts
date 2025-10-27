@@ -57,21 +57,24 @@ export async function getGalleryImagesDB(
     page = 1,
     limit = 20,
     search?: string,
-    tags?: string[]
+    tags?: string[],
+    sortBy: string = 'newest'
 ): Promise<GalleryResponse> {
     try {
         await requireAuth()
 
         const dbAvailable = await isDatabaseAvailable()
         if (!dbAvailable) {
-            // Fallback to Cloudinary direct fetch
-            return await getCloudinaryImagesAction(page, limit, search)
+            return {
+                success: false,
+                error: "Database not available",
+            }
         }
 
         try {
             const { db } = await import("@/lib/db")
             const { galleryImages } = await import("@/lib/db/schema")
-            const { like, or, and, desc, count, arrayContains } = await import("drizzle-orm")
+            const { like, or, and, desc, asc, count, arrayContains } = await import("drizzle-orm")
 
             const offset = (page - 1) * limit
 
@@ -95,11 +98,29 @@ export async function getGalleryImagesDB(
                 })
             }
 
+            // Determine sort order
+            let orderByClause
+            switch (sortBy) {
+                case 'oldest':
+                    orderByClause = asc(galleryImages.createdAt)
+                    break
+                case 'name':
+                    orderByClause = asc(galleryImages.fileName)
+                    break
+                case 'size':
+                    orderByClause = desc(galleryImages.fileSize)
+                    break
+                case 'newest':
+                default:
+                    orderByClause = desc(galleryImages.createdAt)
+                    break
+            }
+
             // Base query
             const baseQuery = db
                 .select()
                 .from(galleryImages)
-                .orderBy(desc(galleryImages.createdAt))
+                .orderBy(orderByClause)
                 .limit(limit)
                 .offset(offset)
 
@@ -145,8 +166,11 @@ export async function getGalleryImagesDB(
                 total,
             }
         } catch (dbError) {
-            console.warn("Database query failed, falling back to Cloudinary", dbError)
-            return await getCloudinaryImagesAction(page, limit, search)
+            console.error("Database query failed:", dbError)
+            return {
+                success: false,
+                error: "Failed to query database",
+            }
         }
     } catch (error) {
         console.error("Get gallery images error:", error)

@@ -35,7 +35,6 @@ export function QuickLinksSection({ dir, className = '', lang = "ar" }: QuickLin
     <div className={cn(dir === 'rtl' ? "text-right" : "text-left", className)}>
       <h3 className={cn(
         "text-base font-semibold text-foreground mb-5 pb-2 border-b border-border flex items-center gap-2",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
       )}>
         <Zap className="w-4 h-4 text-primary" />
         {dir === 'rtl' ? "روابط سريعة" : "Quick Links"}
@@ -47,7 +46,6 @@ export function QuickLinksSection({ dir, className = '', lang = "ar" }: QuickLin
               href={link.href}
               className={cn(
                 "group text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center gap-2 text-sm",
-                dir === 'rtl' ? "flex-row-reverse" : "flex-row"
               )}
             >
               {link.icon && (
@@ -55,7 +53,6 @@ export function QuickLinksSection({ dir, className = '', lang = "ar" }: QuickLin
               )}
               <ChevronRight className={cn(
                 "w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0",
-                dir === 'rtl' && "rotate-180"
               )} />
               <span>{link.name}</span>
             </Link>

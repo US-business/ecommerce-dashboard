@@ -196,7 +196,7 @@ const ProductCard = ({
 
    return (
       <Card className={cn(
-         "group relative w-full h-[350px] overflow-hidden flex flex-col gap-2 p-4 rounded-xl border shadow-sm transition-all hover:shadow-lg hover:border-amber-500/30 select-none",
+         "group relative w-full h-full overflow-hidden flex flex-col gap-2 p-4 rounded-xl border shadow-sm transition-all hover:shadow-lg hover:border-amber-500/30 select-none",
          className
       )}>
          {/* Out of Stock Banner */}
@@ -237,7 +237,7 @@ const ProductCard = ({
          {/* Product Info */}
          <div className="flex flex-col gap-2 flex-1">
             {/* Product Name */}
-            <h3 className="font-semibold text-base line-clamp-2 min-h-[2.5rem] hover:text-amber-600 transition-colors">
+            <h3 className="font-semibold text-base line-clamp-1  hover:text-amber-600 transition-colors">
                <Link href={`/${lang}/products/${product.id}`}>
                   {productName}
                </Link>
@@ -257,6 +257,7 @@ const ProductCard = ({
                currencySymbol={currencySymbol}
                hasDiscount={hasDiscount}
                dir={dir}
+               quantityInStock={product.quantityInStock}
             />
 
             {/* Actions */}

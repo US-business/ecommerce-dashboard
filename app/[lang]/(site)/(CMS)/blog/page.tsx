@@ -7,8 +7,9 @@ import { Button } from "@/components/shadcnUI/button"
 import { Calendar, Clock, User, ArrowRight, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
 
   return {
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   }
 }
 
-export default async function BlogPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export default async function BlogPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
 

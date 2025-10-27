@@ -15,7 +15,7 @@ export default function CreateProductPage() {
           <div className={cn(dir === "rtl" && "text-right")}>
             <h1 className="text-3xl font-bold">{t("products.addProduct")}</h1>
             <p className="text-muted-foreground">
-              {dir === "rtl" ? "إضافة منتج جديد إلى متجرك" : "Add a new product to your store"}
+              {t("products.addProductDescription")}
             </p>
           </div>
 

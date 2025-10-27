@@ -73,13 +73,15 @@ export function Sidebar() {
   const filteredNavigation = navigation.filter((item) => user && item.roles.includes(user.role))
 
   return (
-    <div className={cn("flex h-full flex-col bg-white", dir === "rtl" ? "border-l" : "border-r")}>
+    <div className={cn("w-full flex h-full flex-col bg-white", dir === "rtl" ? "border-l" : "border-r")}>
       <div
-        className={cn("flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6", dir === "rtl" && "flex-row-reverse")}
+        className={cn("w-full flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6",)}
       >
         <Link
           href="/"
-          className={cn("flex items-center gap-2 font-semibold", dir === "rtl" && "flex-row-reverse")}
+          className={cn("w-full  flex items-center gap-2 font-semibold" ,
+            dir === "rtl" ? "justify-end" : ""
+          )}
         >
           <Package className="h-6 w-6" />
           <span>E-Commerce</span>
@@ -103,7 +105,6 @@ export function Sidebar() {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:bg-muted transition-all hover:text-primary",
                   isActive && "bg-muted text-primary",
-                  dir === "rtl" && "flex-row-reverse text-right",
                 )}
               >
                 <Icon className="h-4 w-4" />

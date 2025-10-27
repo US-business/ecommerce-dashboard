@@ -25,14 +25,14 @@ function BurgerButton({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; s
         <Button
           variant="outline"
           size="icon"
-          className={cn("shrink-0 md:hidden   z-40 bg-transparent", dir === "rtl" ? "right-4" : "left-4")}
+          className={cn("shrink-0 md:hidden z-40 bg-transparent", dir === "rtl" ? "right-4" : "left-4")}
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side={dir === "rtl" ? "right" : "left"} className="flex flex-col p-0">
-        <Sidebar /> 
+      <SheetContent side={dir === "rtl" ? "right" : "left"}  className="flex flex-col p-0">
+        <Sidebar />
       </SheetContent>
     </Sheet>
   )
@@ -101,8 +101,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Header */}
         <header
           className={cn(
-            "sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-20   sm:bg-transparent sm:px-6",
-            dir === "rtl" && "flex-row-reverse",
+            "sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-20 sm:bg-transparent sm:px-6",
           )}
         >
           <Button
@@ -129,7 +128,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             size="sm"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className={cn(dir === "rtl" && "flex-row-reverse")}
+            className={cn("")}
           >
             <LogOut className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
             {isLoggingOut ? t("common.loading") : t("auth.logout")}

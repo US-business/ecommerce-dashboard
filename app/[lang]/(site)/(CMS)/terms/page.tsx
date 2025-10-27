@@ -19,9 +19,8 @@ import { GoverningLawSection } from "./_components/GoverningLawSection";
 import { ContactInformation } from "./_components/ContactInformation";
 import { AdditionalResources } from "./_components/AdditionalResources";
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
-  console.log("resolvedParams", resolvedParams);
 
   const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);
@@ -34,8 +33,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   };
 }
 
-export default async function TermsPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export default async function TermsPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
 
@@ -43,55 +43,55 @@ export default async function TermsPage({ params }: { params: { lang: string } }
     {
       key: 'acceptance',
       icon: AlertCircle,
-      color: "bg-green-100 text-green-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'services',
       icon: FileText,
-      color: "bg-blue-100 text-blue-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'account',
       icon: User,
-      color: "bg-purple-100 text-purple-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'prohibited',
       icon: Ban,
-      color: "bg-red-100 text-red-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'intellectual',
       icon: Copyright,
-      color: "bg-indigo-100 text-indigo-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       key: 'limitation',
       icon: Shield,
-      color: "bg-orange-100 text-orange-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       key: 'modifications',
       icon: Calendar,
-      color: "bg-pink-100 text-pink-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
   ];
 
   const keyPoints = [
     {
       icon: Scale,
-      title: "Legal Agreement",
-      description: "These terms constitute a legally binding agreement between you and us",
+      title: dictionary.cms.terms.keyPoints.legalAgreement.title,
+      description: dictionary.cms.terms.keyPoints.legalAgreement.description,
     },
     {
       icon: Shield,
-      title: "User Protection",
-      description: "We're committed to providing a safe and secure platform for all users",
+      title: dictionary.cms.terms.keyPoints.userProtection.title,
+      description: dictionary.cms.terms.keyPoints.userProtection.description,
     },
     {
       icon: FileText,
-      title: "Clear Guidelines",
-      description: "Our terms provide clear guidelines on acceptable use of our services",
+      title: dictionary.cms.terms.keyPoints.clearGuidelines.title,
+      description: dictionary.cms.terms.keyPoints.clearGuidelines.description,
     },
   ];
 

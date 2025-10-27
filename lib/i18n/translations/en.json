@@ -54,7 +54,10 @@
     "warning": "Warning",
     "info": "Information",
     "success": "Success",
-    "error": "Error"
+    "error": "Error",
+    "view": "View",
+    "back": "Back",
+    "off": "off"
   },
   "account": {
     "security": "Security",
@@ -198,7 +201,34 @@
     "imageMainUpload": "Upload Main Image",
     "relatedProducts": "Related Products",
     "allBrands": "All Brands",
-    "priceRange": "Price Range"
+    "priceRange": "Price Range",
+    "manageProducts": "Manage your store products",
+    "searchPlaceholder": "Search products...",
+    "productsList": "Products List",
+    "productsCount": "products",
+    "productDetails": "Product details",
+    "addProductDescription": "Add a new product to your store",
+    "editProductDescription": "Edit product information",
+    "productImage": "Product Image",
+    "noImage": "No image",
+    "basicInfo": "Basic Information",
+    "pricingInventory": "Pricing & Inventory",
+    "featuredProduct": "Featured Product",
+    "statusNew": "New",
+    "statusOnSale": "On Sale",
+    "statusBestSeller": "Best Seller",
+    "statusComingSoon": "Coming Soon",
+    "statusNormal": "Normal",
+    "noProducts": "No products found",
+    "confirmDelete": "Are you sure you want to delete this product?",
+    "confirmDeleteTitle": "Confirm Delete",
+    "deleteWarning": "This action cannot be undone.",
+    "showingProducts": "Showing",
+    "page": "Page",
+    "of": "of",
+    "productDeleted": "Product deleted successfully",
+    "productUpdated": "Product updated successfully",
+    "productCreated": "Product created successfully"
   },
   "categories": {
     "title": "Categories",
@@ -227,12 +257,78 @@
   },
   "orders": {
     "title": "Orders",
+    "subtitle": "Manage customer orders and track their status",
+    "ordersManagement": "Orders Management",
     "orderId": "Order ID",
     "customer": "Customer",
     "totalAmount": "Total Amount",
     "status": "Status",
     "createdAt": "Created At",
-    "items": "Items"
+    "date": "Date",
+    "items": "Items",
+    "searchOrders": "Search Orders",
+    "searchPlaceholder": "Search by order ID, customer name, email, or status...",
+    "ordersFound": "order",
+    "ordersFounds": "orders found",
+    "searchLabel": "Search:",
+    "noOrdersFound": "No orders found matching your search.",
+    "noOrders": "No orders found.",
+    "paymentStatus": "Payment Status",
+    "coupon": "Coupon",
+    "noCoupon": "No coupon",
+    "actions": "Actions",
+    "view": "View",
+    "delete": "Delete",
+    "orderDeleted": "Order deleted",
+    "orderDeletedDesc": "The order has been successfully deleted.",
+    "error": "Error",
+    "deleteError": "Failed to delete order.",
+    "unexpectedError": "An unexpected error occurred.",
+    "backToOrders": "Back to Orders",
+    "printInvoice": "Print Invoice",
+    "orderNumber": "Order #",
+    "createdOn": "Created on",
+    "orderDetails": "Order Details",
+    "pricingDetails": "Pricing Details",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "total": "Total",
+    "customerInfo": "Customer Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "shippingAddress": "Shipping Address",
+    "orderItems": "Order Items",
+    "quantity": "Quantity",
+    "paymentInfo": "Payment Information",
+    "paymentMethod": "Payment Method",
+    "shippingMethod": "Shipping Method",
+    "internalNotes": "Internal Notes",
+    "addNotePlaceholder": "Add a note for your team...",
+    "addNote": "Add Note",
+    "noNotes": "No internal notes for this order yet.",
+    "noteAdded": "Note added.",
+    "success": "Success",
+    "changeStatus": "Change status",
+    "statusUpdated": "Order status updated.",
+    "statusPending": "Pending",
+    "statusProcessing": "Processing",
+    "statusShipped": "Shipped",
+    "statusDelivered": "Delivered",
+    "statusCancelled": "Cancelled",
+    "paymentPending": "Pending",
+    "paymentPaid": "Paid",
+    "paymentFailed": "Failed",
+    "invoice": "Invoice",
+    "billTo": "Bill To",
+    "invoiceDate": "Invoice Date",
+    "orderDate": "Order Date",
+    "item": "Item",
+    "price": "Price",
+    "thankYou": "Thank you for your business!",
+    "companyName": "Dubai-Trading",
+    "companyAddress": "Menoufia Governorate, Egypt"
   },
   "coupons": {
     "title": "Coupons",
@@ -255,6 +351,7 @@
     "total": "Total",
     "filters": "Filters",
     "clear": "Clear Filters",
+    "clearAll": "Clear All",
     "apply": "Apply",
     "productsFound": "Products Found:",
     "sortBy": "Sort By",
@@ -274,8 +371,11 @@
   },
   "gallery": {
     "title": "Gallery",
+    "subtitle": "Manage and organize your images",
     "addGallery": "Add Gallery",
     "editGallery": "Edit Gallery",
+    "editImage": "Edit Image",
+    "editImageDetails": "Edit Image Details",
     "name": "Name",
     "nameEn": "Name (English)",
     "nameAr": "Name (Arabic)",
@@ -283,7 +383,67 @@
     "image": "Image",
     "gallery": "Gallery",
     "allGalleries": "All Galleries",
-    "searchPlaceholder": "Search for images..."
+    "searchPlaceholder": "Search for images...",
+    "uploadImages": "Upload Images",
+    "totalImages": "Total Images",
+    "availableTags": "Available Tags",
+    "featuredImages": "Featured Images",
+    "filters": "Filters",
+    "filterByTags": "Filter by Tags",
+    "activeTags": "Active Tags:",
+    "clearAll": "Clear All",
+    "selectAll": "Select All",
+    "selected": "Selected",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page Info",
+    "grid": "Grid",
+    "list": "List",
+    "confirmDelete": "Are you sure you want to delete this image?",
+    "deleteSuccess": "Image deleted successfully",
+    "deleteError": "Failed to delete image",
+    "uploadSuccess": "Images uploaded successfully",
+    "uploadError": "Failed to upload images",
+    "updateSuccess": "Image updated successfully",
+    "updateError": "Failed to update image",
+    "noImages": "No images found",
+    "loadingImages": "Loading images...",
+    "dragAndDrop": "Drag & drop files here",
+    "orClickToSelect": "or click to select files",
+    "acceptedFormats": "Accepted formats:",
+    "dropFilesHere": "Drop files here",
+    "selectedFiles": "Selected Files",
+    "noFilesSelected": "No files selected yet. Use the dropzone to add files.",
+    "titleEnglish": "Title (English)",
+    "titleArabic": "Title (Arabic)",
+    "altTextEnglish": "Alt Text (English)",
+    "altTextArabic": "Alt Text (Arabic)",
+    "tags": "Tags",
+    "addTag": "Add a tag then press Enter",
+    "addTagButton": "Add",
+    "featured": "Featured",
+    "default": "Default",
+    "uploading": "Uploading...",
+    "uploaded": "Uploaded",
+    "pending": "Pending",
+    "upload": "Upload",
+    "uploadMultiple": "Upload {count} Image",
+    "uploadMultiplePlural": "Upload {count} Images",
+    "clearUploaded": "Clear Uploaded",
+    "noPreview": "No preview",
+    "imagesUploaded": "{count} uploaded",
+    "imagesPending": "{count} pending",
+    "notInDatabase": "This image is not in the database — editing is only available for images stored in the DB.",
+    "noImageData": "No image data to save.",
+    "saveChanges": "Save Changes",
+    "searchTags": "Search tags...",
+    "noTagsFound": "No tags found matching your search",
+    "noTagsAvailable": "No tags available",
+    "view": "View",
+    "copyUrl": "Copy URL",
+    "download": "Download",
+    "sizeUnknown": "Size unknown",
+    "unknownDate": "Unknown date"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -419,8 +579,8 @@
     "home": {
       "hero": {
         "badge": "Best E-Commerce 2024",
-        "title": "Your First Choice E-Commerce Store",
-        "description": "Discover premium products at competitive prices with exceptional customer service. Shop with confidence and security with our quality guarantee.",
+        "title": "Dubai-Trading - Your First Choice for Quality",
+        "description": "Discover premium products at competitive prices with exceptional customer service. Shop with confidence and security with our quality guarantee",
         "ctaPrimary": "Start Shopping",
         "ctaSecondary": "Watch Video",
         "stats": {
@@ -428,6 +588,12 @@
           "products": "Products Sold",
           "rating": "Average Rating"
         }
+      },
+      "discountedProducts": {
+        "title": "Special Deals & Exclusive Discounts",
+        "subtitle": "Discover the best deals and discounts on our featured products - Save now before the offer ends!",
+        "viewAll": "View All Deals",
+        "upTo": "Up to 70% OFF"
       },
       "features": {
         "title": "Features That Make Us The Best",
@@ -537,18 +703,180 @@
     },
     "paymentMethods": {
       "title": "Payment Methods",
-      "description": "Learn about our secure and available payment methods"
+      "description": "Learn about our secure and available payment methods",
+      "paymentMethodsLabel": "Payment Methods",
+      "chooseMethod": "Choose Your Payment Method",
+      "securityProtection": "Security & Protection",
+      "methods": {
+        "creditCard": {
+          "description": "Pay securely with your credit or debit card. We accept all major credit cards with the highest security standards."
+        },
+        "applePay": {
+          "name": "Apple Pay",
+          "description": "Fast and secure payment with your Apple device. One-touch checkout with Face ID or Touch ID."
+        },
+        "googlePay": {
+          "name": "Google Pay",
+          "description": "Simple and secure payment with your Google account. Quick checkout with just a few taps."
+        },
+        "bankTransfer": {
+          "name": "Bank Transfer",
+          "description": "Direct transfer from your bank account. Secure and reliable payment method for larger orders."
+        },
+        "paypal": {
+          "name": "PayPal",
+          "description": "Pay with your PayPal account or link your credit card. Buyer protection included with every purchase."
+        },
+        "instant": "Instant",
+        "businessDays": "Business Days",
+        "popular": "Popular"
+      },
+      "security": {
+        "ssl": {
+          "title": "SSL Encryption",
+          "description": "All transactions are encrypted with 256-bit SSL technology to protect your sensitive information."
+        },
+        "pci": {
+          "title": "PCI Compliant",
+          "description": "We follow strict PCI DSS standards to ensure your payment data is stored and processed securely."
+        },
+        "twoFactor": {
+          "title": "Two-Factor Authentication",
+          "description": "Additional layer of security with 2FA for all payment transactions to prevent unauthorized access."
+        },
+        "global": {
+          "title": "Global Payment Security",
+          "description": "We partner with leading payment processors worldwide to ensure secure transactions everywhere."
+        }
+      },
+      "paymentFaq": {
+        "title": "Payment Questions?",
+        "description": "Find answers to common questions about our payment process and security measures.",
+        "isSecure": {
+          "question": "Is it safe to pay on your site?",
+          "answer": "Yes, absolutely! We use industry-standard SSL encryption and PCI DSS compliance to protect all payment information. Your data is never stored on our servers."
+        },
+        "availableMethods": {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, Google Pay, and bank transfers for your convenience."
+        },
+        "whenCharged": {
+          "question": "When will I be charged?",
+          "answer": "Your payment method will be charged immediately after you place your order. You'll receive a confirmation email with payment details."
+        },
+        "canCancel": {
+          "question": "Can I cancel my payment?",
+          "answer": "Yes, you can cancel your order within 24 hours of purchase. After this period, please contact our customer service team for assistance."
+        }
+      }
     },
     "shipping": {
       "title": "Shipping & Delivery",
-      "description": "Comprehensive information about shipping options and delivery"
+      "description": "Comprehensive information about shipping options and delivery",
+      "shippingDelivery": "Shipping & Delivery",
+      "availableOptions": "Available Shipping Options",
+      "deliveryZones": "Delivery Zones",
+      "features": "Shipping Features",
+      "options": {
+        "express": {
+          "name": "Express Shipping",
+          "time": "1-2 Business Days",
+          "cost": "Starting from $15",
+          "description": "Get your order delivered quickly with our express shipping service. Perfect for urgent orders within major cities."
+        },
+        "standard": {
+          "name": "Standard Shipping",
+          "time": "3-5 Business Days",
+          "cost": "Starting from $8",
+          "description": "Reliable and affordable shipping option for all your regular orders. Free shipping on orders over $50."
+        },
+        "international": {
+          "name": "International Shipping",
+          "time": "7-14 Business Days",
+          "cost": "Starting from $25",
+          "description": "We ship worldwide with trusted carriers. Customs fees may apply depending on your country."
+        }
+      },
+      "zones": {
+        "local": {
+          "zone": "Local Zone",
+          "time": "1-2 Days",
+          "cost": "Free Shipping",
+          "areas": "Menoufia، Tanta، Shebin El Kom، Ashmoun، Menouf، Quesna"
+        },
+        "main": {
+          "zone": "Main Cities",
+          "time": "2-3 Days",
+          "cost": "$8",
+          "areas": "Cairo، Alexandria، Giza، Mansoura، Zagazig، Ismailia، Suez"
+        },
+        "remote": {
+          "zone": "Remote Areas",
+          "time": "4-7 Days",
+          "cost": "$15",
+          "areas": "Upper Egypt، Red Sea، South Sinai، New Valley، Matrouh"
+        }
+      },
+      "shippingFeatures": {
+        "tracking": {
+          "title": "Real-Time Tracking",
+          "description": "Track your shipment in real-time with our advanced tracking system"
+        },
+        "packaging": {
+          "title": "Secure Packaging",
+          "description": "All orders are carefully packaged to ensure safe delivery"
+        },
+        "guarantee": {
+          "title": "Delivery Guarantee",
+          "description": "If your order doesn't arrive on time, we'll refund your shipping costs"
+        },
+        "premium": {
+          "title": "Premium Service",
+          "description": "Enjoy white-glove service with signature delivery and special handling"
+        }
+      },
+      "questionsAbout": {
+        "title": "Questions About Shipping?",
+        "description": "Our customer service team is here to help you with any shipping inquiries. Contact us anytime!"
+      }
     },
     "about": {
       "title": "About Us",
       "subtitle": "Learn more about our company and mission",
       "hero": {
-        "title": "Building Tomorrow's Commerce",
-        "description": "We're passionate about creating exceptional e-commerce experiences that connect businesses with their customers."
+        "title": "Dubai-Trading - Your Trusted Trading Partner",
+        "description": "We're passionate about creating exceptional e-commerce experiences that connect businesses with their customers in Menoufia, Egypt, and the Arab world."
+      },
+      "features": {
+        "quickResponse": {
+          "title": "Quick Response",
+          "description": "We respond to all inquiries within 24 hours"
+        },
+        "professionalSupport": {
+          "title": "Professional Support",
+          "description": "Our expert team is here to help you succeed"
+        },
+        "globalReach": {
+          "title": "Global Reach",
+          "description": "Supporting customers worldwide with local expertise"
+        }
+      },
+      "supportChannels": {
+        "phone": {
+          "title": "Phone Support",
+          "description": "Call us for immediate assistance",
+          "action": "Call Now"
+        },
+        "email": {
+          "title": "Email Support",
+          "description": "Send us your questions via email",
+          "action": "Send Email"
+        },
+        "liveChat": {
+          "title": "Live Chat",
+          "description": "Chat with our support team",
+          "action": "Start Chat"
+        }
       },
       "mission": {
         "title": "Our Mission",
@@ -609,16 +937,42 @@
       },
       "office": {
         "title": "Our Office",
-        "address": "123 Business Street, City, Country 12345",
-        "phone": "+1 (555) 123-4567",
-        "email": "hello@company.com",
-        "hours": "Monday - Friday: 9:00 AM - 6:00 PM"
+        "address": "Menoufia Governorate, Egypt",
+        "phone": "+20 123 456 7890",
+        "email": "info@dubai-trading.com",
+        "hours": "Sunday - Thursday: 9:00 AM - 6:00 PM"
+      },
+      "map": {
+        "title": "Interactive Map",
+        "description": "Find us on the map"
+      },
+      "needHelp": {
+        "title": "Need Help?",
+        "description": "We're here to assist you with any questions or concerns you may have."
+      },
+      "stillNeedHelp": {
+        "title": "Still Need Help?",
+        "description": "Can't find what you're looking for? Our support team is here to help you"
       }
     },
     "privacy": {
       "title": "Privacy Policy",
       "subtitle": "How we collect, use, and protect your information",
       "lastUpdated": "Last updated",
+      "highlights": {
+        "dataProtection": {
+          "title": "Data Protection",
+          "description": "We implement industry-standard security measures to protect your information"
+        },
+        "privacyFirst": {
+          "title": "Privacy First",
+          "description": "Your privacy is our priority and we never sell your personal data"
+        },
+        "transparency": {
+          "title": "Transparency",
+          "description": "We're transparent about what data we collect and how we use it"
+        }
+      },
       "sections": {
         "introduction": {
           "title": "Introduction",
@@ -654,6 +1008,20 @@
       "title": "Terms & Conditions",
       "subtitle": "Terms of service and conditions of use",
       "lastUpdated": "Last updated",
+      "keyPoints": {
+        "legalAgreement": {
+          "title": "Legal Agreement",
+          "description": "These terms constitute a legally binding agreement between you and us"
+        },
+        "userProtection": {
+          "title": "User Protection",
+          "description": "We're committed to providing a safe and secure platform for all users"
+        },
+        "clearGuidelines": {
+          "title": "Clear Guidelines",
+          "description": "Our terms provide clear guidelines on acceptable use of our services"
+        }
+      },
       "sections": {
         "acceptance": {
           "title": "Acceptance of Terms",

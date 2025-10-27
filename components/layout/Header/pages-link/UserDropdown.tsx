@@ -58,8 +58,9 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
                variant="ghost"
                size="sm"
                className={cn(
-                  " gap-2 rounded-full transition-all duration-200 hover:bg-accent",
-                  "w-9 h-9 p-0 sm:w-auto sm:h-auto sm:p-2 sm:rounded-md"
+                  " gap-2 rounded-full transition-all duration-200 bg-slate-600 hover:bg-accent",
+                  "w-9 h-9 p-0 sm:w-auto sm:h-auto sm:p-2 sm:rounded-md",
+                  "text-white hover:text-slate-900"
                )}
             >
                {isLoading ? (
@@ -73,11 +74,11 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
                   <>
                      <Avatar className="h-6 w-6">
                         <AvatarImage src={user.image || ""} alt={user.username} />
-                        <AvatarFallback className="text-xs font-medium bg-purple-400 text-white">
+                        <AvatarFallback className="text-xs font-medium bg-amber-600 text-white">
                            {getInitials(user.username)}
                         </AvatarFallback>
                      </Avatar>
-                     <span className={cn("hidden sm:inline-block font-medium")}>
+                     <span className={cn("hidden sm:inline-block font-medium ")}>
                         {user.username}
                      </span>
                   </>
@@ -99,7 +100,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
          >
             {user ? (
                <>
-                  <DropdownMenuLabel className={cn("font-normal", dir === "rtl" && "text-right")}>
+                  <DropdownMenuLabel className={cn("font-normal")}>
                      <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
                            {user.username}
@@ -119,7 +120,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
 
                   <DropdownMenuItem
                      onClick={() => router.push("/account")}
-                     className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                     className={cn("cursor-pointer")}
                   >
                      <User className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                      <span>{dictionary?.common?.account}</span>
@@ -127,7 +128,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
                   {orders.length !== 0 ? (
                      <DropdownMenuItem
                         onClick={() => router.push("/user-orders")}
-                        className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                        className={cn("cursor-pointer")}
                      >
                         <Box className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                         <span>{dictionary?.orders.title}</span>
@@ -136,7 +137,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
 
                   <DropdownMenuItem
                      onClick={() => router.push("/cart")}
-                     className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                     className={cn("cursor-pointer")}
                   >
                      <ShoppingCart className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                      <span>{dictionary?.cart?.title}</span>
@@ -145,7 +146,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
                   {user.role === "super_admin" && (
                      <DropdownMenuItem
                         onClick={() => router.push("/dashboard")}
-                        className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                        className={cn("cursor-pointer")}
                      >
                         <LayoutDashboard className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                         <span>{dictionary.dashboard.title}</span>
@@ -169,7 +170,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
                <>
                   <DropdownMenuItem
                      onClick={() => router.push("/signin")}
-                     className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                     className={cn("cursor-pointer")}
                   >
                      <LogIn className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                      <span>{dictionary?.auth?.signIn}</span>
@@ -177,7 +178,7 @@ const UserDropdown = ({ dictionary , dir }: UserDropdownProps) => {
 
                   <DropdownMenuItem
                      onClick={() => router.push("/signup")}
-                     className={cn("cursor-pointer", dir === "rtl" && "flex-row-reverse")}
+                     className={cn("cursor-pointer")}
                   >
                      <UserCircle className={cn("h-4 w-4", dir === "rtl" ? "ml-2" : "mr-2")} />
                      <span>{dictionary?.auth?.signUp}</span>

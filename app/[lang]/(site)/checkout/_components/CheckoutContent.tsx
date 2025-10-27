@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils'
 import { CreditCard, Truck, Zap, Mail, Phone, User, MapPin, Building, Package } from 'lucide-react'
 import { useCartStore, type CartItem } from "@/lib/stores/cart-store"
 import { useCouponsStore } from '@/lib/stores'
+import { type Coupon } from '@/lib/stores/coupons-store'
+import AppliedCoupon from '@/components/ui/cart/AppliedCoupon'
 import { Separator } from '@/components/shadcnUI/separator'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/shadcnUI/card'
 import { Input } from '@/components/shadcnUI/input'
@@ -49,11 +51,17 @@ type Dir = 'rtl' | 'ltr';
 export default function CheckoutContent({
     dir,
     cart,
-    user
+    user,
+    couponsDB,
+    currentCoupon,
+    cartId
 }: {
     dir: Dir;
     cart: any | null;
     user: UserProps.User | null;
+    couponsDB?: Coupon[];
+    currentCoupon?: Coupon | null;
+    cartId: number;
 }) {
 
     const { coupons } = useCouponsStore()
@@ -424,7 +432,16 @@ export default function CheckoutContent({
 
                         {/* Order Summary */}
                         <div className="mt-10 lg:mt-0 lg:col-span-5">
-                            <Card className="sticky top-4">
+                            <div className="space-y-6">
+                                {/* Applied Coupon */}
+                                <AppliedCoupon 
+                                    coupons={couponsDB ?? []} 
+                                    dir={dir} 
+                                    cartId={cartId} 
+                                    currentCoupon={currentCoupon} 
+                                />
+
+                                <Card className="sticky top-4">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
                                         <Package className="w-5 h-5 text-primary" />
@@ -555,6 +572,7 @@ export default function CheckoutContent({
                                     </div>
                                 </CardContent>
                             </Card>
+                            </div>
                         </div>
                     </div>
                 </div>

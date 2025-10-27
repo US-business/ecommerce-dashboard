@@ -6,7 +6,12 @@ import { FilterSidebar } from "@/components/layout/FilterSidebar";
 import { FilteredProducts } from "@/components/layout/FilteredProducts";
 import { Home } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { cache } from "react";
 
+// Cached function to avoid duplicate data fetching
+const getCachedCategoryProducts = cache(async (slug: string) => {
+  return await getProductsByCategorySlug(slug);
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
@@ -20,10 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const locale = cookieStore.get("preferred-locale")?.value || "ar"; // default ar
   const dir = locale === "ar" ? "rtl" : "ltr";
 
-  const { data: productInCategory } = await getProductsByCategorySlug(categorySlug);
+  const { data: productInCategory } = await getCachedCategoryProducts(categorySlug);
 
-
-  if (!productInCategory) {
+  if (!productInCategory || productInCategory.length === 0) {
     return { title: 'Category Not Found | Dubai-Trading' };
   }
 
@@ -52,13 +56,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const locale = cookieStore.get("preferred-locale")?.value || "ar"; // default ar
   const dir = locale === "ar" ? "rtl" : "ltr";
 
-  const productsRes = await getProductsByCategorySlug(categorySlug);
-
-
-  if (!categorySlug) {
-    return <p className="text-center">Category slug is missing.</p>;
-  }
-
+  const productsRes = await getCachedCategoryProducts(categorySlug);
 
   if (!productsRes.success || !productsRes.data?.length) {
     return (

@@ -33,15 +33,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { data: product } = await getProduct(idAsNumber);
 
   if (!productId || !product) {
-    return { title: dir === 'rtl' ? 'المنتج غير متاحة' : 'Product Not Found | Dubai-Trading' };
+    return { title: dir === 'rtl' ? 'المنتج غير متاح' : 'Product Not Found | Dubai-Trading' };
   }
 
-
-  const categoryName = dir === 'rtl' ? product?.nameAr : product?.nameEn || 'Dubai-Trading';
-  const description = `Browse products in the ${categoryName} category. Find the best deals at Dubai-Trading.`;
+  const productName = dir === 'rtl' ? product.nameAr : product.nameEn;
+  const categoryName = dir === 'rtl' ? product?.category?.nameAr : product?.category?.nameEn || 'Products';
+  const description = dir === 'rtl' 
+    ? `${productName} - ${categoryName}. اكتشف أفضل العروض في Dubai-Trading`
+    : `${productName} - ${categoryName}. Find the best deals at Dubai-Trading`;
 
   return {
-    title: dir === 'rtl' ? ` Dubai-Trading | ${categoryName} ` : `${categoryName} | Dubai-Trading`,
+    title: dir === 'rtl' ? `${productName} | Dubai-Trading` : `${productName} | Dubai-Trading`,
     description: description,
   };
 }

@@ -1,5 +1,5 @@
 import { not, relations } from "drizzle-orm"
-import { pgTable, serial, varchar, text, decimal, integer, boolean, timestamp, pgEnum, jsonb } from "drizzle-orm/pg-core"
+import { pgTable, serial, varchar, text, decimal, integer, boolean, timestamp, pgEnum, jsonb, index } from "drizzle-orm/pg-core"
 
 // Enums
 export const userRoleEnum = pgEnum("user_role", ["super_admin", "viewer"])
@@ -326,9 +326,9 @@ export const orderNotesRelations = relations(orderNotes, ({ one }) => ({
     fields: [orderNotes.userId],
     references: [users.id],
   }),
-}));
+}))
 
-// Gallery Images table
+// Gallery Images table with indexes for performance
 export const galleryImages = pgTable("gallery_images", {
   id: serial("id").primaryKey(),
   titleEn: varchar("title_en", { length: 200 }),
@@ -347,9 +347,15 @@ export const galleryImages = pgTable("gallery_images", {
   isDefault: boolean("is_default").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-})
-
-
+}, (table) => ({
+  // Indexes for better query performance
+  fileNameIdx: index("gallery_file_name_idx").on(table.fileName),
+  isFeaturedIdx: index("gallery_is_featured_idx").on(table.isFeatured),
+  isDefaultIdx: index("gallery_is_default_idx").on(table.isDefault),
+  createdAtIdx: index("gallery_created_at_idx").on(table.createdAt),
+  // Composite index for common query patterns
+  featuredCreatedIdx: index("gallery_featured_created_idx").on(table.isFeatured, table.createdAt),
+}))
 
 export const galleryImagesRelations = relations(galleryImages, ({ many }) => ({
   // Can be extended for relationships with products, categories, etc.

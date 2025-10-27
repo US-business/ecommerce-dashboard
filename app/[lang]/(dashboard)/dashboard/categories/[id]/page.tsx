@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
-import { useAuth } from "@/lib/stores"
+import { useAuth, useAuthStore } from "@/lib/stores"
 import { DashboardLayout } from "@/components/dashboard/layout/dashboard-layout"
 import { Button } from "@/components/shadcnUI/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card"
@@ -15,7 +15,7 @@ export default function CategoryViewPage() {
   const { t, dir } = useI18nStore()
   const { isSuperAdmin } = useAuthStore()
   const params = useParams()
-  const router = useRouter()
+  const router = useRouter() // const { data: category, isLoading, isError } = useCategory(params.id)
   const [category, setCategory] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")

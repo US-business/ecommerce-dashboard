@@ -18,21 +18,21 @@ export function ProductPrice({
     const currencyLabel = dir === 'rtl' ? 'ج.م' : currency;
 
     return (
-        <div className="flex items-baseline gap-3 flex-wrap">
-            <div className="flex items-baseline gap-2">
-                <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap">
+            <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                     {finalPrice.toFixed(2)}
                 </span>
-                <span className="text-lg font-semibold text-muted-foreground">
+                <span className="text-sm sm:text-base md:text-lg font-semibold text-muted-foreground">
                     {currencyLabel}
                 </span>
             </div>
             {hasDiscount && (
-                <div className="flex items-center gap-2">
-                    <span className="text-lg text-muted-foreground line-through decoration-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="text-sm sm:text-base md:text-lg text-muted-foreground line-through decoration-2">
                         {originalPrice.toFixed(2)}
                     </span>
-                    <span className="text-sm font-medium text-red-600 bg-red-50 px-2 py-1 rounded-md">
+                    <span className="text-xs sm:text-sm font-medium text-red-600 bg-red-50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md">
                         {dir === 'rtl' ? 'وفر' : 'Save'} {(originalPrice - finalPrice).toFixed(2)} {currencyLabel}
                     </span>
                 </div>

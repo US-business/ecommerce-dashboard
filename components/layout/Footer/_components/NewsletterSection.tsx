@@ -15,21 +15,18 @@ export function NewsletterSection({ dir, lang = 'en', className = '' }: Newslett
   return (
     <div className={cn(
       "lg:col-span-2 space-y-8",
-      dir === 'rtl' ? "text-right" : "text-left",
       className
     )}>
       {/* Logo & Description */}
       <div className="space-y-6 ">
         <div className={cn(
-          "flex items-center justify-center gap-3   bg-sky-50 p-2 rounded-lg ",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
-        )}>
+          "flex items-center justify-center gap-3 bg-amber-50 p-2 rounded-lg border border-amber-600/60")}>
 
-          <div className="text-center">
-            <h3 className="text-xl font-mono font-semibold text-foreground ">
+          <div className="text-center text-amber-800">
+            <h3 className="text-xl font-mono font-semibold  ">
               {dir === 'rtl' ? "دبى للتجارة" : "Dubai-trading" }
             </h3>
-            <p className="text-muted-foreground text-sm">
+            <p className=" text-sm">
               {dir === 'rtl' ? "تجربة تسوق استثنائية" : "Exceptional Shopping Experience"}
             </p>
           </div>
@@ -68,8 +65,7 @@ export function NewsletterSection({ dir, lang = 'en', className = '' }: Newslett
       {/* Newsletter */}
       <div className="space-y-4 pt-4 text-center ">
         <div className={cn(
-          "flex items-center gap-2 justify-center",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+          "flex items-center gap-2 justify-center","flex-row"
         )}>
           <Mail className="w-5 h-5 text-primary" />
           <h4 className=" font-semibold text-foreground  ">
@@ -83,17 +79,17 @@ export function NewsletterSection({ dir, lang = 'en', className = '' }: Newslett
           }
         </p>
         <div className={cn(
-          "flex gap-2",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+          "flex gap-2","flex-row"
         )}>
           <Input
             type="email"
             placeholder={dir === 'rtl' ? "أدخل بريدك الإلكتروني" : "Enter your email"}
-            className="flex-1"
+            className="flex-1 outline outline-amber-500/60 placeholder:text-amber-700"
           />
-          <Button className="px-6 gap-2">
+          <Button className="px-6 gap-2 bg-amber-600 hover:bg-amber-500">
+            {dir === "rtl" ? <ArrowRight className="w-4 h-4" /> : null}
             {dir === 'rtl' ? "اشترك" : "Subscribe"}
-            <ArrowRight className="w-4 h-4" />
+            {dir === "ltr" ? <ArrowRight className="w-4 h-4" /> : null}
           </Button>
         </div>
       </div>

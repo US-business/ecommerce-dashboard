@@ -13,12 +13,12 @@ export function CopyrightSection({ dir, lang = 'en', className = '' }: Copyright
   return (
     <div className={cn(
       "flex flex-col md:flex-row justify-between items-center gap-4 text-muted-foreground text-sm",
-      dir === 'rtl' ? "md:flex-row-reverse" : "md:flex-row",
+      "md:flex-row",
       className
     )}>
       <div className={cn(
         "flex items-center gap-2",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+        "flex-row"
       )}>
         <span>
           © 2024 {dir === 'rtl' ? "متجر إلكتروني" : "E-Commerce"}.
@@ -32,8 +32,7 @@ export function CopyrightSection({ dir, lang = 'en', className = '' }: Copyright
       )}>
         <span>{dir === 'rtl' ? "صنع بـ" : "Made with"}</span>
         <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
-        <span>{dir === 'rtl' ? "في السعودية" : "in Saudi Arabia"}</span>
-        <span className="text-base">🇸🇦</span>
+        <span>{dir === 'rtl' ? "أسامة سليمان" : "Osama Soliman"}</span>
       </div>
     </div>
   )

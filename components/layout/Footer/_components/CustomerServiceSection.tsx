@@ -31,10 +31,10 @@ export function CustomerServiceSection({ dir, lang = 'en', className = '' }: Cus
   ]
 
   return (
-    <div className={cn(dir === 'rtl' ? "text-right" : "text-left", className)}>
+    <div className={cn( className)}>
       <h3 className={cn(
         "text-base font-semibold text-foreground mb-5 pb-2 border-b border-border flex items-center gap-2",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+        "flex-row"
       )}>
         <Headphones className="w-4 h-4 text-primary" />
         {dir === 'rtl' ? "خدمة العملاء" : "Customer Service"}
@@ -46,7 +46,7 @@ export function CustomerServiceSection({ dir, lang = 'en', className = '' }: Cus
               href={link.href}
               className={cn(
                 "group text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center gap-2 text-sm",
-                dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+                "flex-row"
               )}
             >
               {link.icon && (

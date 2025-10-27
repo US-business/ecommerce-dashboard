@@ -5,7 +5,7 @@ import { Heart } from 'lucide-react'
 import { Button } from '@/components/shadcnUI/button'
 import { cn } from '@/lib/utils'
 import { addToWishlist, removeFromWishlist, isInWishlist } from '@/lib/actions/wishlist'
-import { useAuth } from '@/lib/stores'
+import { useAuth, useWishlistStore } from '@/lib/stores'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 
@@ -30,22 +30,26 @@ const WishlistButton = ({
   iconClassName,
   onClick
 }: WishlistButtonProps) => {
-  const [isInWishlistState, setIsInWishlistState] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   
   const { user } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
+  const { isInWishlist: isInWishlistStore } = useWishlistStore()
+  
+  // Check if product is in wishlist using store
+  const isInWishlistState = isInWishlistStore(Number(productId))
 
-  // Check if product is in wishlist on mount
+  // Also verify with server on mount to ensure sync
   useEffect(() => {
     const checkWishlist = async () => {
       if (!user || !productId) return
       
       try {
         const result = await isInWishlist(user.id, Number(productId))
-        if (result.success) {
-          setIsInWishlistState(result.data || false)
+        if (result.success && result.data !== isInWishlistState) {
+          // If server state differs, we'll trust server and reload will sync
+          console.log('Wishlist state mismatch, will sync on next load')
         }
       } catch (error) {
         console.error('Error checking wishlist:', error)
@@ -53,7 +57,7 @@ const WishlistButton = ({
     }
 
     checkWishlist()
-  }, [user, productId])
+  }, [user, productId, isInWishlistState])
 
   const handleToggleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -85,7 +89,7 @@ const WishlistButton = ({
         // Remove from wishlist
         const result = await removeFromWishlist(user.id, Number(productId))
         if (result.success) {
-          setIsInWishlistState(false)
+          // Store will be updated on next page load/refresh
           toast({
             title: dir === 'rtl' ? "تمت الإزالة" : "Removed",
             description: dir === 'rtl'
@@ -93,6 +97,8 @@ const WishlistButton = ({
               : 'Product removed from wishlist',
             variant: "default"
           })
+          // Trigger page refresh to sync with server
+          window.location.reload()
         } else {
           throw new Error(result.error)
         }
@@ -100,7 +106,7 @@ const WishlistButton = ({
         // Add to wishlist
         const result = await addToWishlist(user.id, Number(productId))
         if (result.success) {
-          setIsInWishlistState(true)
+          // Store will be updated on next page load/refresh
           toast({
             title: dir === 'rtl' ? "تمت الإضافة" : "Added",
             description: dir === 'rtl'
@@ -108,6 +114,8 @@ const WishlistButton = ({
               : 'Product added to wishlist',
             variant: "default"
           })
+          // Trigger page refresh to sync with server
+          window.location.reload()
         } else {
           throw new Error(result.error)
         }

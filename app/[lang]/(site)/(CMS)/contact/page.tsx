@@ -38,67 +38,67 @@ export default async function ContactPage({ params }: { params: { lang: string }
       icon: MapPin,
       title: dictionary.cms.contact.info.address,
       value: dictionary.cms.contact.office.address,
-      color: "bg-blue-100 text-blue-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       icon: Phone,
       title: dictionary.cms.contact.info.phone,
       value: dictionary.cms.contact.office.phone,
-      color: "bg-green-100 text-green-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       icon: Mail,
       title: dictionary.cms.contact.info.email,
       value: dictionary.cms.contact.office.email,
-      color: "bg-purple-100 text-purple-600",
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       icon: Clock,
       title: dictionary.cms.contact.info.hours,
       value: dictionary.cms.contact.office.hours,
-      color: "bg-orange-100 text-orange-600",
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
   ];
 
   const features = [
     {
       icon: MessageSquare,
-      title: "Quick Response",
-      description: "We respond to all inquiries within 24 hours",
+      title: dictionary.cms.about.features.quickResponse.title,
+      description: dictionary.cms.about.features.quickResponse.description,
     },
     {
       icon: HeadphonesIcon,
-      title: "Professional Support",
-      description: "Our expert team is here to help you succeed",
+      title: dictionary.cms.about.features.professionalSupport.title,
+      description: dictionary.cms.about.features.professionalSupport.description,
     },
     {
       icon: Globe,
-      title: "Global Reach",
-      description: "Supporting customers worldwide with local expertise",
+      title: dictionary.cms.about.features.globalReach.title,
+      description: dictionary.cms.about.features.globalReach.description,
     },
   ];
 
   const supportChannels = [
     {
       icon: Phone,
-      title: "Phone Support",
-      description: "Call us for immediate assistance",
-      action: "Call Now",
-      color: "bg-green-100 text-green-600",
+      title: dictionary.cms.about.supportChannels.phone.title,
+      description: dictionary.cms.about.supportChannels.phone.description,
+      action: dictionary.cms.about.supportChannels.phone.action,
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       icon: Mail,
-      title: "Email Support",
-      description: "Send us your questions via email",
-      action: "Send Email",
-      color: "bg-blue-100 text-blue-600",
+      title: dictionary.cms.about.supportChannels.email.title,
+      description: dictionary.cms.about.supportChannels.email.description,
+      action: dictionary.cms.about.supportChannels.email.action,
+      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       icon: MessageSquare,
-      title: "Live Chat",
-      description: "Chat with our support team",
-      action: "Start Chat",
-      color: "bg-purple-100 text-purple-600",
+      title: dictionary.cms.about.supportChannels.liveChat.title,
+      description: dictionary.cms.about.supportChannels.liveChat.description,
+      action: dictionary.cms.about.supportChannels.liveChat.action,
+      color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
   ];
 
@@ -109,7 +109,7 @@ export default async function ContactPage({ params }: { params: { lang: string }
         <Badge variant="outline" className="mb-4 text-sm font-medium">
           {dictionary.cms.contact.subtitle}
         </Badge>
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 bg-clip-text text-transparent">
           {dictionary.cms.contact.title}
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -122,8 +122,8 @@ export default async function ContactPage({ params }: { params: { lang: string }
         {features.map((feature, index) => (
           <Card key={index} className="text-center border-0 shadow-md hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
-              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <feature.icon className="h-6 w-6 text-primary" />
+              <div className="mx-auto w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mb-4">
+                <feature.icon className="h-6 w-6 text-amber-600 dark:text-amber-500" />
               </div>
               <h3 className="font-semibold mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.description}</p>
@@ -160,11 +160,11 @@ export default async function ContactPage({ params }: { params: { lang: string }
           {/* Map Placeholder */}
           <Card className="border-0 shadow-lg">
             <CardContent className="p-0">
-              <div className="h-64 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg flex items-center justify-center">
+              <div className="h-64 bg-gradient-to-br from-amber-50 to-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
                 <div className="text-center">
-                  <MapPin className="h-12 w-12 text-primary/30 mx-auto mb-2" />
-                  <p className="text-muted-foreground">Interactive Map</p>
-                  <p className="text-sm text-muted-foreground">Find us on the map</p>
+                  <MapPin className="h-12 w-12 text-amber-600 dark:text-amber-500 mx-auto mb-2" />
+                  <p className="text-muted-foreground">{dictionary.cms.contact.map.title}</p>
+                  <p className="text-sm text-muted-foreground">{dictionary.cms.contact.map.description}</p>
                 </div>
               </div>
             </CardContent>
@@ -174,20 +174,20 @@ export default async function ContactPage({ params }: { params: { lang: string }
 
       {/* Additional Info */}
       <div className="mt-16 text-center">
-        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-0 text-white">
+        <Card className="bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-700 dark:to-amber-900 border-0 text-white">
           <CardContent className="p-8">
-            <h3 className="text-2xl font-bold mb-4">Need Immediate Assistance?</h3>
+            <h3 className="text-2xl font-bold mb-4">{dictionary.cms.contact.needHelp.title}</h3>
             <p className="text-lg mb-6 opacity-90">
-              Our support team is available to help you with any urgent matters
+              {dictionary.cms.contact.needHelp.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="secondary" size="lg">
                 <Phone className="h-4 w-4 mr-2" />
-                Call Now
+                {dictionary.cms.about.supportChannels.phone.action}
               </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600">
+              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-amber-600">
                 <Mail className="h-4 w-4 mr-2" />
-                Email Support
+                {dictionary.cms.about.supportChannels.email.action}
               </Button>
             </div>
           </CardContent>
@@ -197,9 +197,9 @@ export default async function ContactPage({ params }: { params: { lang: string }
       {/* Support Channels */}
       <div className="mt-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Still Need Help?</h2>
+          <h2 className="text-3xl font-bold mb-4">{dictionary.cms.contact.stillNeedHelp.title}</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Can't find what you're looking for? Our support team is here to help you
+            {dictionary.cms.contact.stillNeedHelp.description}
           </p>
         </div>
         

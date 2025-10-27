@@ -19,10 +19,10 @@ export function GoverningLawSection({
 }: GoverningLawSectionProps) {
   return (
     <div className="mt-16 max-w-4xl mx-auto">
-      <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-50 to-gray-50">
+      <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-slate-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
-            <Scale className="h-6 w-6 text-primary" />
+            <Scale className="h-6 w-6 text-amber-600 dark:text-amber-500" />
             {title}
           </CardTitle>
         </CardHeader>

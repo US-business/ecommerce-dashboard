@@ -1,6 +1,6 @@
 
 import { getAllProductsActions } from "@/lib/actions/products"
-import CarouselComponent from "../ui/CarouselComponent"
+import CarouselComponent from "../ui/Carousel/CarouselComponent"
 
 interface CategoryProductSliderProps {
   categoryId: number

@@ -29,7 +29,7 @@ export const ProductActions = ({
     if (!isVisible) return null
 
     return (
-        <div className={cn("flex items-center gap-2 mt-2", className)}>
+        <div className={cn("flex items-center flex-wrap gap-2 mt-2", className)}>
             <Button
                 onClick={onAddToCart}
                 disabled={isAddingToCart}

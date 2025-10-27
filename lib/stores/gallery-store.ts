@@ -32,7 +32,7 @@ interface GalleryState {
     editingImage?: GalleryImage
     selectedImage?: GalleryImage
     addFile: (file: File) => void
-    addImages: (images: GalleryImage[]) => void
+    addImages: (images: GalleryImage[], replace?: boolean) => void
     addImage: (image: GalleryImage) => void
     removeFile: (fileName: string) => void
     removePendingFiles: () => void
@@ -44,7 +44,6 @@ interface GalleryState {
     updateEditingImage: (updatedImage: Partial<GalleryImage>) => void
     getEditingImage: () => GalleryImage | undefined
     updateImage: (fileName: string, updatedImage: Partial<GalleryImage>) => void
-    // إضافة دالة جديدة لتحديث الصور المرفوعة
     updateUploadedImages: (uploadedImages: GalleryImage[]) => void
 }
 
@@ -79,34 +78,34 @@ export const useGalleryStore = create<GalleryState>((set, get) => ({
             ],
         })),
 
-    // تحديث addImages لحل مشكلة المطابقة
-    addImages: (images) =>
+    // Add or replace images from database
+    addImages: (images, replace = false) =>
         set((state) => {
-            // إذا كانت الصور جاية من الداتابيس (load fresh)، استبدل الكل
-            if (images.length > 0 && images[0].id) {
+            // If replace = true, replace all images (used when loading from DB)
+            if (replace) {
                 return { images: images }
             }
             
-            // وإلا، ادمج مع الموجود
+            // Otherwise, merge with existing images intelligently
             const imageMap = new Map<string, GalleryImage>()
 
-            // أضف الصور الموجودة أولاً
+            // Add existing images first
             state.images.forEach(img => {
                 const key = img.publicId || img.fileName
                 imageMap.set(key, img)
             })
 
-            // أضف/حدث الصور الجديدة
+            // Add/update new images
             images.forEach(newImg => {
                 const key = newImg.publicId || newImg.fileName
                 const existingImg = imageMap.get(key)
                 
                 if (existingImg) {
-                    // حدث الصورة الموجودة مع الحفاظ على الميتاداتا المحلية
+                    // Update existing image with new data
                     imageMap.set(key, {
                         ...existingImg,
                         ...newImg,
-                            status: "uploaded"
+                        status: "uploaded"
                     })
                 } else {
                     imageMap.set(key, newImg)

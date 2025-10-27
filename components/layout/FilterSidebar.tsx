@@ -2,21 +2,17 @@
 
 import { useState } from 'react';
 import { useSearchStore } from '@/lib/stores/search-store';
-import { Slider } from '@/components/shadcnUI/slider';
-import { Checkbox } from '@/components/shadcnUI/checkbox';
-import { Badge } from '@/components/shadcnUI/badge';
 import { Button } from '@/components/shadcnUI/button';
 import { ScrollArea } from '@/components/shadcnUI/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/shadcnUI/sheet';
 import { SlidersIcon } from 'lucide-react';
-import { useCookies } from 'next-client-cookies';
 import { useI18nStore } from '@/lib/stores';
 import SearchFilters from './SearchFilters';
 
 interface FilterSidebarProps {
    brands: string[];
    categories?: Array<{ id: number; nameEn: string; nameAr: string }>;
-   dir: string;
+   dir: 'rtl' | 'ltr';
    showCategories?: boolean;
    showPriceRange?: boolean;
    showBrands?: boolean;
@@ -31,9 +27,7 @@ export const FilterSidebar = ({
    showBrands = true
 }: FilterSidebarProps) => {
 
-
-   const { t, locale} = useI18nStore()
-
+   const { t, locale } = useI18nStore();
    const [isOpen, setIsOpen] = useState(false);
 
    const {
@@ -52,6 +46,27 @@ export const FilterSidebar = ({
       clearFilters,
    } = useSearchStore();
 
+   // Shared props for SearchFilters
+   const searchFiltersProps = {
+      t,
+      locale,
+      categories: showCategories ? categories : undefined,
+      brands: showBrands ? brands : [],
+      sortBy,
+      setSortBy,
+      selectedBrands,
+      toggleBrand,
+      priceRange: showPriceRange ? priceRange : [0, 10000],
+      setPriceRange,
+      inStockOnly,
+      setInStockOnly,
+      outOfStockOnly,
+      setOutOfStockOnly,
+      onSaleOnly,
+      setOnSaleOnly,
+      clearFilters,
+   };
+
    return (
       <>
          {/* Mobile Filter Button */}
@@ -63,53 +78,25 @@ export const FilterSidebar = ({
                      <span className="whitespace-nowrap">{dir === 'rtl' ? 'الفلتر' : 'Filter'}</span>
                   </Button>
                </SheetTrigger>
-               <SheetContent side={dir === 'rtl' ? 'right' : 'left'} className="w-[280px] sm:w-[300px] p-4">
-                  <SearchFilters
-                     classNames='h-full lg:flex'
-                     t={t}
-                     locale={locale}
-                     categories={showCategories ? categories : undefined}
-                     brands={showBrands ? brands : []}
-                     sortBy={sortBy}
-                     setSortBy={setSortBy}
-                     selectedBrands={selectedBrands}
-                     toggleBrand={toggleBrand}
-                     priceRange={showPriceRange ? priceRange : [0, 10000]}
-                     setPriceRange={setPriceRange}
-                     inStockOnly={inStockOnly}
-                     setInStockOnly={setInStockOnly}
-                     outOfStockOnly={outOfStockOnly}
-                     setOutOfStockOnly={setOutOfStockOnly}
-                     onSaleOnly={onSaleOnly}
-                     setOnSaleOnly={setOnSaleOnly}
-                     clearFilters={clearFilters}
-                  />
-
+               <SheetContent 
+                  side={dir === 'rtl' ? 'right' : 'left'} 
+                  className="w-[350px] sm:w-[400px] p-0"
+               >
+                  <ScrollArea className="h-full p-4">
+                     <SearchFilters
+                        classNames='flex flex-col'
+                        {...searchFiltersProps}
+                     />
+                  </ScrollArea>
                </SheetContent>
             </Sheet>
          </div>
 
          {/* Desktop Sidebar */}
-            <SearchFilters
-               classNames='hidden lg:flex'
-               t={t}
-               locale={locale}
-               categories={showCategories ? categories : undefined}
-               brands={showBrands ? brands : []}
-               sortBy={sortBy}
-               setSortBy={setSortBy}
-               selectedBrands={selectedBrands}
-               toggleBrand={toggleBrand}
-               priceRange={showPriceRange ? priceRange : [0, 10000]}
-               setPriceRange={setPriceRange}
-               inStockOnly={inStockOnly}
-               setInStockOnly={setInStockOnly}
-               outOfStockOnly={outOfStockOnly}
-               setOutOfStockOnly={setOutOfStockOnly}
-               onSaleOnly={onSaleOnly}
-               setOnSaleOnly={setOnSaleOnly}
-               clearFilters={clearFilters}
-            />
+         <SearchFilters
+            classNames='hidden lg:flex'
+            {...searchFiltersProps}
+         />
       </>
    );
 };

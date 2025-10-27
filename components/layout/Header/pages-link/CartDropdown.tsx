@@ -81,14 +81,14 @@ const CartDropdown = ({ user, cart, dictionary , dir }: CartDropdownProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className="hover:bg-accent transition-colors relative"
+          className={cn("hover:bg-accent transition-colors relative cursor-pointer" , "bg-slate-600 text-slate-50  hover:text-slate-900 hover:bg-slate-200 rounded")}
           title={dictionary.cart.title}
         >
           <ShoppingCart className="h-5 w-5" />
           {totalItems > 0 && (
             <Badge
               variant="destructive"
-              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs text-white"
+              className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs text-white"
             >
               {totalItems}
             </Badge>
@@ -172,7 +172,7 @@ const CartDropdown = ({ user, cart, dictionary , dir }: CartDropdownProps) => {
           <Separator className="my-3" />
 
           <div className="space-y-3">
-            <div className={cn("flex justify-between font-semibold", dir === "rtl" ? "flex-row-reverse" : "flex-row")}>
+            <div className={cn("flex justify-between font-semibold")}>
               <span>{dictionary.common.total}</span>
               <span>EGP{totalPrice.toFixed(2)}</span>
             </div>

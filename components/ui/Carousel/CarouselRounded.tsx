@@ -1,38 +1,23 @@
 
 
 import React from 'react'
-import { Button } from "@/components/shadcnUI/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/shadcnUI/carousel"
 import { Badge } from "@/components/shadcnUI/badge"
 import { Card, CardContent } from "@/components/shadcnUI/card"
 import { cn } from "@/lib/utils"
-import Image from 'next/image';
-
-import {
-   ArrowRight,
-   ShoppingCart,
-   Users,
-   Star,
-   Truck,
-   Shield,
-   RotateCcw,
-   Award,
-   Heart,
-   Eye,
-   ChevronRight,
-} from "lucide-react"
-import { useI18nStore } from '@/lib/stores'
-
+import Image from 'next/image'
+import Link from 'next/link'
+import type { Category } from '@/types/category'
 
 type SliderRoundedProps = {
-   items: any[] | undefined;
+   items: Category[] | undefined;
    dir: string;
+   lang: string;
    className?: string;
 }
 
 
-const CarouselRounded = ({ items, dir, className }: SliderRoundedProps) => {
-
+const CarouselRounded = ({ items, dir, lang, className }: SliderRoundedProps) => {
    return (
       <>
          <div className={`flex sm:max-w-6xl max-w-full basis-1/3 ${className}`}>
@@ -55,11 +40,16 @@ const CarouselRounded = ({ items, dir, className }: SliderRoundedProps) => {
             >
                <CarouselContent className="my-10 gap-2 sm:gap-1 md:gap-2 lg:gap-6 px-9">
                   {items?.map((item) => {
-
+                     const categoryName = dir === 'rtl' ? item.nameAr : item.nameEn;
+                     
                      return (
                         <CarouselItem key={item.id} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/5">
-                           <Card className="group transition-all duration-300 bg-transparent border-0 p-0">
-                              <CardContent className="p-0 gap-2 flex flex-col justify-between select-none">
+                           <Link
+                              href={`/${lang}/category/${item.slug}`}
+                              className="block"
+                           >
+                              <Card className="group transition-all duration-300 bg-transparent border-0 p-0 hover:scale-105 cursor-pointer">
+                                 <CardContent className="p-0 gap-2 flex flex-col justify-between select-none">
 
                                  <div className="relative mx-auto w-20 h-20 rounded-full sm:w-20 sm:h-20 lg:w-30 lg:h-30 bg-gradient-to-b from-amber-200 to-gray-100">
                                     <div
@@ -70,7 +60,7 @@ const CarouselRounded = ({ items, dir, className }: SliderRoundedProps) => {
                                     >
                                        <Image
                                           src={item.image || "/placeholder.svg"}
-                                          alt={dir === "rtl" ? item.nameEn : item.nameAr}
+                                          alt={categoryName}
                                           fill
                                           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                                           className="relative w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
@@ -84,12 +74,14 @@ const CarouselRounded = ({ items, dir, className }: SliderRoundedProps) => {
                                        </div>
                                     </div> 
                                  </div>
-                                 <div className="relative text-center flex items-center justify-center">
-                                    <Badge className={cn("text-[1rem] font-medium text-center text-amber-900 relative bg-amber-100  ")}>{dir === "rtl" ?  item.nameAr: item.nameEn}</Badge>
-                                 </div>
-
-                              </CardContent>
-                           </Card>
+                                    <div className="relative text-center flex items-center justify-center">
+                                       <Badge className={cn("text-[1rem] font-medium text-center text-amber-900 relative bg-amber-100 group-hover:bg-amber-200 transition-colors")}>
+                                          {categoryName}
+                                       </Badge>
+                                    </div>
+                                 </CardContent>
+                              </Card>
+                           </Link>
                         </CarouselItem>
                      )
                   })}

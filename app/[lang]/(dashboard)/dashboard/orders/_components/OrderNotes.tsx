@@ -9,6 +9,7 @@ import { useAuthStore } from "@/lib/stores";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcnUI/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcnUI/avatar";
 import { Loader2 } from "lucide-react";
+import { useI18nStore } from "@/lib/stores/i18n-store";
 
 // Assuming a type for the note object, including the user
 type OrderNote = {
@@ -28,6 +29,7 @@ interface OrderNotesProps {
 }
 
 export function OrderNotes({ orderId, initialNotes }: OrderNotesProps) {
+  const { t } = useI18nStore();
   const { user } = useAuthStore();
   const [notes, setNotes] = useState(initialNotes);
   const [newNote, setNewNote] = useState("");
@@ -50,9 +52,9 @@ export function OrderNotes({ orderId, initialNotes }: OrderNotesProps) {
         }
         setNotes([newNoteWithUser, ...notes]);
         setNewNote("");
-        toast({ title: "Success", description: "Note added." });
+        toast({ title: t("orders.success"), description: t("orders.noteAdded") });
       } else {
-        toast({ title: "Error", description: result.error, variant: "destructive" });
+        toast({ title: t("orders.error"), description: result.error, variant: "destructive" });
       }
     });
   };
@@ -60,24 +62,24 @@ export function OrderNotes({ orderId, initialNotes }: OrderNotesProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Internal Notes</CardTitle>
+        <CardTitle>{t("orders.internalNotes")}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4 mb-6">
           <Textarea
-            placeholder="Add a note for your team..."
+            placeholder={t("orders.addNotePlaceholder")}
             value={newNote}
             onChange={(e) => setNewNote(e.target.value)}
             rows={3}
             disabled={isPending}
           />
           <Button type="submit" disabled={isPending || !newNote.trim()}>
-            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Note"}
+            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : t("orders.addNote")}
           </Button>
         </form> 
         <div className="space-y-4">
           {notes.length === 0 ? (
-            <p className="text-muted-foreground text-sm">No internal notes for this order yet.</p>
+            <p className="text-muted-foreground text-sm">{t("orders.noNotes")}</p>
           ) : (
             notes.map((note) => (
               <div key={note.id} className="flex items-start gap-4 p-4 border rounded-lg">

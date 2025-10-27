@@ -1,15 +1,17 @@
-import { SearchBar } from "../Search"
+import { SearchBar } from "./search/Search"
 import LogoLink from "./pages-link/LogoLink"
 import WishListLink from "./pages-link/WishListLink"
 import CartDropdown from "./pages-link/CartDropdown"
 import UserDropdown from "./pages-link/UserDropdown"
 import ScrolledHeader from "./ScrolledHeader"
-import { MobileMenu } from "./MobileMenu"
+import { MobileMenu } from "./MobileMenu/MobileMenu"
 import { getCategories } from "@/lib/actions/categories"
 import { type Locale } from "@/lib/i18n/i18n-config"
 import { getCartFull } from "@/lib/actions/cart"
 import { getNextAuthUser } from "@/lib/auth/guards"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
+import { getWishlistFull } from "@/lib/actions/wishlist"
+import { CategoryNavbar } from "./CategoryNavbar"
 
 async function Header({ params }: { params: Promise<{ lang: string }> }) {
 
@@ -26,19 +28,21 @@ async function Header({ params }: { params: Promise<{ lang: string }> }) {
     const dir = lang === "ar" ? "rtl" : "ltr";
 
 
+    const user = await getNextAuthUser()
+    
     const { data: categories } = await getCategories()
 
-    const user = await getNextAuthUser()
-
     let cart = null
+    let wishlist = null
     if (user?.id) {
         cart = await getCartFull(user.id)
+        wishlist = await getWishlistFull(user.id)
     }
 
     return (
         <>
             <ScrolledHeader>
-                <div className="container mx-auto h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="container mx-auto h-16  flex items-center justify-between px-4 sm:px-6 lg:px-8">
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <LogoLink />
@@ -46,12 +50,12 @@ async function Header({ params }: { params: Promise<{ lang: string }> }) {
 
                     {/* Desktop Search Bar - Hidden on mobile and tablet */}
                     <div className="hidden xl:flex flex-1 max-w-2xl mx-8">
-                        <SearchBar categories={categories} />
+                        <SearchBar />
                     </div>
 
                     {/* Desktop Actions */}
                     <div className="hidden lg:flex items-center gap-4 xl:gap-6">
-                        <WishListLink />
+                        <WishListLink wishlist={wishlist} />
                         <CartDropdown user={user ? { id: user.id! } : null} cart={cart} dictionary={dictionary} dir={dir} />
                         <UserDropdown dictionary={dictionary} dir={dir} />
                     </div>
@@ -61,15 +65,17 @@ async function Header({ params }: { params: Promise<{ lang: string }> }) {
                         categories={categories}
                         user={user ? { id: user.id! } : null}
                         cart={cart}
+                        wishlist={wishlist}
                         dictionary={dictionary}
                         dir={dir}
+                        lang={lang}
                     />
                 </div>
-
+                <CategoryNavbar categories={categories} lang={lang} dir={dir} />
                 {/* Mobile/Tablet Search Bar - Below header */}
-                <div className="lg:hidden border-t bg-white/95 backdrop-blur-sm">
+                <div className="lg:hidden border-t bg-white/80 backdrop-blur-sm">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
-                        <SearchBar categories={categories} />
+                        <SearchBar />
                     </div>
                 </div>
             </ScrolledHeader>

@@ -11,6 +11,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Search, Eye, Trash2, X, Loader2 } from "lucide-react"
 import { deleteOrder } from "@/lib/actions/orders"
 import { toast } from "@/hooks/use-toast"
+import { useI18nStore } from "@/lib/stores/i18n-store"
+import { cn } from "@/lib/utils"
 
 // Using a relaxed type here because server returns decimal fields as strings and may include nulls
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,6 +31,7 @@ interface OrdersListProps {
 }
 
 export function OrdersList({ initialOrders }: OrdersListProps) {
+  const { t, dir } = useI18nStore()
   const router = useRouter()
   const [orders, setOrders] = useState(initialOrders)
   const [searchQuery, setSearchQuery] = useState("")
@@ -61,20 +64,20 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
         if (result.success) {
           setOrders((prev) => prev.filter((order) => order.id !== orderId))
           toast({
-            title: "Order deleted",
-            description: "The order has been successfully deleted.",
+            title: t("orders.orderDeleted"),
+            description: t("orders.orderDeletedDesc"),
           })
         } else {
           toast({
-            title: "Error",
-            description: "Failed to delete order.",
+            title: t("orders.error"),
+            description: t("orders.deleteError"),
             variant: "destructive",
           })
         }
       } catch (error) {
         toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
+          title: t("orders.error"),
+          description: t("orders.unexpectedError"),
           variant: "destructive",
         })
       }
@@ -88,24 +91,28 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Orders Management</h1>
-          <p className="text-muted-foreground">Manage customer orders and track their status</p>
+          <h1 className="text-2xl font-bold">{t("orders.ordersManagement")}</h1>
+          <p className="text-muted-foreground">{t("orders.subtitle")}</p>
         </div>
       </div>
 
       {/* Search */}
       <Card>
         <CardHeader>
-          <CardTitle>Search Orders</CardTitle>
+          <CardTitle>{t("orders.searchOrders")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Search className={cn(
+              "absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4",
+              dir === 'rtl' ? 'right-3' : 'left-3'
+            )} />
             <Input
-              placeholder="Search by order ID, customer name, email, or status..."
+              placeholder={t("orders.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10"
+              className={cn(dir === 'rtl' ? 'pr-10 pl-10' : 'pl-10 pr-10')}
+              dir={dir}
             />
             {searchQuery && (
               <Button
@@ -120,9 +127,9 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
           </div>
           <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
             <span>
-              {`${orders.length} order${orders.length !== 1 ? "s" : ""} found`}
+              {`${orders.length} ${orders.length !== 1 ? t("orders.ordersFounds") : t("orders.ordersFound")}`}
             </span>
-            {searchQuery && <span>Search: "{searchQuery}"</span>}
+            {searchQuery && <span>{t("orders.searchLabel")} "{searchQuery}"</span>}
           </div>
         </CardContent>
       </Card>
@@ -130,13 +137,13 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
       {/* Orders Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Orders</CardTitle>
+          <CardTitle>{t("orders.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           {orders.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground">
-                {searchQuery ? "No orders found matching your search." : "No orders found."}
+                {searchQuery ? t("orders.noOrdersFound") : t("orders.noOrders")}
               </p>
             </div>
           ) : (
@@ -144,14 +151,14 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Order ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Payment Status</TableHead>
-                    <TableHead>Total</TableHead>
-                    <TableHead>Coupon</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t("orders.orderId")}</TableHead>
+                    <TableHead>{t("orders.customer")}</TableHead>
+                    <TableHead>{t("orders.status")}</TableHead>
+                    <TableHead>{t("orders.paymentStatus")}</TableHead>
+                    <TableHead>{t("orders.total")}</TableHead>
+                    <TableHead>{t("orders.coupon")}</TableHead>
+                    <TableHead>{t("orders.date")}</TableHead>
+                    <TableHead className={cn(dir === 'rtl' ? 'text-left' : 'text-right')}>{t("orders.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -202,14 +209,17 @@ export function OrdersList({ initialOrders }: OrdersListProps) {
                             </div>
                           </div>
                         ) : (
-                          <span className="text-gray-400 text-sm">No coupon</span>
+                          <span className="text-gray-400 text-sm">{t("orders.noCoupon")}</span>
                         )}
                       </TableCell>
                       <TableCell>
                         {new Date(order.createdAt).toLocaleDateString()}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
+                      <TableCell className={cn(dir === 'rtl' ? 'text-left' : 'text-right')}>
+                        <div className={cn(
+                          "flex items-center gap-2",
+                          dir === 'rtl' ? 'justify-start' : 'justify-end'
+                        )}>
                           <Button asChild variant="outline" size="sm">
                             <Link href={`/dashboard/orders/${order.id}`}>
                               <Eye className="h-4 w-4" />

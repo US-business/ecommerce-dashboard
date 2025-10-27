@@ -19,8 +19,9 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
-    const lang = params.lang as Locale;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+    const resolvedParams = await params;
+    const lang = resolvedParams.lang as Locale;
     const dictionary = await getDictionary(lang);
 
     return {
@@ -29,53 +30,54 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     }
 }
 
-export default async function ShippingPage({ params }: { params: { lang: string } }) {
-    const lang = params.lang as Locale;
+export default async function ShippingPage({ params }: { params: Promise<{ lang: string }> }) {
+    const resolvedParams = await params;
+    const lang = resolvedParams.lang as Locale;
     const dictionary = await getDictionary(lang);
     const dir = lang === "ar" ? "rtl" : "ltr";
 
     const shippingOptions = [
         {
             icon: Truck,
-            name: dir === "rtl" ? "الشحن السريع" : "Express Shipping",
-            time: dir === "rtl" ? "1-2 يوم عمل" : "1-2 business days",
-            cost: dir === "rtl" ? "مجاني فوق $100" : "Free over $100",
-            description: dir === "rtl" ? "توصيل سريع في نفس اليوم أو اليوم التالي" : "Same day or next day delivery"
+            name: dictionary.cms.shipping.options.express.name,
+            time: dictionary.cms.shipping.options.express.time,
+            cost: dictionary.cms.shipping.options.express.cost,
+            description: dictionary.cms.shipping.options.express.description
         },
         {
             icon: Clock,
-            name: dir === "rtl" ? "الشحن القياسي" : "Standard Shipping",
-            time: dir === "rtl" ? "3-5 أيام عمل" : "3-5 business days",
-            cost: dir === "rtl" ? "مجاني فوق $50" : "Free over $50",
-            description: dir === "rtl" ? "خيار اقتصادي مع تتبع كامل" : "Economical option with full tracking"
+            name: dictionary.cms.shipping.options.standard.name,
+            time: dictionary.cms.shipping.options.standard.time,
+            cost: dictionary.cms.shipping.options.standard.cost,
+            description: dictionary.cms.shipping.options.standard.description
         },
         {
             icon: Globe,
-            name: dir === "rtl" ? "الشحن الدولي" : "International Shipping",
-            time: dir === "rtl" ? "7-14 يوم عمل" : "7-14 business days",
-            cost: dir === "rtl" ? "يختلف حسب البلد" : "Varies by country",
-            description: dir === "rtl" ? "شحن إلى أكثر من 150 دولة" : "Shipping to over 150 countries"
+            name: dictionary.cms.shipping.options.international.name,
+            time: dictionary.cms.shipping.options.international.time,
+            cost: dictionary.cms.shipping.options.international.cost,
+            description: dictionary.cms.shipping.options.international.description
         }
     ]
 
     const shippingZones = [
         {
-            zone: dir === "rtl" ? "المنطقة المحلية" : "Local Area",
-            time: dir === "rtl" ? "1 يوم" : "1 day",
-            cost: dir === "rtl" ? "مجاني" : "Free",
-            areas: [dir === "rtl" ? "الرياض" : "Riyadh", dir === "rtl" ? "جدة" : "Jeddah", dir === "rtl" ? "الدمام" : "Dammam"]
+            zone: dictionary.cms.shipping.zones.local.zone,
+            time: dictionary.cms.shipping.zones.local.time,
+            cost: dictionary.cms.shipping.zones.local.cost,
+            areas: dictionary.cms.shipping.zones.local.areas.split("، ")
         },
         {
-            zone: dir === "rtl" ? "المناطق الرئيسية" : "Main Regions",
-            time: dir === "rtl" ? "2 يوم" : "2 days",
-            cost: dir === "rtl" ? "مجاني فوق $50" : "Free over $50",
-            areas: [dir === "rtl" ? "المنطقة الشرقية" : "Eastern Province", dir === "rtl" ? "المنطقة الغربية" : "Western Province"]
+            zone: dictionary.cms.shipping.zones.main.zone,
+            time: dictionary.cms.shipping.zones.main.time,
+            cost: dictionary.cms.shipping.zones.main.cost,
+            areas: dictionary.cms.shipping.zones.main.areas.split("، ")
         },
         {
-            zone: dir === "rtl" ? "المناطق النائية" : "Remote Areas",
-            time: dir === "rtl" ? "3-5 أيام" : "3-5 days",
-            cost: dir === "rtl" ? "$10 رسوم إضافية" : "$10 extra fee",
-            areas: [dir === "rtl" ? "نجران" : "Najran", dir === "rtl" ? "جيزان" : "Jizan", dir === "rtl" ? "حائل" : "Hail"]
+            zone: dictionary.cms.shipping.zones.remote.zone,
+            time: dictionary.cms.shipping.zones.remote.time,
+            cost: dictionary.cms.shipping.zones.remote.cost,
+            areas: dictionary.cms.shipping.zones.remote.areas.split("، ")
         }
     ]
 
@@ -83,9 +85,9 @@ export default async function ShippingPage({ params }: { params: { lang: string 
         <div className="container mx-auto py-10 px-4">
             {/* Header Section */}
             <div className="text-center mb-16">
-                <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 px-4 py-2">
+                <Badge className="mb-4 bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-900/20 dark:text-amber-500 px-4 py-2">
                     <Truck className="w-4 h-4 mr-2" />
-                    {dir === "rtl" ? "الشحن والتوصيل" : "Shipping & Delivery"}
+                    {dictionary.cms.shipping.shippingDelivery}
                 </Badge>
 
                 <h1 className="text-4xl font-bold mb-6">
@@ -99,7 +101,7 @@ export default async function ShippingPage({ params }: { params: { lang: string 
             {/* Shipping Options */}
             <div className="mb-16">
                 <h2 className="text-2xl font-bold text-center mb-12">
-                    {dir === "rtl" ? "خيارات الشحن المتاحة" : "Available Shipping Options"}
+                    {dictionary.cms.shipping.availableOptions}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -107,11 +109,11 @@ export default async function ShippingPage({ params }: { params: { lang: string 
                         <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                             <CardHeader className="pb-4">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                                        <option.icon className="w-6 h-6 text-primary" />
+                                    <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                                        <option.icon className="w-6 h-6 text-amber-600 dark:text-amber-500" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold group-hover:text-primary transition-colors">
+                                        <h3 className="font-semibold group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                                             {option.name}
                                         </h3>
                                     </div>
@@ -140,14 +142,14 @@ export default async function ShippingPage({ params }: { params: { lang: string 
             {/* Shipping Zones */}
             <div className="mb-16">
                 <h2 className="text-2xl font-bold text-center mb-12">
-                    {dir === "rtl" ? "مناطق التوصيل" : "Delivery Zones"}
+                    {dictionary.cms.shipping.deliveryZones}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {shippingZones.map((zone, index) => (
                         <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                             <CardHeader className="pb-4">
-                                <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                                <CardTitle className="text-lg group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                                     {zone.zone}
                                 </CardTitle>
                             </CardHeader>
@@ -183,62 +185,62 @@ export default async function ShippingPage({ params }: { params: { lang: string 
             {/* Features Section */}
             <div className="mb-16">
                 <h2 className="text-2xl font-bold text-center mb-12">
-                    {dir === "rtl" ? "مميزات الشحن لدينا" : "Our Shipping Features"}
+                    {dictionary.cms.shipping.features}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <Card className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                         <CardContent className="p-6">
-                            <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/30 transition-colors">
-                                <MapPin className="w-7 h-7 text-blue-600" />
+                            <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/30 transition-colors">
+                                <MapPin className="w-7 h-7 text-amber-600 dark:text-amber-500" />
                             </div>
-                            <h3 className="font-semibold mb-3 group-hover:text-blue-600 transition-colors">
-                                {dir === "rtl" ? "تتبع دقيق" : "Accurate Tracking"}
+                            <h3 className="font-semibold mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
+                                {dictionary.cms.shipping.shippingFeatures.tracking.title}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed">
-                                {dir === "rtl" ? "تتبع شحنتك خطوة بخطوة" : "Track your shipment step by step"}
+                                {dictionary.cms.shipping.shippingFeatures.tracking.description}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                         <CardContent className="p-6">
-                            <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-900/30 transition-colors">
-                                <Shield className="w-7 h-7 text-green-600" />
+                            <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors">
+                                <Shield className="w-7 h-7 text-slate-600 dark:text-slate-400" />
                             </div>
-                            <h3 className="font-semibold mb-3 group-hover:text-green-600 transition-colors">
-                                {dir === "rtl" ? "تعبئة آمنة" : "Secure Packaging"}
+                            <h3 className="font-semibold mb-3 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors">
+                                {dictionary.cms.shipping.shippingFeatures.packaging.title}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed">
-                                {dir === "rtl" ? "تعبئة احترافية تحمي منتجاتك" : "Professional packaging that protects your products"}
+                                {dictionary.cms.shipping.shippingFeatures.packaging.description}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                         <CardContent className="p-6">
-                            <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 dark:group-hover:bg-purple-900/30 transition-colors">
-                                <Award className="w-7 h-7 text-purple-600" />
+                            <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/30 transition-colors">
+                                <Award className="w-7 h-7 text-amber-600 dark:text-amber-500" />
                             </div>
-                            <h3 className="font-semibold mb-3 group-hover:text-purple-600 transition-colors">
-                                {dir === "rtl" ? "ضمان التوصيل" : "Delivery Guarantee"}
+                            <h3 className="font-semibold mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
+                                {dictionary.cms.shipping.shippingFeatures.guarantee.title}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed">
-                                {dir === "rtl" ? "ضمان توصيل منتجاتك بحالة ممتازة" : "Guarantee delivery of your products in excellent condition"}
+                                {dictionary.cms.shipping.shippingFeatures.guarantee.description}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                         <CardContent className="p-6">
-                            <div className="w-14 h-14 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 dark:group-hover:bg-orange-900/30 transition-colors">
-                                <Star className="w-7 h-7 text-orange-600" />
+                            <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors">
+                                <Star className="w-7 h-7 text-slate-600 dark:text-slate-400" />
                             </div>
-                            <h3 className="font-semibold mb-3 group-hover:text-orange-600 transition-colors">
-                                {dir === "rtl" ? "خدمة متميزة" : "Premium Service"}
+                            <h3 className="font-semibold mb-3 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors">
+                                {dictionary.cms.shipping.shippingFeatures.premium.title}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed">
-                                {dir === "rtl" ? "خدمة عملاء متميزة في كل خطوة" : "Exceptional customer service every step of the way"}
+                                {dictionary.cms.shipping.shippingFeatures.premium.description}
                             </p>
                         </CardContent>
                     </Card>
@@ -246,16 +248,13 @@ export default async function ShippingPage({ params }: { params: { lang: string 
             </div>
 
             {/* Contact Section */}
-            <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+            <Card className="bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/10 border-amber-200 dark:border-amber-800">
                 <CardContent className="p-8 text-center">
                     <h3 className="text-2xl font-bold mb-4">
-                        {dir === "rtl" ? "هل لديك أسئلة حول الشحن؟" : "Questions About Shipping?"}
+                        {dictionary.cms.shipping.questionsAbout.title}
                     </h3>
                     <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                        {dir === "rtl"
-                            ? "فريق الشحن متاح لمساعدتك في أي استفسار حول التوصيل والشحن"
-                            : "Our shipping team is available to help with any questions about delivery and shipping"
-                        }
+                        {dictionary.cms.shipping.questionsAbout.description}
                     </p>
 
                     <div className={cn(
@@ -264,11 +263,11 @@ export default async function ShippingPage({ params }: { params: { lang: string 
                     )}>
                         <div className="flex items-center gap-2 text-muted-foreground">
                             <Phone className="w-4 h-4" />
-                            <span>+1 (555) 123-4567</span>
+                            <span>{dictionary.cms.contact.office.phone}</span>
                         </div>
                         <div className="flex items-center gap-2 text-muted-foreground">
                             <Mail className="w-4 h-4" />
-                            <span>shipping@ecommerce.com</span>
+                            <span>{dictionary.cms.contact.office.email}</span>
                         </div>
                     </div>
                 </CardContent>

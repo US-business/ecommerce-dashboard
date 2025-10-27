@@ -25,20 +25,17 @@ export function PaymentSecuritySection({ dir, lang = 'en', className = '' }: Pay
   return (
     <div className={cn(
       "flex flex-col md:flex-row justify-between items-center gap-6",
-      dir === 'rtl' ? "md:flex-row-reverse" : "md:flex-row",
       className
     )}>
       {/* Payment Methods */}
       <div className={cn(
         "flex flex-wrap items-center gap-4",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
       )}>
         <span className="text-muted-foreground text-sm font-medium">
           {dir === 'rtl' ? "طرق الدفع:" : "Payment methods:"}
         </span>
         <div className={cn(
           "flex gap-2",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
         )}>
           {paymentMethods.map((method, index) => (
             <div

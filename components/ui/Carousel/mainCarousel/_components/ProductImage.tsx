@@ -29,7 +29,7 @@ export function ProductImage({
             new: {
                 icon: Zap,
                 label: dir === 'rtl' ? 'جديد' : 'New',
-                className: 'bg-gradient-to-r from-sky-400 to-purple-600 text-white border-0 shadow-lg'
+                className: 'bg-gradient-to-r from-emerald-400 to-teal-600 text-white border-0 shadow-lg'
             },
             on_sale: {
                 icon: Percent,
@@ -39,7 +39,7 @@ export function ProductImage({
             coming_soon: {
                 icon: Clock,
                 label: dir === 'rtl' ? 'قريباً' : 'Coming Soon',
-                className: 'bg-gradient-to-r from-blue-400 to-indigo-600 text-white border-0 shadow-lg'
+                className: 'bg-gradient-to-r from-violet-400 to-purple-600 text-white border-0 shadow-lg'
             },
             normal: null
         };
@@ -65,11 +65,13 @@ export function ProductImage({
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     alt={alt}
-                    className="object-contain p-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-2"
+                    className="object-contain p-4 transition-all duration-500 group-hover:scale-110 group-hover:rotate-2"
+                    loading="lazy"
+                    quality={85}
                 />
                 
                 {/* Gradient Overlay on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             {/* Status Badge */}

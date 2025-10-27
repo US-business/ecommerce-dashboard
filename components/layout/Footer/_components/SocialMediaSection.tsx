@@ -30,7 +30,7 @@ export function SocialMediaSection({ dir, lang = 'en', className = '' }: SocialM
   return (
     <div className={cn(
       "flex flex-col md:flex-row justify-between items-start md:items-center gap-2",
-      dir === 'rtl' ? "md:flex-row-reverse" : "md:flex-row",
+      "md:flex-row",
       className
     )}>
       {/* Social Links */}
@@ -40,7 +40,7 @@ export function SocialMediaSection({ dir, lang = 'en', className = '' }: SocialM
         </h3>
         <div className={cn(
           "flex gap-3",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+          "flex-row"
         )}>
           {socialLinks.map((social, index) => (
             <Button

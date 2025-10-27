@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { useI18nStore } from "@/lib/stores/i18n-store"
+import type { Category } from "@/types/category"
 import { DashboardLayout } from "@/components/dashboard/layout/dashboard-layout"
 import { CategoryForm } from "@/components/dashboard/categories/category-form"
 import { ProtectedRoute } from "@/components/auth/protected-route"
@@ -12,7 +13,7 @@ import { cn } from "@/lib/utils"
 export default function EditCategoryPage() {
   const { t, dir } = useI18nStore()
   const params = useParams()
-  const [category, setCategory] = useState(null)
+  const [category, setCategory] = useState<Category | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 

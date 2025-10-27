@@ -1,0 +1,5 @@
+export { BackgroundDecorations } from './BackgroundDecorations'
+export { SectionHeader } from './SectionHeader'
+export { ProductGrid } from './ProductGrid'
+export { ViewAllButton } from './ViewAllButton'
+export { BottomWave } from './BottomWave'

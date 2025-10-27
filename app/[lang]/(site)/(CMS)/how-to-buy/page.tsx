@@ -23,8 +23,9 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
 
   return {
@@ -33,58 +34,47 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   }
 }
 
-export default async function HowToBuyPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export default async function HowToBuyPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
 
   const steps = [
     {
       icon: Search,
-      title: dir === "rtl" ? "تصفح المنتجات" : "Browse Products",
-      description: dir === "rtl"
-        ? "تصفح مجموعتنا الواسعة من المنتجات واستخدم الفلاتر للعثور على ما تبحث عنه"
-        : "Browse our wide range of products and use filters to find what you're looking for",
+      title: dictionary.cms.howToBuy.steps.browse.title,
+      description: dictionary.cms.howToBuy.steps.browse.description,
       step: "1"
     },
     {
       icon: Heart,
-      title: dir === "rtl" ? "أضف للمفضلة" : "Add to Wishlist",
-      description: dir === "rtl"
-        ? "أضف المنتجات التي تعجبك إلى قائمة المفضلة لحفظها لوقت لاحق"
-        : "Add products you like to your wishlist to save them for later",
+      title: dictionary.cms.howToBuy.steps.wishlist.title,
+      description: dictionary.cms.howToBuy.steps.wishlist.description,
       step: "2"
     },
     {
       icon: ShoppingCart,
-      title: dir === "rtl" ? "أضف للسلة" : "Add to Cart",
-      description: dir === "rtl"
-        ? "اختر الكمية المناسبة وأضف المنتج إلى سلة التسوق الخاصة بك"
-        : "Select the right quantity and add the product to your shopping cart",
+      title: dictionary.cms.howToBuy.steps.addToCart.title,
+      description: dictionary.cms.howToBuy.steps.addToCart.description,
       step: "3"
     },
     {
       icon: CreditCard,
-      title: dir === "rtl" ? "ادفع بأمان" : "Secure Payment",
-      description: dir === "rtl"
-        ? "ادفع بطرق متعددة وآمنة مع حماية SSL متقدمة لبياناتك"
-        : "Pay with multiple secure methods with advanced SSL protection for your data",
+      title: dictionary.cms.howToBuy.steps.payment.title,
+      description: dictionary.cms.howToBuy.steps.payment.description,
       step: "4"
     },
     {
       icon: Truck,
-      title: dir === "rtl" ? "تتبع الشحنة" : "Track Delivery",
-      description: dir === "rtl"
-        ? "تتبع شحنتك في الوقت الفعلي حتى تصل إليك"
-        : "Track your shipment in real-time until it reaches you",
+      title: dictionary.cms.howToBuy.steps.track.title,
+      description: dictionary.cms.howToBuy.steps.track.description,
       step: "5"
     },
     {
       icon: CheckCircle,
-      title: dir === "rtl" ? "استلم المنتج" : "Receive Product",
-      description: dir === "rtl"
-        ? "استلم منتجك واستمتع بالجودة العالية والضمان الممتد"
-        : "Receive your product and enjoy the high quality and extended warranty",
+      title: dictionary.cms.howToBuy.steps.receive.title,
+      description: dictionary.cms.howToBuy.steps.receive.description,
       step: "6"
     }
   ]
@@ -92,28 +82,28 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
   const benefits = [
     {
       icon: Shield,
-      title: dir === "rtl" ? "أمان مضمون" : "Guaranteed Security",
-      description: dir === "rtl" ? "حماية متقدمة لبياناتك الشخصية والمالية" : "Advanced protection for your personal and financial data"
+      title: dictionary.cms.howToBuy.benefits.security.title,
+      description: dictionary.cms.howToBuy.benefits.security.description
     },
     {
       icon: Clock,
-      title: dir === "rtl" ? "توصيل سريع" : "Fast Delivery",
-      description: dir === "rtl" ? "توصيل خلال 24 ساعة في معظم المناطق" : "Delivery within 24 hours in most areas"
+      title: dictionary.cms.howToBuy.benefits.fastDelivery.title,
+      description: dictionary.cms.howToBuy.benefits.fastDelivery.description
     },
     {
       icon: RotateCcw,
-      title: dir === "rtl" ? "إرجاع سهل" : "Easy Returns",
-      description: dir === "rtl" ? "إرجاع مجاني خلال 30 يوم بدون أسئلة" : "Free returns within 30 days, no questions asked"
+      title: dictionary.cms.howToBuy.benefits.easyReturns.title,
+      description: dictionary.cms.howToBuy.benefits.easyReturns.description
     },
     {
       icon: Award,
-      title: dir === "rtl" ? "جودة عالية" : "High Quality",
-      description: dir === "rtl" ? "منتجات أصلية من علامات تجارية موثوقة" : "Authentic products from trusted brands"
+      title: dictionary.cms.howToBuy.benefits.highQuality.title,
+      description: dictionary.cms.howToBuy.benefits.highQuality.description
     },
     {
       icon: Users,
-      title: dir === "rtl" ? "دعم عملاء" : "Customer Support",
-      description: dir === "rtl" ? "فريق دعم متخصص متاح 24/7" : "Specialized support team available 24/7"
+      title: dictionary.cms.howToBuy.benefits.support.title,
+      description: dictionary.cms.howToBuy.benefits.support.description
     }
   ]
 
@@ -121,9 +111,9 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
     <div className="container mx-auto py-10 px-4">
       {/* Header Section */}
       <div className="text-center mb-16">
-        <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 px-4 py-2">
+        <Badge className="mb-4 bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-900/20 dark:text-amber-500 px-4 py-2">
           <ShoppingCart className="w-4 h-4 mr-2" />
-          {dir === "rtl" ? "دليل التسوق" : "Shopping Guide"}
+          {dictionary.cms.howToBuy.shoppingGuide}
         </Badge>
 
         <h1 className="text-4xl font-bold mb-6">
@@ -137,7 +127,7 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
       {/* Step by Step Guide */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-center mb-12">
-          {dir === "rtl" ? "خطوات التسوق خطوة بخطوة" : "Step-by-Step Shopping Guide"}
+          {dictionary.cms.howToBuy.stepByStep}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -145,14 +135,14 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
             <Card key={index} className="relative group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <step.icon className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center">
+                    <step.icon className="w-6 h-6 text-amber-600 dark:text-amber-500" />
                   </div>
-                  <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
+                  <Badge variant="outline" className="bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
                     {step.step}
                   </Badge>
                 </div>
-                <CardTitle className="group-hover:text-primary transition-colors">
+                <CardTitle className="group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                   {step.title}
                 </CardTitle>
               </CardHeader>
@@ -169,17 +159,17 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
       {/* Benefits Section */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-center mb-12">
-          {dir === "rtl" ? "لماذا تختار متجرنا؟" : "Why Choose Our Store?"}
+          {dictionary.cms.howToBuy.whyChoose}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
             <Card key={index} className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
               <CardContent className="p-6">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                  <benefit.icon className="w-8 h-8 text-primary" />
+                <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/30 transition-colors">
+                  <benefit.icon className="w-8 h-8 text-amber-600 dark:text-amber-500" />
                 </div>
-                <h3 className="font-semibold mb-3 group-hover:text-primary transition-colors">
+                <h3 className="font-semibold mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                   {benefit.title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
@@ -192,29 +182,26 @@ export default async function HowToBuyPage({ params }: { params: { lang: string 
       </div>
 
       {/* FAQ Section */}
-      <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+      <Card className="bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/10 border-amber-200 dark:border-amber-800">
         <CardContent className="p-8 text-center">
           <h3 className="text-2xl font-bold mb-4">
-            {dir === "rtl" ? "هل لديك أسئلة أخرى؟" : "Have More Questions?"}
+            {dictionary.cms.howToBuy.moreQuestions.title}
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            {dir === "rtl"
-              ? "فريق الدعم متاح لمساعدتك في أي وقت. لا تتردد في التواصل معنا"
-              : "Our support team is available to help you anytime. Don't hesitate to contact us"
-            }
+            {dictionary.cms.howToBuy.moreQuestions.description}
           </p>
 
           <div className={cn(
             "flex flex-col sm:flex-row gap-4 justify-center",
             dir === "rtl" ? "flex-row-reverse" : "flex-row"
           )}>
-            <Button className="bg-primary hover:bg-primary/90">
+            <Button className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-800 text-white">
               <MessageCircle className="w-4 h-4 mr-2" />
-              {dir === "rtl" ? "تواصل معنا" : "Contact Us"}
+              {dictionary.cms.about.supportChannels.liveChat.action}
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" className="border-amber-600 text-amber-600 hover:bg-amber-50 dark:border-amber-500 dark:text-amber-500">
               <Phone className="w-4 h-4 mr-2" />
-              +1 (555) 123-4567
+              {dictionary.cms.contact.office.phone}
             </Button>
           </div>
         </CardContent>

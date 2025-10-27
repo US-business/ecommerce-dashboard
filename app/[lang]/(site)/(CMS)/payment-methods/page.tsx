@@ -17,8 +17,9 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
 
   return {
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   }
 }
 
-export default async function PaymentMethodsPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang as Locale;
+export default async function PaymentMethodsPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang as Locale;
   const dictionary = await getDictionary(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
 
@@ -36,74 +38,74 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
     {
       icon: CreditCard,
       name: "Visa",
-      description: dir === "rtl" ? "بطاقات فيزا الائتمانية والخصم" : "Visa credit and debit cards",
+      description: dictionary.cms.paymentMethods.methods.creditCard.description,
       popular: true,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     },
     {
       icon: CreditCard,
       name: "Mastercard",
-      description: dir === "rtl" ? "بطاقات ماستركارد الائتمانية والخصم" : "Mastercard credit and debit cards",
+      description: dictionary.cms.paymentMethods.methods.creditCard.description,
       popular: true,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     },
     {
       icon: CreditCard,
       name: "American Express",
-      description: dir === "rtl" ? "بطاقات أمريكان إكسبريس" : "American Express cards",
+      description: dictionary.cms.paymentMethods.methods.creditCard.description,
       popular: false,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     },
     {
       icon: Smartphone,
-      name: dir === "rtl" ? "أبل باي" : "Apple Pay",
-      description: dir === "rtl" ? "الدفع السريع والآمن عبر أجهزة أبل" : "Fast and secure payment via Apple devices",
+      name: dictionary.cms.paymentMethods.methods.applePay.name,
+      description: dictionary.cms.paymentMethods.methods.applePay.description,
       popular: true,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     },
     {
       icon: Smartphone,
-      name: dir === "rtl" ? "جوجل باي" : "Google Pay",
-      description: dir === "rtl" ? "الدفع السريع عبر خدمات جوجل" : "Fast payment via Google services",
+      name: dictionary.cms.paymentMethods.methods.googlePay.name,
+      description: dictionary.cms.paymentMethods.methods.googlePay.description,
       popular: true,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     },
     {
       icon: Building,
-      name: dir === "rtl" ? "التحويل البنكي" : "Bank Transfer",
-      description: dir === "rtl" ? "تحويل مباشر من حسابك البنكي" : "Direct transfer from your bank account",
+      name: dictionary.cms.paymentMethods.methods.bankTransfer.name,
+      description: dictionary.cms.paymentMethods.methods.bankTransfer.description,
       popular: false,
-      processingTime: dir === "rtl" ? "1-3 أيام عمل" : "1-3 business days"
+      processingTime: `1-3 ${dictionary.cms.paymentMethods.methods.businessDays}`
     },
     {
       icon: Wallet,
-      name: dir === "rtl" ? "باي بال" : "PayPal",
-      description: dir === "rtl" ? "الدفع الآمن عبر باي بال" : "Secure payment via PayPal",
+      name: dictionary.cms.paymentMethods.methods.paypal.name,
+      description: dictionary.cms.paymentMethods.methods.paypal.description,
       popular: true,
-      processingTime: dir === "rtl" ? "فوري" : "Instant"
+      processingTime: dictionary.cms.paymentMethods.methods.instant
     }
   ]
 
   const securityFeatures = [
     {
       icon: Shield,
-      title: dir === "rtl" ? "تشفير SSL" : "SSL Encryption",
-      description: dir === "rtl" ? "حماية متقدمة لبياناتك" : "Advanced data protection"
+      title: dictionary.cms.paymentMethods.security.ssl.title,
+      description: dictionary.cms.paymentMethods.security.ssl.description
     },
     {
       icon: Lock,
-      title: dir === "rtl" ? "حماية PCI DSS" : "PCI DSS Compliance",
-      description: dir === "rtl" ? "امتثال لمعايير أمان البطاقات" : "Compliance with card security standards"
+      title: dictionary.cms.paymentMethods.security.pci.title,
+      description: dictionary.cms.paymentMethods.security.pci.description
     },
     {
       icon: CheckCircle,
-      title: dir === "rtl" ? "التحقق الثنائي" : "Two-Factor Authentication",
-      description: dir === "rtl" ? "حماية إضافية لحسابك" : "Extra protection for your account"
+      title: dictionary.cms.paymentMethods.security.twoFactor.title,
+      description: dictionary.cms.paymentMethods.security.twoFactor.description
     },
     {
       icon: Globe,
-      title: dir === "rtl" ? "حماية عالمية" : "Global Protection",
-      description: dir === "rtl" ? "أمان معتمد عالمياً" : "Globally certified security"
+      title: dictionary.cms.paymentMethods.security.global.title,
+      description: dictionary.cms.paymentMethods.security.global.description
     }
   ]
 
@@ -111,9 +113,9 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
     <div className="container mx-auto py-10 px-4">
       {/* Header Section */}
       <div className="text-center mb-16">
-        <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 px-4 py-2">
+        <Badge className="mb-4 bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-900/20 dark:text-amber-500 px-4 py-2">
           <CreditCard className="w-4 h-4 mr-2" />
-          {dir === "rtl" ? "طرق الدفع" : "Payment Methods"}
+          {dictionary.cms.paymentMethods.paymentMethodsLabel}
         </Badge>
 
         <h1 className="text-4xl font-bold mb-6">
@@ -127,7 +129,7 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
       {/* Payment Methods Grid */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-center mb-12">
-          {dir === "rtl" ? "اختر طريقة الدفع المناسبة" : "Choose Your Payment Method"}
+          {dictionary.cms.paymentMethods.chooseMethod}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -135,16 +137,16 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
             <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <method.icon className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                    <method.icon className="w-6 h-6 text-amber-600 dark:text-amber-500" />
                   </div>
                   {method.popular && (
-                    <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
-                      {dir === "rtl" ? "شائع" : "Popular"}
+                    <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-500">
+                      {dictionary.cms.paymentMethods.methods.popular}
                     </Badge>
                   )}
                 </div>
-                <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                <CardTitle className="text-lg group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                   {method.name}
                 </CardTitle>
               </CardHeader>
@@ -166,17 +168,17 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
       {/* Security Section */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-center mb-12">
-          {dir === "rtl" ? "الأمان والحماية" : "Security & Protection"}
+          {dictionary.cms.paymentMethods.securityProtection}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {securityFeatures.map((feature, index) => (
             <Card key={index} className="text-center group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
               <CardContent className="p-6">
-                <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-900/30 transition-colors">
-                  <feature.icon className="w-7 h-7 text-green-600" />
+                <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/30 transition-colors">
+                  <feature.icon className="w-7 h-7 text-amber-600 dark:text-amber-500" />
                 </div>
-                <h3 className="font-semibold mb-3 group-hover:text-green-600 transition-colors">
+                <h3 className="font-semibold mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
@@ -189,41 +191,32 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
       </div>
 
       {/* FAQ Section */}
-      <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+      <Card className="bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/10 border-amber-200 dark:border-amber-800">
         <CardContent className="p-8 text-center">
           <h3 className="text-2xl font-bold mb-4">
-            {dir === "rtl" ? "أسئلة شائعة حول الدفع" : "Payment FAQ"}
+            {dictionary.cms.paymentMethods.paymentFaq.title}
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            {dir === "rtl"
-              ? "إليك إجابات على أكثر الأسئلة شيوعاً حول طرق الدفع والأمان"
-              : "Here are answers to the most common questions about payment methods and security"
-            }
+            {dictionary.cms.paymentMethods.paymentFaq.description}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-4xl mx-auto">
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold mb-2">
-                  {dir === "rtl" ? "هل الدفع آمن؟" : "Is payment secure?"}
+                  {dictionary.cms.paymentMethods.paymentFaq.isSecure.question}
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  {dir === "rtl"
-                    ? "نعم، نحن نستخدم تشفير SSL متقدم وحماية PCI DSS لحماية بياناتك"
-                    : "Yes, we use advanced SSL encryption and PCI DSS protection for your data"
-                  }
+                  {dictionary.cms.paymentMethods.paymentFaq.isSecure.answer}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-semibold mb-2">
-                  {dir === "rtl" ? "ما هي طرق الدفع المتاحة؟" : "What payment methods are available?"}
+                  {dictionary.cms.paymentMethods.paymentFaq.availableMethods.question}
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  {dir === "rtl"
-                    ? "نقبل جميع البطاقات الائتمانية الرئيسية وأبل باي وجوجل باي وباي بال"
-                    : "We accept all major credit cards, Apple Pay, Google Pay, and PayPal"
-                  }
+                  {dictionary.cms.paymentMethods.paymentFaq.availableMethods.answer}
                 </p>
               </div>
             </div>
@@ -231,25 +224,19 @@ export default async function PaymentMethodsPage({ params }: { params: { lang: s
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold mb-2">
-                  {dir === "rtl" ? "متى يتم خصم المبلغ؟" : "When is the amount charged?"}
+                  {dictionary.cms.paymentMethods.paymentFaq.whenCharged.question}
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  {dir === "rtl"
-                    ? "يتم خصم المبلغ فور تأكيد الطلب بالنسبة للبطاقات والمحافظ الإلكترونية"
-                    : "The amount is charged immediately upon order confirmation for cards and e-wallets"
-                  }
+                  {dictionary.cms.paymentMethods.paymentFaq.whenCharged.answer}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-semibold mb-2">
-                  {dir === "rtl" ? "هل يمكنني إلغاء الطلب؟" : "Can I cancel my order?"}
+                  {dictionary.cms.paymentMethods.paymentFaq.canCancel.question}
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  {dir === "rtl"
-                    ? "يمكنك إلغاء الطلب قبل الشحن مع استرداد كامل للمبلغ"
-                    : "You can cancel your order before shipping with a full refund"
-                  }
+                  {dictionary.cms.paymentMethods.paymentFaq.canCancel.answer}
                 </p>
               </div>
             </div>

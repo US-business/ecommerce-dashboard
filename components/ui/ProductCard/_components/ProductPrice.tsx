@@ -6,6 +6,7 @@ interface ProductPriceProps {
   currencySymbol: string
   hasDiscount: boolean
   dir: string
+  quantityInStock: number
   className?: string
 }
 
@@ -15,31 +16,42 @@ export const ProductPrice = ({
   currencySymbol,
   hasDiscount,
   dir,
+  quantityInStock,
   className
 }: ProductPriceProps) => {
   return (
-    <div className={cn("flex flex-col gap-1 mt-auto", className)}>
-      {hasDiscount ? (
-        <>
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-2xl font-bold text-amber-600">
-              {currencySymbol} {discountedPrice.toFixed(2)}
-            </span>
-            <span className="text-base text-gray-400 line-through">
+    <>
+      {quantityInStock > 0 ? (
+        <div className={cn("flex flex-col gap-1 mt-auto", className)}>
+          {hasDiscount ? (
+            <>
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="text-2xl font-bold text-amber-600">
+                  {currencySymbol} {discountedPrice.toFixed(2)}
+                </span>
+                <span className="text-base text-gray-400 line-through">
+                  {currencySymbol} {price.toFixed(2)}
+                </span>
+              </div>
+              <span className="text-xs text-green-600 font-medium">
+                {dir === 'rtl'
+                  ? `وفر ${(price - discountedPrice).toFixed(2)} ${currencySymbol}`
+                  : `Save ${currencySymbol} ${(price - discountedPrice).toFixed(2)}`}
+              </span>
+            </>
+          ) : (
+            <span className="text-2xl font-bold text-gray-900">
               {currencySymbol} {price.toFixed(2)}
             </span>
-          </div>
-          <span className="text-xs text-green-600 font-medium">
-            {dir === 'rtl'
-              ? `وفر ${(price - discountedPrice).toFixed(2)} ${currencySymbol}`
-              : `Save ${currencySymbol} ${(price - discountedPrice).toFixed(2)}`}
-          </span>
-        </>
+          )}
+        </div>
       ) : (
-        <span className="text-2xl font-bold text-gray-900">
-          {currencySymbol} {price.toFixed(2)}
-        </span>
+        <div className={cn("flex flex-col gap-1 mt-auto", className)}>
+          <span className="text-xl font-bold text-gray-400">
+            {dir === 'rtl' ? 'غير متوفر' : 'Out of Stock'}
+          </span>
+        </div>
       )}
-    </div>
+    </>
   )
 }

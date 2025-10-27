@@ -21,7 +21,7 @@ export function FooterLinks({ quickLinks, customerService, dir, className = '' }
   return (
     <>
       {/* Quick Links */}
-      <div className={cn(dir === 'rtl' ? "text-right" : "text-left", className)}>
+      <div className={cn( className)}>
         <h3 className="text-lg font-semibold text-white mb-6">
           {dir === 'rtl' ? "روابط سريعة" : "Quick Links"}
         </h3>
@@ -41,7 +41,7 @@ export function FooterLinks({ quickLinks, customerService, dir, className = '' }
       </div>
 
       {/* Customer Service */}
-      <div className={cn(dir === 'rtl' ? "text-right" : "text-left")}>
+      <div className={cn("")}>
         <h3 className="text-lg font-semibold text-white mb-6">
           {dir === 'rtl' ? "خدمة العملاء" : "Customer Service"}
         </h3>
@@ -62,22 +62,22 @@ export function FooterLinks({ quickLinks, customerService, dir, className = '' }
         {/* Contact Info */}
         <div className="mt-8 space-y-3">
           <div className={cn(
-            "flex items-center gap-3 text-slate-400",
-            dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+            "flex items-center gap-3 text-slate-400","flex-row"
+            
           )}>
             <Phone className="w-4 h-4 text-primary flex-shrink-0" />
             <span>+1 (555) 123-4567</span>
           </div>
           <div className={cn(
-            "flex items-center gap-3 text-slate-400",
-            dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+            "flex items-center gap-3 text-slate-400","flex-row"
+            
           )}>
             <Mail className="w-4 h-4 text-primary flex-shrink-0" />
             <span>support@ecommerce.com</span>
           </div>
           <div className={cn(
-            "flex items-center gap-3 text-slate-400",
-            dir === 'rtl' ? "flex-row-reverse" : "flex-row"
+            "flex items-center gap-3 text-slate-400","flex-row"
+            
           )}>
             <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
             <span>

@@ -56,7 +56,7 @@ export default function EditProductPage() {
           <div className={cn(dir === "rtl" && "text-right")}>
             <h1 className="text-3xl font-bold">{t("products.editProduct")}</h1>
             <p className="text-muted-foreground">
-              {dir === "rtl" ? "تعديل معلومات المنتج" : "Edit product information"}
+              {t("products.editProductDescription")}
             </p>
           </div>
 

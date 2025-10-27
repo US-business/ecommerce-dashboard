@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 
 import Header from "@/components/layout/Header"
-import { Navbar } from "@/components/layout/Header/Navbar"
+import { Navbar } from "@/components/layout/Navbar/Navbar"
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/layout/Footer"
 import BackToTopButton from "@/components/ui/BackToTopButton"

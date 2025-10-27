@@ -5,5 +5,6 @@ export { useSearchStore } from './search-store'
 export { useGalleryStore } from './gallery-store'
 export { useCartStore } from './cart-store'
 export { useCouponsStore } from './coupons-store'
+export { useWishlistStore } from './wishlist-store'
 
 
