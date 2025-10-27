@@ -39,24 +39,24 @@ export function useValidation() {
 
             case 'minLength':
                isValid = !value || value.length >= (rule.value as number)
-               errorMessage = rule.message || getValidationError('minLength', { min: rule.value })
+               errorMessage = rule.message || getValidationError('minLength', { min: rule.value ?? 0 })
                break
 
             case 'maxLength':
                isValid = !value || value.length <= (rule.value as number)
-               errorMessage = rule.message || getValidationError('maxLength', { max: rule.value })
+               errorMessage = rule.message || getValidationError('maxLength', { max: rule.value ?? 0 })
                break
 
             case 'minValue':
                const numValue = parseFloat(value)
                isValid = !value || (!isNaN(numValue) && numValue >= (rule.value as number))
-               errorMessage = rule.message || getValidationError('minValue', { min: rule.value })
+               errorMessage = rule.message || getValidationError('minValue', { min: rule.value ?? 0 })
                break
 
             case 'maxValue':
                const maxNumValue = parseFloat(value)
                isValid = !value || (!isNaN(maxNumValue) && maxNumValue <= (rule.value as number))
-               errorMessage = rule.message || getValidationError('maxValue', { max: rule.value })
+               errorMessage = rule.message || getValidationError('maxValue', { max: rule.value ?? 0 })
                break
 
             case 'phone':

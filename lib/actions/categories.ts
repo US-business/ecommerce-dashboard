@@ -5,6 +5,9 @@ import { requireAuth } from "@/lib/auth/guards"
 import { mockCategoriesService } from "@/lib/services/categories-mock"
 import type { Category, CategoryFormData } from "@/types/category"
 
+// Re-export types for components
+export type { CategoryFormData } from "@/types/category"
+
 export interface CategoriesResponse {
   success: boolean
   data?: Category[]

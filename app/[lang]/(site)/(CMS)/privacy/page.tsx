@@ -17,7 +17,7 @@ import { PrivacySections } from "./_components/PrivacySections";
 import { CallToAction } from "./_components/CallToAction";
 import { AdditionalResources } from "./_components/AdditionalResources";
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
 
   const lang = resolvedParams?.lang as Locale;
@@ -31,8 +31,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   };
 }
 
-export default async function PrivacyPage({ params }: { params: { lang: string } }) {
-
+export default async function PrivacyPage({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);

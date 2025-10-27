@@ -43,38 +43,38 @@ export default async function HowToBuyPage({ params }: { params: Promise<{ lang:
   const steps = [
     {
       icon: Search,
-      title: dictionary.cms.howToBuy.steps.browse.title,
-      description: dictionary.cms.howToBuy.steps.browse.description,
+      title: dir === "rtl" ? "تصفح المنتجات" : "Browse Products",
+      description: dir === "rtl" ? "ابحث عن المنتجات المفضلة لديك" : "Search for your favorite products",
       step: "1"
     },
     {
       icon: Heart,
-      title: dictionary.cms.howToBuy.steps.wishlist.title,
-      description: dictionary.cms.howToBuy.steps.wishlist.description,
+      title: dir === "rtl" ? "قائمة الرغبات" : "Wishlist",
+      description: dir === "rtl" ? "احفظ المنتجات المفضلة" : "Save favorite products",
       step: "2"
     },
     {
       icon: ShoppingCart,
-      title: dictionary.cms.howToBuy.steps.addToCart.title,
-      description: dictionary.cms.howToBuy.steps.addToCart.description,
+      title: dir === "rtl" ? "أضف إلى السلة" : "Add to Cart",
+      description: dir === "rtl" ? "أضف المنتجات للسلة" : "Add products to cart",
       step: "3"
     },
     {
       icon: CreditCard,
-      title: dictionary.cms.howToBuy.steps.payment.title,
-      description: dictionary.cms.howToBuy.steps.payment.description,
+      title: dir === "rtl" ? "الدفع" : "Payment",
+      description: dir === "rtl" ? "اختر طريقة الدفع المناسبة" : "Choose payment method",
       step: "4"
     },
     {
       icon: Truck,
-      title: dictionary.cms.howToBuy.steps.track.title,
-      description: dictionary.cms.howToBuy.steps.track.description,
+      title: dir === "rtl" ? "تتبع الطلب" : "Track Order",
+      description: dir === "rtl" ? "تابع حالة طلبك" : "Track your order status",
       step: "5"
     },
     {
       icon: CheckCircle,
-      title: dictionary.cms.howToBuy.steps.receive.title,
-      description: dictionary.cms.howToBuy.steps.receive.description,
+      title: dir === "rtl" ? "استلم الطلب" : "Receive Order",
+      description: dir === "rtl" ? "استلم طلبك بأمان" : "Receive your order safely",
       step: "6"
     }
   ]
@@ -82,28 +82,28 @@ export default async function HowToBuyPage({ params }: { params: Promise<{ lang:
   const benefits = [
     {
       icon: Shield,
-      title: dictionary.cms.howToBuy.benefits.security.title,
-      description: dictionary.cms.howToBuy.benefits.security.description
+      title: dir === "rtl" ? "دفع آمن" : "Secure Payment",
+      description: dir === "rtl" ? "معاملات آمنة 100%" : "100% secure transactions"
     },
     {
       icon: Clock,
-      title: dictionary.cms.howToBuy.benefits.fastDelivery.title,
-      description: dictionary.cms.howToBuy.benefits.fastDelivery.description
+      title: dir === "rtl" ? "توصيل سريع" : "Fast Delivery",
+      description: dir === "rtl" ? "توصيل سريع وموثوق" : "Fast and reliable delivery"
     },
     {
       icon: RotateCcw,
-      title: dictionary.cms.howToBuy.benefits.easyReturns.title,
-      description: dictionary.cms.howToBuy.benefits.easyReturns.description
+      title: dir === "rtl" ? "إرجاع سهل" : "Easy Returns",
+      description: dir === "rtl" ? "سياسة إرجاع مرنة" : "Flexible return policy"
     },
     {
       icon: Award,
-      title: dictionary.cms.howToBuy.benefits.highQuality.title,
-      description: dictionary.cms.howToBuy.benefits.highQuality.description
+      title: dir === "rtl" ? "جودة عالية" : "High Quality",
+      description: dir === "rtl" ? "منتجات أصلية ومضمونة" : "Original guaranteed products"
     },
     {
       icon: Users,
-      title: dictionary.cms.howToBuy.benefits.support.title,
-      description: dictionary.cms.howToBuy.benefits.support.description
+      title: dir === "rtl" ? "دعم متميز" : "Excellent Support",
+      description: dir === "rtl" ? "فريق دعم على مدار الساعة" : "24/7 support team"
     }
   ]
 
@@ -197,11 +197,11 @@ export default async function HowToBuyPage({ params }: { params: Promise<{ lang:
           )}>
             <Button className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-800 text-white">
               <MessageCircle className="w-4 h-4 mr-2" />
-              {dictionary.cms.about.supportChannels.liveChat.action}
+              {dir === "rtl" ? "ابدأ المحادثة" : "Start Chat"}
             </Button>
             <Button variant="outline" className="border-amber-600 text-amber-600 hover:bg-amber-50 dark:border-amber-500 dark:text-amber-500">
               <Phone className="w-4 h-4 mr-2" />
-              {dictionary.cms.contact.office.phone}
+              {dir === "rtl" ? "اتصل الآن" : "Call Now"}
             </Button>
           </div>
         </CardContent>

@@ -699,7 +699,14 @@
     },
     "howToBuy": {
       "title": "How to Shop",
-      "description": "Comprehensive step-by-step guide for the perfect shopping experience"
+      "description": "Comprehensive step-by-step guide for the perfect shopping experience",
+      "shoppingGuide": "Shopping Guide",
+      "stepByStep": "Step-by-Step Shopping Process",
+      "whyChoose": "Why Choose Our Store?",
+      "moreQuestions": {
+        "title": "Have More Questions?",
+        "description": "Our support team is available to help you anytime. Don't hesitate to reach out"
+      }
     },
     "paymentMethods": {
       "title": "Payment Methods",

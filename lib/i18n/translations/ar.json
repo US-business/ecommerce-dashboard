@@ -1210,5 +1210,19 @@
         }
       }
     }
+  },
+  "accessibility": {
+    "skipToContent": "انتقل إلى المحتوى",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "toggleTheme": "تبديل المظهر",
+    "goToTop": "الذهاب إلى الأعلى",
+    "previousPage": "الصفحة السابقة",
+    "nextPage": "الصفحة التالية",
+    "sortOptions": "خيارات الترتيب",
+    "filterOptions": "خيارات التصفية",
+    "searchResults": "نتائج البحث",
+    "productImage": "صورة المنتج",
+    "userAvatar": "صورة المستخدم"
   }
 }

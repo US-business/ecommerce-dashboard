@@ -14,7 +14,7 @@ import {
   Globe
 } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);
@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   };
 }
 
-export default async function ContactPage({ params }: { params: { lang: string } }) {  const resolvedParams = await params;
+export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
 
   const lang = resolvedParams?.lang as Locale;
   const dictionary = await getDictionary(lang);
@@ -63,41 +64,41 @@ export default async function ContactPage({ params }: { params: { lang: string }
   const features = [
     {
       icon: MessageSquare,
-      title: dictionary.cms.about.features.quickResponse.title,
-      description: dictionary.cms.about.features.quickResponse.description,
+      title: dir === "rtl" ? "استجابة سريعة" : "Quick Response",
+      description: dir === "rtl" ? "نرد على استفساراتكم خلال 24 ساعة" : "We respond to your inquiries within 24 hours",
     },
     {
       icon: HeadphonesIcon,
-      title: dictionary.cms.about.features.professionalSupport.title,
-      description: dictionary.cms.about.features.professionalSupport.description,
+      title: dir === "rtl" ? "دعم احترافي" : "Professional Support",
+      description: dir === "rtl" ? "فريق دعم متخصص ومدرب" : "Specialized and trained support team",
     },
     {
       icon: Globe,
-      title: dictionary.cms.about.features.globalReach.title,
-      description: dictionary.cms.about.features.globalReach.description,
+      title: dir === "rtl" ? "تواصل عالمي" : "Global Reach",
+      description: dir === "rtl" ? "نخدم عملاء من جميع أنحاء العالم" : "We serve customers from all over the world",
     },
   ];
 
   const supportChannels = [
     {
       icon: Phone,
-      title: dictionary.cms.about.supportChannels.phone.title,
-      description: dictionary.cms.about.supportChannels.phone.description,
-      action: dictionary.cms.about.supportChannels.phone.action,
+      title: dir === "rtl" ? "الهاتف" : "Phone",
+      description: dir === "rtl" ? "اتصل بنا الآن" : "Call us now",
+      action: dir === "rtl" ? "اتصل الآن" : "Call Now",
       color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
     {
       icon: Mail,
-      title: dictionary.cms.about.supportChannels.email.title,
-      description: dictionary.cms.about.supportChannels.email.description,
-      action: dictionary.cms.about.supportChannels.email.action,
+      title: dir === "rtl" ? "البريد الإلكتروني" : "Email",
+      description: dir === "rtl" ? "راسلنا عبر البريد" : "Email us",
+      action: dir === "rtl" ? "أرسل رسالة" : "Send Email",
       color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500",
     },
     {
       icon: MessageSquare,
-      title: dictionary.cms.about.supportChannels.liveChat.title,
-      description: dictionary.cms.about.supportChannels.liveChat.description,
-      action: dictionary.cms.about.supportChannels.liveChat.action,
+      title: dir === "rtl" ? "المحادثة المباشرة" : "Live Chat",
+      description: dir === "rtl" ? "تحدث معنا مباشرة" : "Chat with us",
+      action: dir === "rtl" ? "ابدأ المحادثة" : "Start Chat",
       color: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
     },
   ];
@@ -163,8 +164,8 @@ export default async function ContactPage({ params }: { params: { lang: string }
               <div className="h-64 bg-gradient-to-br from-amber-50 to-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
                 <div className="text-center">
                   <MapPin className="h-12 w-12 text-amber-600 dark:text-amber-500 mx-auto mb-2" />
-                  <p className="text-muted-foreground">{dictionary.cms.contact.map.title}</p>
-                  <p className="text-sm text-muted-foreground">{dictionary.cms.contact.map.description}</p>
+                  <p className="text-muted-foreground">{dir === "rtl" ? "موقعنا على الخريطة" : "Our Location"}</p>
+                  <p className="text-sm text-muted-foreground">{dir === "rtl" ? "يمكنك العثور علينا هنا" : "You can find us here"}</p>
                 </div>
               </div>
             </CardContent>
@@ -176,18 +177,18 @@ export default async function ContactPage({ params }: { params: { lang: string }
       <div className="mt-16 text-center">
         <Card className="bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-700 dark:to-amber-900 border-0 text-white">
           <CardContent className="p-8">
-            <h3 className="text-2xl font-bold mb-4">{dictionary.cms.contact.needHelp.title}</h3>
+            <h3 className="text-2xl font-bold mb-4">{dir === "rtl" ? "هل تحتاج إلى مساعدة؟" : "Need Help?"}</h3>
             <p className="text-lg mb-6 opacity-90">
-              {dictionary.cms.contact.needHelp.description}
+              {dir === "rtl" ? "نحن هنا للمساعدة! تواصل معنا الآن" : "We're here to help! Contact us now"}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="secondary" size="lg">
                 <Phone className="h-4 w-4 mr-2" />
-                {dictionary.cms.about.supportChannels.phone.action}
+                {dir === "rtl" ? "اتصل الآن" : "Call Now"}
               </Button>
               <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-amber-600">
                 <Mail className="h-4 w-4 mr-2" />
-                {dictionary.cms.about.supportChannels.email.action}
+                {dir === "rtl" ? "أرسل رسالة" : "Send Email"}
               </Button>
             </div>
           </CardContent>
@@ -197,9 +198,9 @@ export default async function ContactPage({ params }: { params: { lang: string }
       {/* Support Channels */}
       <div className="mt-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">{dictionary.cms.contact.stillNeedHelp.title}</h2>
+          <h2 className="text-3xl font-bold mb-4">{dir === "rtl" ? "لا تزال بحاجة إلى مساعدة؟" : "Still Need Help?"}</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {dictionary.cms.contact.stillNeedHelp.description}
+            {dir === "rtl" ? "اختر الطريقة المناسبة للتواصل معنا" : "Choose the best way to contact us"}
           </p>
         </div>
         

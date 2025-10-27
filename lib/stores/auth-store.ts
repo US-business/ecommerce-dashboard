@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { getCurrentUser, logout } from "@/lib/auth/actions"
+import { getCurrentUser } from "@/lib/auth/actions"
+import { signOut as nextAuthSignOut } from "next-auth/react"
 
 interface User {
   id: number
@@ -47,7 +48,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   signOut: async () => {
     try {
-      await logout()
+      await nextAuthSignOut({ redirect: false })
       set({ 
         user: null,
         isSuperAdmin: false,

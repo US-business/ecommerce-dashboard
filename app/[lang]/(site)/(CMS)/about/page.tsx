@@ -11,7 +11,7 @@ import {
   CallToActionSection
 } from "./_components/index";
 
-export async function generateMetadata({ params }: { params: { lang: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
 
   const lang = resolvedParams?.lang as Locale;
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   };
 }
 
-export default async function AboutPage({ params }: { params: { lang: string } }) {
+export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
 
   const lang = resolvedParams?.lang as Locale;

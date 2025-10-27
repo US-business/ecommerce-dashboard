@@ -496,6 +496,13 @@ export interface Dictionary {
         howToBuy: {
             title: string
             description: string
+            shoppingGuide: string
+            stepByStep: string
+            whyChoose: string
+            moreQuestions: {
+                title: string
+                description: string
+            }
         }
         paymentMethods: {
             title: string
@@ -712,6 +719,20 @@ export interface Dictionary {
             title: string
             subtitle: string
             lastUpdated: string
+            highlights: {
+                dataProtection: {
+                    title: string
+                    description: string
+                }
+                privacyFirst: {
+                    title: string
+                    description: string
+                }
+                transparency: {
+                    title: string
+                    description: string
+                }
+            }
             sections: {
                 introduction: {
                     title: string
