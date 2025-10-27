@@ -32,7 +32,7 @@ export function PaymentSecuritySection({ dir, lang = 'en', className = '' }: Pay
         "flex flex-wrap items-center gap-4",
       )}>
         <span className="text-muted-foreground text-sm font-medium">
-          {dir === 'rtl' ? "طرق الدفع:" : "Payment methods:"}
+          {dir === 'rtl' ? "طرق الدفع :" : "Payment methods :"}
         </span>
         <div className={cn(
           "flex gap-2",
@@ -54,11 +54,9 @@ export function PaymentSecuritySection({ dir, lang = 'en', className = '' }: Pay
       {/* Security Badges */}
       <div className={cn(
         "flex flex-wrap items-center gap-5",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
       )}>
         <div className={cn(
           "flex items-center gap-2 text-muted-foreground",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
         )}>
           <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
             <Lock className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -67,7 +65,6 @@ export function PaymentSecuritySection({ dir, lang = 'en', className = '' }: Pay
         </div>
         <div className={cn(
           "flex items-center gap-2 text-muted-foreground",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
         )}>
           <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">
             <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -76,7 +73,6 @@ export function PaymentSecuritySection({ dir, lang = 'en', className = '' }: Pay
         </div>
         <div className={cn(
           "flex items-center gap-2 text-muted-foreground",
-          dir === 'rtl' ? "flex-row-reverse" : "flex-row"
         )}>
           <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
             <Award className="w-4 h-4 text-purple-600 dark:text-purple-400" />

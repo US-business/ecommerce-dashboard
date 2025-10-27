@@ -2,7 +2,7 @@
 
 import { getUserOrders } from "@/lib/actions/orders";
 import { getCurrentUser } from "@/lib/actions/users";
-import AccountPageClient from "./_components/AccountPageClient";
+import AccountPageClient from "./_components/AccountPageClient/AccountPageClient";
 import { type Locale } from "@/lib/i18n/i18n-config"
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { getServerSession } from "next-auth/next"

@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/shadcnUI/input"
 import { Button } from "@/components/shadcnUI/button"
-import { ArrowRight, Mail } from "lucide-react"
+import { ArrowLeft, ArrowRight, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface NewsletterSectionProps {
@@ -87,9 +87,8 @@ export function NewsletterSection({ dir, lang = 'en', className = '' }: Newslett
             className="flex-1 outline outline-amber-500/60 placeholder:text-amber-700"
           />
           <Button className="px-6 gap-2 bg-amber-600 hover:bg-amber-500">
-            {dir === "rtl" ? <ArrowRight className="w-4 h-4" /> : null}
             {dir === 'rtl' ? "اشترك" : "Subscribe"}
-            {dir === "ltr" ? <ArrowRight className="w-4 h-4" /> : null}
+            {dir === "ltr" ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
           </Button>
         </div>
       </div>

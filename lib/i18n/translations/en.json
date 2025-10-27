@@ -92,7 +92,7 @@
     "general": {
       "back": "Back",
       "name": "Name",
-      "role": "Role",
+      "role": "Account Type",
       "joinDate": "Join Date",
       "memberSince": "Member since",
       "googleAccount": "Google Account",

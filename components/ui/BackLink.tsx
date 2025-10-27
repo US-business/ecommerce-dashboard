@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { Button } from '../shadcnUI/button'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
@@ -14,22 +14,18 @@ type Props = {
 
 
 
-const BackLink = ({ dir = "ltr", className, text , href }: Props) => {
+const BackLink = ({ dir = "ltr", className, text, href }: Props) => {
    const router = useRouter()
    return (
       <>
          <Button
             variant="ghost"
             onClick={() => href ? router.push(href) : router.back()}
-            className={cn( dir === "rtl" && "flex-row-reverse" , className)}
+            className={cn(dir === "rtl" && "flex-row-reverse", className)}
          >
-            {dir === "rtl" ? <>
-            <span>{text || "العودة"}</span> 
-            <ArrowLeft className={cn("h-4 w-4", dir === "rtl" ? "ml-2 rotate-180" : "mr-2")} />
-            </> : <>
-            <ArrowLeft className={cn("h-4 w-4", dir === "rtl" ? "mr-2" : "ml-2")} />
-            <span>{text || "Back"}</span>
-            </>}
+            {dir === "rtl" ? <span>{text || "العودة"}</span> : <span>{text || "Back"}</span>}
+            {dir === "ltr" ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
+
          </Button>
       </>
    )

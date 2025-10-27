@@ -34,7 +34,7 @@ export function SocialMediaSection({ dir, lang = 'en', className = '' }: SocialM
       className
     )}>
       {/* Social Links */}
-      <div className={cn(dir === 'rtl' ? "text-right" : "text-left")}>
+      <div>
         <h3 className="text-base font-semibold text-foreground mb-4">
           {dir === 'rtl' ? "تابعنا" : "Follow Us"}
         </h3>

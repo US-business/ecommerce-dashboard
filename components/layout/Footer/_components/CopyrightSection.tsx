@@ -28,9 +28,8 @@ export function CopyrightSection({ dir, lang = 'en', className = '' }: Copyright
 
       <div className={cn(
         "flex items-center gap-2",
-        dir === 'rtl' ? "flex-row-reverse" : "flex-row"
       )}>
-        <span>{dir === 'rtl' ? "صنع بـ" : "Made with"}</span>
+        <span>{dir === 'rtl' ? "صنع" : "Made with"}</span>
         <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
         <span>{dir === 'rtl' ? "أسامة سليمان" : "Osama Soliman"}</span>
       </div>

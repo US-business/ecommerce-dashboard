@@ -21,8 +21,8 @@ export function FeaturesSection({ dir, lang = 'en', className = '' }: FeaturesSe
     const features: FeaturesProps[] = [
         {
             icon: Truck,
-            title: dir === 'rtl' ? "شحن مجاني" : "Free Shipping",
-            description: dir === 'rtl' ? "للطلبات فوق $50" : "On orders over $50",
+            title: dir === 'rtl' ? "شحن سريع" : "Fast Shipping",
+            description: dir === 'rtl' ? "توصيل في 1-3 أيام" : "Delivery in 1-3 days",
             delay: 0
         },
         {
@@ -34,7 +34,7 @@ export function FeaturesSection({ dir, lang = 'en', className = '' }: FeaturesSe
         {
             icon: RotateCcw,
             title: dir === 'rtl' ? "إرجاع سهل" : "Easy Returns",
-            description: dir === 'rtl' ? "خلال 30 يوم بدون أسئلة" : "Within 30 days, no questions",
+            description: dir === 'rtl' ? "تواصل مع خدمة العملاء" : "Contact customer support",
             delay: 200
         },
         {
@@ -54,7 +54,6 @@ export function FeaturesSection({ dir, lang = 'en', className = '' }: FeaturesSe
                             key={index}
                             className={cn(
                                 "group flex items-center gap-4 p-5 bg-card rounded-lg border-2 border-sky-300 hover:border-green-500 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5",
-                                dir === 'rtl' ? "flex-row-reverse" : "flex-row"
                             )}
                             style={{
                                 animationDelay: `${feature.delay}ms`
@@ -65,7 +64,7 @@ export function FeaturesSection({ dir, lang = 'en', className = '' }: FeaturesSe
                                     <feature.icon className="w-6 h-6 text-sky-600 group-hover:text-green-600" />
                                 </div>
                             </div>
-                            <div className={cn(dir === 'rtl' ? "text-right" : "text-left")}>
+                            <div>
                                 <h3 className="font-semibold group-hover:text-green-800 text-sky-600  mb-0.5 text-sm">
                                     {feature.title}
                                 </h3>

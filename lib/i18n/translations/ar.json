@@ -92,7 +92,7 @@
     "general": {
       "back": "العودة",
       "name": "الاسم",
-      "role": "الدور",
+      "role": "نوع الحساب",
       "joinDate": "تاريخ الانضمام",
       "memberSince": "عضو منذ",
       "googleAccount": "حساب Google",
